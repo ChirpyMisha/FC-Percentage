@@ -19,12 +19,12 @@
       "Name": "FC Percentage Counter",
       "CounterLocation": "FullComboPercentageCounter.FCPercentageCounter",
       "ConfigDefaults": {
-        "Enabled": false,
-        "Position": "AboveCombo",
+        "Enabled": true,
+        "Position": "BelowMultiplier",
         "Distance": 0
       },
       "BSML": {
-        "Resource": "FullComboPercentageCounter.Configuration.FCPercentageSettings.bsml",
+        "Resource": "FullComboPercentageCounter.Configuration.BSML.FCPercentageSettings.bsml",
         "Host": "FullComboPercentageCounter.Configuration.FCPercentageConfigModel",
         "Icon": "FullComboPercentageCounter.Resources.Icon.png"
       }

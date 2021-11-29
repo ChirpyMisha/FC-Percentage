@@ -1,24 +1,16 @@
 ﻿using CountersPlus.Counters.Interfaces;
-using CountersPlus.ConfigModels;
 using CountersPlus.Custom;
 using CountersPlus.Utils;
 using Zenject;
 using TMPro;
-using UnityEngine;
 using FullComboPercentageCounter.Configuration;
-using IPA.Utilities;
 using System;
-using FullComboPercentageCounter.Installers;
-using SiraUtil.Zenject;
-//using static CountersPlus.Utils.Accessors;
 
 namespace FullComboPercentageCounter
 {
 	public class FCPercentageCounter : ICounter
 	{
 		//The icon doesn't work for some unknown reason.
-
-		//The default counter position may need to be changed?
 
 		private static double DefaultPercentage = 100.0;
 
