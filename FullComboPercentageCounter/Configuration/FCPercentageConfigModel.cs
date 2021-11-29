@@ -1,5 +1,4 @@
 ﻿using BeatSaberMarkupLanguage.Attributes;
-using NoShitmissPercentageCounter.Configuration;
 
 namespace FullComboPercentageCounter.Configuration
 {

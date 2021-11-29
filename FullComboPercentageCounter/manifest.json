@@ -16,7 +16,7 @@
   ],
   "features": {
     "CountersPlus.CustomCounter": {
-      "Name": "Full Combo Percentage Counter",
+      "Name": "FC Percentage Counter",
       "CounterLocation": "FullComboPercentageCounter.FCPercentageCounter",
       "ConfigDefaults": {
         "Enabled": false,

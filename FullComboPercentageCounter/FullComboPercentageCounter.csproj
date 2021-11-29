@@ -132,7 +132,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\FCPercentageCounterConfigModel.cs" />
+    <Compile Include="Configuration\FCPercentageConfigModel.cs" />
+    <Compile Include="FCPercentageCounter.cs" />
     <Compile Include="Installers\GameInstaller.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
@@ -143,7 +144,7 @@
     <EmbeddedResource Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Configuration\BSML\FCPercentageCounterSettings.bsml" />
+    <EmbeddedResource Include="Configuration\BSML\FCPercentageSettings.bsml" />
     <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
     <None Include="Directory.Build.targets" Condition="Exists('Directory.Build.targets')" />
     <None Include="FullComboPercentageCounter.csproj.user" Condition="Exists('FullComboPercentageCounter.csproj.user')" />

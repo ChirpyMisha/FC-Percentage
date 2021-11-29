@@ -17,19 +17,9 @@ namespace FullComboPercentageCounter
 		private Dictionary<NoteCutInfo, NoteData> noteCutInfoData;
 
 		private int noteCount;
+		private int currentScore, currentMaxScore;
 
-		private int currentScore;
-		private int currentMaxScore;
-
-		public int CurrentScore
-		{
-			get { return currentScore; }
-		}
-		public int CurrentMaxScore
-		{
-			get { return currentMaxScore; }
-		}
-
+		private readonly Func<int, int> MultiplierAtNoteCount = noteCount => (noteCount > 13 ? 8 : noteCount > 5 ? 4 : noteCount > 1 ? 2 : 1);
 
 		public ScoreTracker(ScoreController scoreController)
 		{
@@ -48,8 +38,7 @@ namespace FullComboPercentageCounter
 			noteCutInfoData = new Dictionary<NoteCutInfo, NoteData>();
 
 			noteCount = 0;
-			currentScore = 0;
-			currentMaxScore = 0;
+			currentScore = currentMaxScore = 0;
 		}
 
 		public void Dispose()
@@ -75,8 +64,7 @@ namespace FullComboPercentageCounter
 
 				int beforeCutRawScore, afterCutRawScore, accRawScore;
 				ScoreModel.RawScoreWithoutMultiplier(noteCutInfo.swingRatingCounter, noteCutInfo.cutDistanceToCenter, out beforeCutRawScore, out afterCutRawScore, out accRawScore);
-				int myMultiplier = noteCount > 13 ? 8 : noteCount > 5 ? 4 : noteCount > 1 ? 2 : 1;
-				Rating rating = new Rating(noteData, beforeCutRawScore, afterCutRawScore, accRawScore, myMultiplier);
+				Rating rating = new Rating(noteData, beforeCutRawScore, afterCutRawScore, accRawScore, MultiplierAtNoteCount(noteCount));
 				noteRatings.Add(noteData, rating);
 
 				UpdateScoreUnfinished(rating);
@@ -112,7 +100,10 @@ namespace FullComboPercentageCounter
 			{
 				NoteData noteData;
 				if (noteCutInfoData.TryGetValue(noteCutInfo, out noteData))
+				{
 					UpdateScoreFinished(noteRatings[noteData]);
+					noteRatings.Remove(noteData);
+				}
 				else
 					Plugin.Log.Error("ScoreTracker, HandleSaberSwingRatingCounterDidFinish : Failed to get NoteData from noteCutInfoData!");
 
@@ -141,10 +132,6 @@ namespace FullComboPercentageCounter
 			int ratingAngleCutScoreMultiplied = (rating.beforeCut + rating.afterCut) * rating.multiplier;
 			int diffAngleCutScoreMultiplied = maxAngleCutScoreMultiplied - ratingAngleCutScoreMultiplied;
 
-			//Plugin.Log.Notice($"UpdateScoreFinished: Finishing Score.");
-			//Plugin.Log.Notice($"acc = {rating.acc}, beforeCut = {rating.beforeCut}, afterCut = {rating.afterCut}");
-			//Plugin.Log.Notice($"max After Cut Score = [{maxAngleCutScoreMultiplied}]. rating After Cut Score = [{ratingAngleCutScoreMultiplied}]. Difference = {diffAngleCutScoreMultiplied}");
-
 			if (diffAngleCutScoreMultiplied > 0)
 			{
 				currentScore -= diffAngleCutScoreMultiplied;
@@ -158,12 +145,10 @@ namespace FullComboPercentageCounter
 			EventHandler<ScoreUpdateEventArgs> handler = OnScoreUpdate;
 			if (handler != null)
 			{
-				// create EventArgs
 				ScoreUpdateEventArgs scoreUpdateEventArgs = new ScoreUpdateEventArgs();
 				scoreUpdateEventArgs.CurrentScore = currentScore;
 				scoreUpdateEventArgs.CurrentMaxScore = currentMaxScore;
 
-				// Invoke OnScoreUpdate
 				handler(this, scoreUpdateEventArgs);
 			}
 		}

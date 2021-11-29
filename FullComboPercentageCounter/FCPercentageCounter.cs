@@ -16,38 +16,26 @@ namespace FullComboPercentageCounter
 {
 	public class FCPercentageCounter : ICounter
 	{
-		//I got an idea to make it feel more responsive.
-		//Im going to assume that it is a full swing and update the score as such.
-		//But if it turns out it is not a full swing I will subtract those points when the swing is finished.
-
 		//The icon doesn't work for some unknown reason.
 
 		//The default counter position may need to be changed?
 
-		//Changing the # of digits in the settings doesn't work. It also doesn't get saved?
+		private static double DefaultPercentage = 100.0;
 
 		private TMP_Text counterText;
 		private string counterFormat;
 
 		private readonly ScoreTracker scoreTracker;
-		FCPercentageConfigModel counterConfig;
+		private readonly FCPercentageConfigModel counterConfig;
 
+		// Can this be changed to be the same as CanvasUtility and Settings? Need to test this after testing the previous changes.
 		public FCPercentageCounter([InjectOptional] ScoreTracker scoreTracker, [InjectOptional] FCPercentageConfigModel counterConfig)
 		{
 			this.scoreTracker = scoreTracker;
 			this.counterConfig = counterConfig;
 		}
 
-		/// <summary>
-		/// Helper class for creating text within Counters+'s system.
-		/// Not recommended for creating text belonging outside of Counters+.
-		/// </summary>
 		[Inject] protected CanvasUtility CanvasUtility;
-
-		/// <summary>
-		/// The <see cref="CustomConfigModel"/> for your Custom Counter.
-		/// Use it to help position your text with <see cref="CanvasUtility"/>.
-		/// </summary>
 		[Inject] protected CustomConfigModel Settings;
 
 		public void CounterInit()
@@ -72,11 +60,10 @@ namespace FullComboPercentageCounter
 
 		private void InitCounterText()
 		{
-			double defaultPercentage = 100.0;
 			counterFormat = CreateCounterFormat();
 
 			counterText = CanvasUtility.CreateTextFromSettings(Settings);
-			counterText.text = $"{defaultPercentage.ToString(counterFormat)}%";
+			counterText.text = $"{DefaultPercentage.ToString(counterFormat)}%";
 		}
 
 		private string CreateCounterFormat()
@@ -94,7 +81,6 @@ namespace FullComboPercentageCounter
 		public void CounterDestroy()
 		{
 			scoreTracker.OnScoreUpdate -= OnScoreUpdateHandler;
-			return;
 		}
 
 		private void OnScoreUpdateHandler(object s, ScoreUpdateEventArgs e)
@@ -103,13 +89,13 @@ namespace FullComboPercentageCounter
 			counterText.text = $"{percent.ToString(counterFormat)}%";
 		}
 
-		private double PercentageOf(double value1, double value2, int decimalPrecision)
+		private double PercentageOf(double part, double total, int decimalPrecision)
 		{
-			return Math.Round(PercentageOf(value1, value2), decimalPrecision);
+			return Math.Round(PercentageOf(part, total), decimalPrecision);
 		}
-		private double PercentageOf(double value1, double value2)
+		private double PercentageOf(double part, double total)
 		{
-			return (value1 / value2) * 100;
+			return (part / total) * 100;
 		}
 	}
 }
