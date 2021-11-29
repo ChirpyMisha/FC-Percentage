@@ -8,6 +8,13 @@ namespace FullComboPercentageCounter
 {
 	public class ScoreTracker : IInitializable, IDisposable, ISaberSwingRatingCounterDidChangeReceiver, ISaberSwingRatingCounterDidFinishReceiver
 	{
+		// Bugs & future features:
+		// Bug: The icon doesn't work for some unknown reason.
+		// Feature: Split percentage for left & right saber.
+		// Feature: Change counter size.
+		// Feature: Toggleable counter name.
+		// Feature: Ignore multiplier.
+
 		public event EventHandler<ScoreUpdateEventArgs> OnScoreUpdate;
 
 		private readonly ScoreController scoreController;

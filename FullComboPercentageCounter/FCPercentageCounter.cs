@@ -10,8 +10,6 @@ namespace FullComboPercentageCounter
 {
 	public class FCPercentageCounter : ICounter
 	{
-		//The icon doesn't work for some unknown reason.
-
 		private static double DefaultPercentage = 100.0;
 
 		private TMP_Text counterText;
