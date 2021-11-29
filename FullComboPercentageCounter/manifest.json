@@ -1,0 +1,33 @@
+﻿{
+  "$schema": "https://raw.githubusercontent.com/bsmg/BSIPA-MetadataFileSchema/master/Schema.json",
+  "id": "FullComboPercentageCounter",
+  "name": "FullComboPercentageCounter",
+  "author": "ChirpyMisha",
+  "version": "0.1.0",
+  "description": "",
+  "gameVersion": "1.18.3",
+  "dependsOn": {
+    "BSIPA": "^4.2.0",
+    "SiraUtil": "^2.5.8",
+    "Counters+": "^2.2.2"
+  },
+  "loadAfter": [
+    "Counters+"
+  ],
+  "features": {
+    "CountersPlus.CustomCounter": {
+      "Name": "Full Combo Percentage Counter",
+      "CounterLocation": "FullComboPercentageCounter.FCPercentageCounter",
+      "ConfigDefaults": {
+        "Enabled": false,
+        "Position": "AboveCombo",
+        "Distance": 0
+      },
+      "BSML": {
+        "Resource": "FullComboPercentageCounter.Configuration.FCPercentageSettings.bsml",
+        "Host": "FullComboPercentageCounter.Configuration.FCPercentageConfigModel",
+        "Icon": "FullComboPercentageCounter.Resources.Icon.png"
+      }
+    }
+  }
+}
