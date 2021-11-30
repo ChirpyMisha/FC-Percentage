@@ -8,7 +8,7 @@ Available settings:
 - Decimal Precision: Change the precision of the counter from 0 decimals up to 4 decimals.
 
 Known bugs:
-- Counters+ shows the default icon instead of my custom icon.
+- [No known bugs]
 
 Unconfirmed bugs:
 - After exiting Beat Saber the screen stays black.
