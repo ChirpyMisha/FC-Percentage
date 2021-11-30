@@ -7,7 +7,7 @@ namespace FullComboPercentageCounter.Installers
 	{
 		public override void InstallBindings()
 		{
-			Container.BindInterfacesAndSelfTo<ScoreTracker>().AsSingle();
+			Container.BindInterfacesAndSelfTo<NoteRatingTracker>().AsSingle();
 			Container.BindInterfacesAndSelfTo<FCPercentageConfigModel>().AsSingle();
 		}
 	}

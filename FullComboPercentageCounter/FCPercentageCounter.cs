@@ -15,13 +15,14 @@ namespace FullComboPercentageCounter
 		private TMP_Text counterText;
 		private string counterFormat;
 
-		private readonly ScoreTracker scoreTracker;
+		private readonly NoteRatingTracker noteTracker;
 		private readonly FCPercentageConfigModel counterConfig;
+		private ScoreTracker scoreTracker;
 
 		// Can this be changed to be the same as CanvasUtility and Settings? Need to test this after testing the previous changes.
-		public FCPercentageCounter([InjectOptional] ScoreTracker scoreTracker, [InjectOptional] FCPercentageConfigModel counterConfig)
+		public FCPercentageCounter([InjectOptional] NoteRatingTracker noteTracker, [InjectOptional] FCPercentageConfigModel counterConfig)
 		{
-			this.scoreTracker = scoreTracker;
+			this.noteTracker = noteTracker;
 			this.counterConfig = counterConfig;
 		}
 
@@ -32,7 +33,7 @@ namespace FullComboPercentageCounter
 		{
 			Plugin.Log.Info("Starting NoShitmissPercentageCounter Init");
 
-			if (scoreTracker == null)
+			if (noteTracker == null)
 			{
 				Plugin.Log.Error("ERROR: scoreTracker == null");
 				return;
@@ -42,6 +43,8 @@ namespace FullComboPercentageCounter
 				Plugin.Log.Error("ERROR: counterConfig == null");
 				return;
 			}
+
+			scoreTracker = new ScoreTracker(noteTracker);
 
 			InitCounterText();
 
@@ -75,7 +78,7 @@ namespace FullComboPercentageCounter
 
 		private void OnScoreUpdateHandler(object s, ScoreUpdateEventArgs e)
 		{
-			double percent = PercentageOf(e.CurrentScore, e.CurrentMaxScore, counterConfig.DecimalPrecision);
+			double percent = PercentageOf(e.CurrentScoreTotal, e.CurrentMaxScoreTotal, counterConfig.DecimalPrecision);
 			counterText.text = $"{percent.ToString(counterFormat)}%";
 		}
 

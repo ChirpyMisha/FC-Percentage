@@ -1,146 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
-using Zenject;
-
-// I copied a part of PikminBloom's homework and changed a few things so it isn't obvious.
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace FullComboPercentageCounter
 {
-	public class ScoreTracker : IInitializable, IDisposable, ISaberSwingRatingCounterDidChangeReceiver, ISaberSwingRatingCounterDidFinishReceiver
+	class ScoreTracker : IDisposable
 	{
-		// Bugs & future features:
-		// Bug: The icon doesn't work for some unknown reason.
-		// Feature: Split percentage for left & right saber.
-		// Feature: Change counter size.
-		// Feature: Toggleable counter name.
-		// Feature: Ignore multiplier.
-
 		public event EventHandler<ScoreUpdateEventArgs> OnScoreUpdate;
 
-		private readonly ScoreController scoreController;
-		private Dictionary<NoteData, Rating> noteRatings;
-		private Dictionary<ISaberSwingRatingCounter, NoteCutInfo> swingCounterCutInfo;
-		private Dictionary<NoteCutInfo, NoteData> noteCutInfoData;
+		private int currentScoreA, currentScoreB;
+		private int currentMaxScoreA, currentMaxScoreB;
 
-		private int noteCount;
-		private int currentScore, currentMaxScore;
+		private readonly Func<int, int> MultiplierAtNoteCount = noteCount => (noteCount > 13 ? 8 : (noteCount > 5 ? 4 : (noteCount > 1 ? 2 : 1)));
 
-		private readonly Func<int, int> MultiplierAtNoteCount = noteCount => (noteCount > 13 ? 8 : noteCount > 5 ? 4 : noteCount > 1 ? 2 : 1);
+		private NoteRatingTracker noteRatingTracker;
 
-		public ScoreTracker(ScoreController scoreController)
+		public ScoreTracker(NoteRatingTracker noteRatingTracker)
 		{
-			this.scoreController = scoreController;
-		}
+			// Assign variables
+			this.noteRatingTracker = noteRatingTracker;
+			
+			// init variables
+			currentScoreA = currentScoreB = 0;
+			currentMaxScoreA = currentMaxScoreB = 0;
 
-		public void Initialize()
-		{
-			Plugin.Log.Notice("Initializing ScoreTracker");
-
-			scoreController.noteWasMissedEvent += ScoreController_noteWasMissedEvent;
-			scoreController.noteWasCutEvent += ScoreController_noteWasCutEvent;
-
-			noteRatings = new Dictionary<NoteData, Rating>();
-			swingCounterCutInfo = new Dictionary<ISaberSwingRatingCounter, NoteCutInfo>();
-			noteCutInfoData = new Dictionary<NoteCutInfo, NoteData>();
-
-			noteCount = 0;
-			currentScore = currentMaxScore = 0;
+			// Assign events
+			noteRatingTracker.OnRatingAdded += NoteRatingTracker_OnNoteRatingAdded;
+			noteRatingTracker.OnRatingFinished += NoteTracker_OnNoteRatingFinished;
 		}
 
 		public void Dispose()
 		{
-			scoreController.noteWasMissedEvent -= ScoreController_noteWasMissedEvent;
-			scoreController.noteWasCutEvent -= ScoreController_noteWasCutEvent;
+			// Unassign events
+			noteRatingTracker.OnRatingAdded -= NoteRatingTracker_OnNoteRatingAdded;
+			noteRatingTracker.OnRatingFinished -= NoteTracker_OnNoteRatingFinished;
 		}
 
-		private void ScoreController_noteWasMissedEvent(NoteData noteData, int _)
+		private void NoteRatingTracker_OnNoteRatingAdded(object s, NoteRatingUpdateEventArgs e)
 		{
-			noteCount++;
-		}
-
-		private void ScoreController_noteWasCutEvent(NoteData noteData, in NoteCutInfo noteCutInfo, int multiplier)
-		{
-			noteCount++;
-			if (noteData.colorType != ColorType.None && noteCutInfo.allIsOK)
-			{
-				swingCounterCutInfo.Add(noteCutInfo.swingRatingCounter, noteCutInfo);
-				noteCutInfoData.Add(noteCutInfo, noteData);
-				noteCutInfo.swingRatingCounter.RegisterDidChangeReceiver(this);
-				noteCutInfo.swingRatingCounter.RegisterDidFinishReceiver(this);
-
-				int beforeCutRawScore, afterCutRawScore, accRawScore;
-				ScoreModel.RawScoreWithoutMultiplier(noteCutInfo.swingRatingCounter, noteCutInfo.cutDistanceToCenter, out beforeCutRawScore, out afterCutRawScore, out accRawScore);
-				Rating rating = new Rating(noteData, beforeCutRawScore, afterCutRawScore, accRawScore, MultiplierAtNoteCount(noteCount));
-				noteRatings.Add(noteData, rating);
-
-				UpdateScoreUnfinished(rating);
-			}
-		}
-
-		public void HandleSaberSwingRatingCounterDidChange(ISaberSwingRatingCounter saberSwingRatingCounter, float rating)
-		{
-			NoteCutInfo noteCutInfo;
-			if (swingCounterCutInfo.TryGetValue(saberSwingRatingCounter, out noteCutInfo))
-			{
-				NoteData noteData;
-				if (noteCutInfoData.TryGetValue(noteCutInfo, out noteData))
-				{
-					int beforeCutRawScore, afterCutRawScore, accRawScore;
-					ScoreModel.RawScoreWithoutMultiplier(saberSwingRatingCounter, noteCutInfo.cutDistanceToCenter, out beforeCutRawScore, out afterCutRawScore, out accRawScore);
-
-					Rating previousRating = noteRatings[noteData];
-					Rating updatedRating = new Rating(noteData, beforeCutRawScore, afterCutRawScore, accRawScore, previousRating.multiplier);
-					noteRatings[noteData] = updatedRating;
-				}
-				else
-					Plugin.Log.Error("ScoreTracker, HandleSaberSwingRatingCounterDidChange : Failed to get NoteData from noteCutInfoData!");
-			}
-			else
-				Plugin.Log.Error("ScoreTracker, HandleSaberSwingRatingCounterDidChange : Failed to get NoteCutInfo from swingCounterCutInfo!");
-		}
-
-		public void HandleSaberSwingRatingCounterDidFinish(ISaberSwingRatingCounter saberSwingRatingCounter)
-		{
-			NoteCutInfo noteCutInfo;
-			if (swingCounterCutInfo.TryGetValue(saberSwingRatingCounter, out noteCutInfo))
-			{
-				NoteData noteData;
-				if (noteCutInfoData.TryGetValue(noteCutInfo, out noteData))
-				{
-					UpdateScoreFinished(noteRatings[noteData]);
-					noteRatings.Remove(noteData);
-				}
-				else
-					Plugin.Log.Error("ScoreTracker, HandleSaberSwingRatingCounterDidFinish : Failed to get NoteData from noteCutInfoData!");
-
-				swingCounterCutInfo.Remove(saberSwingRatingCounter);
-			}
-			else
-				Plugin.Log.Error("ScoreTracker, HandleSaberSwingRatingCounterDidFinish : Failed to get NoteCutInfo from swingCounterCutInfo!");
-
-			saberSwingRatingCounter.UnregisterDidChangeReceiver(this);
-			saberSwingRatingCounter.UnregisterDidFinishReceiver(this);
-		}
-
-		private void UpdateScoreUnfinished(Rating rating)
-		{
+			NoteRating rating = e.NoteRating;
 			int maxScoreIfFinishedMultiplied = (rating.acc + ScoreModel.kMaxBeforeCutSwingRawScore + ScoreModel.kMaxAfterCutSwingRawScore) * rating.multiplier;
 
-			currentScore += maxScoreIfFinishedMultiplied;
-			currentMaxScore += ScoreModel.kMaxCutRawScore * rating.multiplier;
+			// Update score for left or right saber
+			if (e.NoteData.colorType == ColorType.ColorA)
+			{
+				currentScoreA += maxScoreIfFinishedMultiplied;
+				currentMaxScoreA += ScoreModel.kMaxCutRawScore * rating.multiplier;
+			}
+			else if (e.NoteData.colorType == ColorType.ColorB)
+			{
+				currentScoreB += maxScoreIfFinishedMultiplied;
+				currentMaxScoreB += ScoreModel.kMaxCutRawScore * rating.multiplier;
+			}
 
 			InvokeScoreUpdate();
 		}
 
-		private void UpdateScoreFinished(Rating rating)
+		private void NoteTracker_OnNoteRatingFinished(object s, NoteRatingUpdateEventArgs e)
 		{
+			NoteRating rating = e.NoteRating;
+
+			// Calculate difference between previously applied score and actual score
 			int maxAngleCutScoreMultiplied = (ScoreModel.kMaxBeforeCutSwingRawScore + ScoreModel.kMaxAfterCutSwingRawScore) * rating.multiplier;
 			int ratingAngleCutScoreMultiplied = (rating.beforeCut + rating.afterCut) * rating.multiplier;
 			int diffAngleCutScoreMultiplied = maxAngleCutScoreMultiplied - ratingAngleCutScoreMultiplied;
 
+			// If the previously applied score was NOT correct (aka, it was a full NOT swing) -> Update score
 			if (diffAngleCutScoreMultiplied > 0)
 			{
-				currentScore -= diffAngleCutScoreMultiplied;
+				if (e.NoteData.colorType == ColorType.ColorA)
+					currentScoreA -= diffAngleCutScoreMultiplied;
+				else if (e.NoteData.colorType == ColorType.ColorB)
+					currentScoreB -= diffAngleCutScoreMultiplied;
 
 				InvokeScoreUpdate();
 			}
@@ -148,38 +81,32 @@ namespace FullComboPercentageCounter
 
 		protected virtual void InvokeScoreUpdate()
 		{
+			// Create event handler
 			EventHandler<ScoreUpdateEventArgs> handler = OnScoreUpdate;
 			if (handler != null)
 			{
+				// Assign event args
 				ScoreUpdateEventArgs scoreUpdateEventArgs = new ScoreUpdateEventArgs();
-				scoreUpdateEventArgs.CurrentScore = currentScore;
-				scoreUpdateEventArgs.CurrentMaxScore = currentMaxScore;
+				scoreUpdateEventArgs.CurrentScoreA = currentScoreA;
+				scoreUpdateEventArgs.CurrentMaxScoreA = currentMaxScoreA;
+				scoreUpdateEventArgs.CurrentScoreB = currentScoreB;
+				scoreUpdateEventArgs.CurrentMaxScoreB = currentMaxScoreB;
 
+				// Invoke event
 				handler(this, scoreUpdateEventArgs);
 			}
 		}
 
-
-		public struct Rating
-		{
-			public NoteData noteData;
-			public int multiplier, beforeCut, afterCut, acc;
-
-			public Rating(NoteData noteData, int beforeCutRaw, int afterCutRaw, int accRaw, int multiplier)
-			{
-				this.noteData = noteData;
-				this.multiplier = multiplier;
-				this.beforeCut = beforeCutRaw;
-				this.afterCut = afterCutRaw;
-				this.acc = accRaw;
-			}
-		}
+		
 	}
 
 	public class ScoreUpdateEventArgs : EventArgs
 	{
-		public int CurrentScore { get; set; }
-		public int CurrentMaxScore { get; set; }
+		public int CurrentScoreA { get; set; }
+		public int CurrentMaxScoreA { get; set; }
+		public int CurrentScoreB { get; set; }
+		public int CurrentMaxScoreB { get; set; }
+		public int CurrentScoreTotal { get { return CurrentScoreA + CurrentScoreB; } }
+		public int CurrentMaxScoreTotal { get { return CurrentMaxScoreA + CurrentMaxScoreB; } }
 	}
 }
-

@@ -135,10 +135,11 @@
     <Compile Include="Configuration\FCPercentageConfigModel.cs" />
     <Compile Include="FCPercentageCounter.cs" />
     <Compile Include="Installers\GameInstaller.cs" />
+    <Compile Include="ScoreTracker.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScoreTracker.cs" />
+    <Compile Include="NoteRatingTracker.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />
