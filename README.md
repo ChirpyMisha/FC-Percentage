@@ -10,9 +10,6 @@ Available settings:
 Known bugs:
 - [No known bugs]
 
-Unconfirmed bugs:
-- After exiting Beat Saber the screen stays black.
-
 Ideas for Future Features:
 - Change counter size.
 - Toggleable counter name.
