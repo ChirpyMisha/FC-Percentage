@@ -10,8 +10,13 @@ Available settings:
 Known bugs:
 - Counters+ shows the default icon instead of my custom icon.
 
+Unconfirmed bugs:
+- After exiting Beat Saber the screen stays black.
+
 Ideas for Future Features:
 - Change counter size.
 - Toggleable counter name.
-- Ignore multiplier.
+- True accuracy mode (Ignore multiplier ramp-up at the start of the song).
 - Split percentage for left & right saber.
+- Show final percentage after song on the overview view.
+- Add highest accuracy to the bar below the scoresaber screen (similar to SongPlayHistoryContinued)
