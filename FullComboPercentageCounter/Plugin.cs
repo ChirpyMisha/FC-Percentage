@@ -24,7 +24,7 @@ namespace FullComboPercentageCounter
 			Instance = this;
 			Log = logger;
 			zenjector.OnGame<GameInstaller>(false);
-			Log.Info("NoShitmissPercentageCounter initialized.");
+			Log.Info("FullComboPercentageCounter initialized.");
 		}
 
 		//Uncomment to use BSIPA's config

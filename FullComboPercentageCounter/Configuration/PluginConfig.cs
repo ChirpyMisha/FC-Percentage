@@ -8,6 +8,13 @@ namespace FullComboPercentageCounter.Configuration
 	{
 		public static PluginConfig Instance { get; set; }
 		public virtual int DecimalPrecision { get; set; } = 2;
+		public virtual float PercentageSize { get; set; } = 0.85f;
+		public virtual bool EnableLabel { get; set; } = true;
+		public virtual bool LabelAboveCount { get; set; } = false;
+		public virtual string LabelTextPrefix { get; set; } = "FC : ";
+		public virtual string LabelTextAboveCount { get; set; } = "FC Percent";
+		public virtual float LabelOffsetAboveCount { get; set; } = 0.32f;
+		public virtual float LabelSizeAboveCount { get; set; } = 0.95f;
 
 		/// <summary>
 		/// This is called whenever BSIPA reads the config from disk (including when file changes are detected).

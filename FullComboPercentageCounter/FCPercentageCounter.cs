@@ -5,6 +5,7 @@ using Zenject;
 using TMPro;
 using FullComboPercentageCounter.Configuration;
 using System;
+using UnityEngine;
 
 namespace FullComboPercentageCounter
 {
@@ -13,17 +14,19 @@ namespace FullComboPercentageCounter
 		private static double DefaultPercentage = 100.0;
 
 		private TMP_Text counterText;
+		private TMP_Text counterNameText;
 		private string counterFormat;
+		private string counterPrefix;
 
 		private readonly NoteRatingTracker noteTracker;
-		private readonly FCPercentageConfigModel counterConfig;
+		private readonly PluginConfig counterConfig;
 		private ScoreTracker scoreTracker;
 
 		// Can this be changed to be the same as CanvasUtility and Settings? Need to test this after testing the previous changes.
-		public FCPercentageCounter([InjectOptional] NoteRatingTracker noteTracker, [InjectOptional] FCPercentageConfigModel counterConfig)
+		public FCPercentageCounter([InjectOptional] NoteRatingTracker noteTracker)
 		{
 			this.noteTracker = noteTracker;
-			this.counterConfig = counterConfig;
+			counterConfig = PluginConfig.Instance;
 		}
 
 		[Inject] protected CanvasUtility CanvasUtility;
@@ -46,6 +49,8 @@ namespace FullComboPercentageCounter
 
 			scoreTracker = new ScoreTracker(noteTracker);
 
+			
+
 			InitCounterText();
 
 			scoreTracker.OnScoreUpdate += OnScoreUpdateHandler;
@@ -53,22 +58,36 @@ namespace FullComboPercentageCounter
 
 		private void InitCounterText()
 		{
-			counterFormat = CreateCounterFormat();
+			counterPrefix = "";
+			if (counterConfig.EnableLabel)
+			{
+				if (counterConfig.LabelAboveCount)
+				{
+					counterNameText = CanvasUtility.CreateTextFromSettings(Settings, new Vector3(0.0f, counterConfig.LabelOffsetAboveCount, 0.0f));
+					counterNameText.text = counterConfig.LabelTextAboveCount;
+					counterNameText.fontSize *= counterConfig.LabelSizeAboveCount;
+				}
+				else
+				{
+					counterPrefix = counterConfig.LabelTextPrefix;
+				}
+			}
 
+			counterFormat = CreateCounterFormat();
 			counterText = CanvasUtility.CreateTextFromSettings(Settings);
-			counterText.text = $"{DefaultPercentage.ToString(counterFormat)}%";
+
+			counterText.fontSize *= counterConfig.PercentageSize;
+			if (counterConfig.EnableLabel && !counterConfig.LabelAboveCount)
+				counterText.fontSize -= 0.15f;
+			counterText.text = $"{counterPrefix}{DefaultPercentage.ToString(counterFormat)}%";
 		}
 
 		private string CreateCounterFormat()
 		{
-			string format = "0";
 			if (counterConfig.DecimalPrecision > 0)
-				format += ".";
-
-			for (int i = 0; i < counterConfig.DecimalPrecision; i++)
-				format += "0";
-
-			return format;
+				return "0." + new string('0', counterConfig.DecimalPrecision);
+			else
+				return "0";
 		}
 
 		public void CounterDestroy()
@@ -79,7 +98,7 @@ namespace FullComboPercentageCounter
 		private void OnScoreUpdateHandler(object s, ScoreUpdateEventArgs e)
 		{
 			double percent = PercentageOf(e.CurrentScoreTotal, e.CurrentMaxScoreTotal, counterConfig.DecimalPrecision);
-			counterText.text = $"{percent.ToString(counterFormat)}%";
+			counterText.text = $"{counterPrefix}{percent.ToString(counterFormat)}%";
 		}
 
 		private double PercentageOf(double part, double total, int decimalPrecision)
