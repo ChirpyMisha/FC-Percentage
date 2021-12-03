@@ -1,5 +1,4 @@
-﻿using FullComboPercentageCounter.Configuration;
-using Zenject;
+﻿using Zenject;
 
 namespace FullComboPercentageCounter.Installers
 {
@@ -8,7 +7,7 @@ namespace FullComboPercentageCounter.Installers
 		public override void InstallBindings()
 		{
 			Container.BindInterfacesAndSelfTo<NoteRatingTracker>().AsSingle();
-			Container.BindInterfacesAndSelfTo<FCPercentageConfigModel>().AsSingle();
+			Container.BindInterfacesAndSelfTo<ScoreTracker>().AsSingle();
 		}
 	}
 }

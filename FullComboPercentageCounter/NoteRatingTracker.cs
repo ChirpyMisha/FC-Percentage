@@ -8,16 +8,11 @@ namespace FullComboPercentageCounter
 {
 	public class NoteRatingTracker : IInitializable, IDisposable, ISaberSwingRatingCounterDidChangeReceiver, ISaberSwingRatingCounterDidFinishReceiver
 	{
-		// Bugs & future features:
-		// Feature: Split percentage for left & right saber.
-		// Feature: Change counter size.
-		// Feature: Toggleable counter name.
-		// Feature: Ignore multiplier.
-
 		public event EventHandler<NoteRatingUpdateEventArgs> OnRatingAdded;
 		public event EventHandler<NoteRatingUpdateEventArgs> OnRatingFinished;
 
 		private readonly ScoreController scoreController;
+
 		private Dictionary<NoteData, NoteRating> noteRatings;
 		private Dictionary<ISaberSwingRatingCounter, NoteCutInfo> swingCounterCutInfo;
 		private Dictionary<NoteCutInfo, NoteData> noteCutInfoData;
@@ -31,7 +26,7 @@ namespace FullComboPercentageCounter
 
 		public void Initialize()
 		{
-			Plugin.Log.Notice("Initializing NoteRatingTracker");
+			Plugin.Log.Notice("Initializing noteRatingTracker");
 
 			scoreController.noteWasMissedEvent += ScoreController_noteWasMissedEvent;
 			scoreController.noteWasCutEvent += ScoreController_noteWasCutEvent;
@@ -87,10 +82,10 @@ namespace FullComboPercentageCounter
 					noteRatings[noteData].UpdateRating(beforeCutRawScore, afterCutRawScore, accRawScore);
 				}
 				else
-					Plugin.Log.Error("NoteRatingTracker, HandleSaberSwingRatingCounterDidChange : Failed to get NoteData from noteCutInfoData!");
+					Plugin.Log.Error("noteRatingTracker, HandleSaberSwingRatingCounterDidChange : Failed to get NoteData from noteCutInfoData!");
 			}
 			else
-				Plugin.Log.Error("NoteRatingTracker, HandleSaberSwingRatingCounterDidChange : Failed to get NoteCutInfo from swingCounterCutInfo!");
+				Plugin.Log.Error("noteRatingTracker, HandleSaberSwingRatingCounterDidChange : Failed to get NoteCutInfo from swingCounterCutInfo!");
 		}
 
 		public void HandleSaberSwingRatingCounterDidFinish(ISaberSwingRatingCounter saberSwingRatingCounter)
@@ -106,12 +101,12 @@ namespace FullComboPercentageCounter
 					noteRatings.Remove(noteData);
 				}
 				else
-					Plugin.Log.Error("NoteRatingTracker, HandleSaberSwingRatingCounterDidFinish : Failed to get NoteData from noteCutInfoData!");
+					Plugin.Log.Error("noteRatingTracker, HandleSaberSwingRatingCounterDidFinish : Failed to get NoteData from noteCutInfoData!");
 
 				swingCounterCutInfo.Remove(saberSwingRatingCounter);
 			}
 			else
-				Plugin.Log.Error("NoteRatingTracker, HandleSaberSwingRatingCounterDidFinish : Failed to get NoteCutInfo from swingCounterCutInfo!");
+				Plugin.Log.Error("noteRatingTracker, HandleSaberSwingRatingCounterDidFinish : Failed to get NoteCutInfo from swingCounterCutInfo!");
 
 			saberSwingRatingCounter.UnregisterDidChangeReceiver(this);
 			saberSwingRatingCounter.UnregisterDidFinishReceiver(this);

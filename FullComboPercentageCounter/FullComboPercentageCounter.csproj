@@ -134,12 +134,17 @@
   <ItemGroup>
     <Compile Include="Configuration\FCPercentageConfigModel.cs" />
     <Compile Include="FCPercentageCounter.cs" />
+    <Compile Include="FCPercentageResultsViewHandler.cs" />
+    <Compile Include="injectAttribute.cs" />
+    <Compile Include="Installers\AppInstaller.cs" />
     <Compile Include="Installers\GameInstaller.cs" />
+    <Compile Include="Installers\MenuInstaller.cs" />
     <Compile Include="ScoreTracker.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="Configuration\PluginConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="NoteRatingTracker.cs" />
+    <Compile Include="ScoreManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />

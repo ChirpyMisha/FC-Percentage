@@ -1,30 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using FullComboPercentageCounter.Configuration;
+using System;
+using Zenject;
 
 namespace FullComboPercentageCounter
 {
-	class ScoreTracker : IDisposable
+	public class ScoreTracker : IInitializable, IDisposable
 	{
-		public event EventHandler<ScoreUpdateEventArgs> OnScoreUpdate;
-
-		private int currentScoreA, currentScoreB;
-		private int currentMaxScoreA, currentMaxScoreB;
-
 		private readonly Func<int, int> MultiplierAtNoteCount = noteCount => (noteCount > 13 ? 8 : (noteCount > 5 ? 4 : (noteCount > 1 ? 2 : 1)));
+		private readonly Func<int, int> MultiplierAtMax = noteCount => 8;
+		private Func<int, int> GetMultiplier;
 
-		private NoteRatingTracker noteRatingTracker;
+		private readonly NoteRatingTracker noteRatingTracker;
+		private readonly ScoreManager scoreManager;
 
-		public ScoreTracker(NoteRatingTracker noteRatingTracker)
+		public ScoreTracker(ScoreManager scoreManager, NoteRatingTracker noteRatingTracker)
 		{
-			// Assign variables
+			this.scoreManager = scoreManager;
 			this.noteRatingTracker = noteRatingTracker;
-			
-			// init variables
-			currentScoreA = currentScoreB = 0;
-			currentMaxScoreA = currentMaxScoreB = 0;
+		}
+
+		public void Initialize()
+		{
+			// Set function for multiplier according to setting
+			GetMultiplier = PluginConfig.Instance.IgnoreMultiplier ? MultiplierAtMax : MultiplierAtNoteCount;
+
+			// Reset the stored score back to 0
+			scoreManager.ResetScore();
 
 			// Assign events
 			noteRatingTracker.OnRatingAdded += NoteRatingTracker_OnNoteRatingAdded;
@@ -40,22 +41,8 @@ namespace FullComboPercentageCounter
 
 		private void NoteRatingTracker_OnNoteRatingAdded(object s, NoteRatingUpdateEventArgs e)
 		{
-			NoteRating rating = e.NoteRating;
-			int maxScoreIfFinishedMultiplied = (rating.acc + ScoreModel.kMaxBeforeCutSwingRawScore + ScoreModel.kMaxAfterCutSwingRawScore) * rating.multiplier;
-
-			// Update score for left or right saber
-			if (e.NoteData.colorType == ColorType.ColorA)
-			{
-				currentScoreA += maxScoreIfFinishedMultiplied;
-				currentMaxScoreA += ScoreModel.kMaxCutRawScore * rating.multiplier;
-			}
-			else if (e.NoteData.colorType == ColorType.ColorB)
-			{
-				currentScoreB += maxScoreIfFinishedMultiplied;
-				currentMaxScoreB += ScoreModel.kMaxCutRawScore * rating.multiplier;
-			}
-
-			InvokeScoreUpdate();
+			int maxScoreIfFinished = e.NoteRating.acc + ScoreModel.kMaxBeforeCutSwingRawScore + ScoreModel.kMaxAfterCutSwingRawScore;
+			scoreManager.AddScore(e.NoteData.colorType, maxScoreIfFinished, GetMultiplier(e.NoteRating.noteCount));
 		}
 
 		private void NoteTracker_OnNoteRatingFinished(object s, NoteRatingUpdateEventArgs e)
@@ -63,50 +50,15 @@ namespace FullComboPercentageCounter
 			NoteRating rating = e.NoteRating;
 
 			// Calculate difference between previously applied score and actual score
-			int maxAngleCutScoreMultiplied = (ScoreModel.kMaxBeforeCutSwingRawScore + ScoreModel.kMaxAfterCutSwingRawScore) * rating.multiplier;
-			int ratingAngleCutScoreMultiplied = (rating.beforeCut + rating.afterCut) * rating.multiplier;
-			int diffAngleCutScoreMultiplied = maxAngleCutScoreMultiplied - ratingAngleCutScoreMultiplied;
+			int maxAngleCutScore = ScoreModel.kMaxBeforeCutSwingRawScore + ScoreModel.kMaxAfterCutSwingRawScore;
+			int ratingAngleCutScore = rating.beforeCut + rating.afterCut;
+			int diffAngleCutScore = maxAngleCutScore - ratingAngleCutScore;
 
 			// If the previously applied score was NOT correct (aka, it was a full NOT swing) -> Update score
-			if (diffAngleCutScoreMultiplied > 0)
+			if (diffAngleCutScore > 0)
 			{
-				if (e.NoteData.colorType == ColorType.ColorA)
-					currentScoreA -= diffAngleCutScoreMultiplied;
-				else if (e.NoteData.colorType == ColorType.ColorB)
-					currentScoreB -= diffAngleCutScoreMultiplied;
-
-				InvokeScoreUpdate();
+				scoreManager.SubtractScore(e.NoteData.colorType, diffAngleCutScore, GetMultiplier(e.NoteRating.noteCount));
 			}
 		}
-
-		protected virtual void InvokeScoreUpdate()
-		{
-			// Create event handler
-			EventHandler<ScoreUpdateEventArgs> handler = OnScoreUpdate;
-			if (handler != null)
-			{
-				// Assign event args
-				ScoreUpdateEventArgs scoreUpdateEventArgs = new ScoreUpdateEventArgs();
-				scoreUpdateEventArgs.CurrentScoreA = currentScoreA;
-				scoreUpdateEventArgs.CurrentMaxScoreA = currentMaxScoreA;
-				scoreUpdateEventArgs.CurrentScoreB = currentScoreB;
-				scoreUpdateEventArgs.CurrentMaxScoreB = currentMaxScoreB;
-
-				// Invoke event
-				handler(this, scoreUpdateEventArgs);
-			}
-		}
-
-		
-	}
-
-	public class ScoreUpdateEventArgs : EventArgs
-	{
-		public int CurrentScoreA { get; set; }
-		public int CurrentMaxScoreA { get; set; }
-		public int CurrentScoreB { get; set; }
-		public int CurrentMaxScoreB { get; set; }
-		public int CurrentScoreTotal { get { return CurrentScoreA + CurrentScoreB; } }
-		public int CurrentMaxScoreTotal { get { return CurrentMaxScoreA + CurrentMaxScoreB; } }
 	}
 }

@@ -11,6 +11,7 @@ namespace FullComboPercentageCounter.Configuration
 		public virtual float PercentageSize { get; set; } = 0.85f;
 		public virtual bool EnableLabel { get; set; } = true;
 		public virtual bool LabelAboveCount { get; set; } = false;
+		public virtual bool IgnoreMultiplier { get; set; } = false;
 		public virtual string LabelTextPrefix { get; set; } = "FC : ";
 		public virtual string LabelTextAboveCount { get; set; } = "FC Percent";
 		public virtual float LabelOffsetAboveCount { get; set; } = 0.32f;

@@ -31,5 +31,12 @@ namespace FullComboPercentageCounter.Configuration
 			get { return PluginConfig.Instance.LabelAboveCount; }
 			set { PluginConfig.Instance.LabelAboveCount = value; }
 		}
+
+		[UIValue("IgnoreMultiplier")]
+		public virtual bool IgnoreMultiplier
+		{
+			get { return PluginConfig.Instance.IgnoreMultiplier; }
+			set { PluginConfig.Instance.IgnoreMultiplier = value; }
+		}
 	}
 }

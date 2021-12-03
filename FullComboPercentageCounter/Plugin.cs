@@ -23,6 +23,8 @@ namespace FullComboPercentageCounter
 		{
 			Instance = this;
 			Log = logger;
+			zenjector.OnApp<AppInstaller>();
+			zenjector.OnMenu<MenuInstaller>();
 			zenjector.OnGame<GameInstaller>(false);
 			Log.Info("FullComboPercentageCounter initialized.");
 		}

@@ -18,42 +18,21 @@ namespace FullComboPercentageCounter
 		private string counterFormat;
 		private string counterPrefix;
 
-		private readonly NoteRatingTracker noteTracker;
-		private readonly PluginConfig counterConfig;
-		private ScoreTracker scoreTracker;
-
-		// Can this be changed to be the same as CanvasUtility and Settings? Need to test this after testing the previous changes.
-		public FCPercentageCounter([InjectOptional] NoteRatingTracker noteTracker)
-		{
-			this.noteTracker = noteTracker;
-			counterConfig = PluginConfig.Instance;
-		}
-
+		private PluginConfig counterConfig;
+		
+		[Inject] protected ScoreManager ScoreManager;
 		[Inject] protected CanvasUtility CanvasUtility;
 		[Inject] protected CustomConfigModel Settings;
 
 		public void CounterInit()
 		{
-			Plugin.Log.Info("Starting NoShitmissPercentageCounter Init");
+			Plugin.Log.Info("Starting FCPercentageCounter Init");
 
-			if (noteTracker == null)
-			{
-				Plugin.Log.Error("ERROR: scoreTracker == null");
-				return;
-			}
-			if (counterConfig == null)
-			{
-				Plugin.Log.Error("ERROR: counterConfig == null");
-				return;
-			}
-
-			scoreTracker = new ScoreTracker(noteTracker);
-
-			
+			counterConfig = PluginConfig.Instance;
 
 			InitCounterText();
 
-			scoreTracker.OnScoreUpdate += OnScoreUpdateHandler;
+			ScoreManager.OnScoreUpdate += OnScoreUpdateHandler;
 		}
 
 		private void InitCounterText()
@@ -92,12 +71,17 @@ namespace FullComboPercentageCounter
 
 		public void CounterDestroy()
 		{
-			scoreTracker.OnScoreUpdate -= OnScoreUpdateHandler;
+			ScoreManager.OnScoreUpdate -= OnScoreUpdateHandler;
 		}
 
-		private void OnScoreUpdateHandler(object s, ScoreUpdateEventArgs e)
+		private void OnScoreUpdateHandler(object s, EventArgs e)
 		{
-			double percent = PercentageOf(e.CurrentScoreTotal, e.CurrentMaxScoreTotal, counterConfig.DecimalPrecision);
+			RefreshCounterText();
+		}
+
+		private void RefreshCounterText()
+		{
+			double percent = PercentageOf(ScoreManager.ScoreTotal, ScoreManager.MaxScoreTotal, counterConfig.DecimalPrecision);
 			counterText.text = $"{counterPrefix}{percent.ToString(counterFormat)}%";
 		}
 
