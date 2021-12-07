@@ -15,8 +15,8 @@ namespace FullComboPercentageCounter
 
 		private TMP_Text counterText;
 		private TMP_Text counterNameText;
-		private string counterFormat;
 		private string counterPrefix;
+		private string CounterTextFormat => $"{counterPrefix}{ScoreManager.PercentageStr}%";
 
 		private PluginConfig counterConfig;
 		
@@ -42,31 +42,20 @@ namespace FullComboPercentageCounter
 			{
 				if (counterConfig.LabelAboveCount)
 				{
-					counterNameText = CanvasUtility.CreateTextFromSettings(Settings, new Vector3(0.0f, counterConfig.LabelOffsetAboveCount, 0.0f));
-					counterNameText.text = counterConfig.LabelTextAboveCount;
-					counterNameText.fontSize *= counterConfig.LabelSizeAboveCount;
+					counterNameText = CanvasUtility.CreateTextFromSettings(Settings, new Vector3(0.0f, counterConfig.CounterLabelOffsetAboveCount, 0.0f));
+					counterNameText.text = counterConfig.CounterLabelTextAboveCount;
+					counterNameText.fontSize *= counterConfig.CounterLabelSizeAboveCount;
 				}
 				else
 				{
-					counterPrefix = counterConfig.LabelTextPrefix;
+					counterPrefix = counterConfig.CounterLabelTextPrefix;
 				}
 			}
 
-			counterFormat = CreateCounterFormat();
 			counterText = CanvasUtility.CreateTextFromSettings(Settings);
-
 			counterText.fontSize *= counterConfig.PercentageSize;
-			if (counterConfig.EnableLabel && !counterConfig.LabelAboveCount)
-				counterText.fontSize -= 0.15f;
-			counterText.text = $"{counterPrefix}{DefaultPercentage.ToString(counterFormat)}%";
-		}
 
-		private string CreateCounterFormat()
-		{
-			if (counterConfig.DecimalPrecision > 0)
-				return "0." + new string('0', counterConfig.DecimalPrecision);
-			else
-				return "0";
+			RefreshCounterText();
 		}
 
 		public void CounterDestroy()
@@ -81,17 +70,7 @@ namespace FullComboPercentageCounter
 
 		private void RefreshCounterText()
 		{
-			double percent = PercentageOf(ScoreManager.ScoreTotal, ScoreManager.MaxScoreTotal, counterConfig.DecimalPrecision);
-			counterText.text = $"{counterPrefix}{percent.ToString(counterFormat)}%";
-		}
-
-		private double PercentageOf(double part, double total, int decimalPrecision)
-		{
-			return Math.Round(PercentageOf(part, total), decimalPrecision);
-		}
-		private double PercentageOf(double part, double total)
-		{
-			return (part / total) * 100;
+			counterText.text = CounterTextFormat;
 		}
 	}
 }

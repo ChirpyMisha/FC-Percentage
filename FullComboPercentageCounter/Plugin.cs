@@ -12,6 +12,7 @@ namespace FullComboPercentageCounter
 	{
 		internal static Plugin Instance { get; private set; }
 		internal static IPALogger Log { get; private set; }
+		internal bool IsResultsViewBSMLParsed { get; set; }
 
 		[Init]
 		/// <summary>
@@ -23,6 +24,7 @@ namespace FullComboPercentageCounter
 		{
 			Instance = this;
 			Log = logger;
+			IsResultsViewBSMLParsed = false;
 			zenjector.OnApp<AppInstaller>();
 			zenjector.OnMenu<MenuInstaller>();
 			zenjector.OnGame<GameInstaller>(false);

@@ -1,0 +1,3 @@
+﻿<horizontal anchor-pos-x="38.6" anchor-pos-y="-20">
+	<text id='fc-percent-text' text='101.00%' align='Center'></text>
+</horizontal>

@@ -154,6 +154,8 @@
     <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
     <None Include="Directory.Build.targets" Condition="Exists('Directory.Build.targets')" />
     <None Include="FullComboPercentageCounter.csproj.user" Condition="Exists('FullComboPercentageCounter.csproj.user')" />
+    <EmbeddedResource Include="UI\Views\ResultsViewFCPercentage.bsml" />
+    <EmbeddedResource Include="UI\Views\ResultsViewFCScore.bsml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BeatSaberModdingTools.Tasks">
@@ -165,5 +167,6 @@
   <ItemGroup>
     <EmbeddedResource Include="Resources\Icon.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

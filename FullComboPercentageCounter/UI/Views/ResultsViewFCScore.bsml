@@ -1,0 +1,3 @@
+﻿<horizontal anchor-pos-x="-1" anchor-pos-y="-20">
+	<text id='fc-score-text' text='FC: 9001' anchor-pos-x="73.8" anchor-pos-y="-20" align='Center'></text>
+</horizontal>

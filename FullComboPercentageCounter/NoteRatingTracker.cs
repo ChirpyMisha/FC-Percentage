@@ -10,6 +10,7 @@ namespace FullComboPercentageCounter
 	{
 		public event EventHandler<NoteRatingUpdateEventArgs> OnRatingAdded;
 		public event EventHandler<NoteRatingUpdateEventArgs> OnRatingFinished;
+		public event EventHandler<NoteMissedEventArgs> OnNoteMissed;
 
 		private readonly ScoreController scoreController;
 
@@ -47,6 +48,7 @@ namespace FullComboPercentageCounter
 		private void ScoreController_noteWasMissedEvent(NoteData noteData, int _)
 		{
 			noteCount++;
+			InvokeNoteMissed(noteData, noteCount);
 		}
 
 		private void ScoreController_noteWasCutEvent(NoteData noteData, in NoteCutInfo noteCutInfo, int multiplier)
@@ -129,11 +131,23 @@ namespace FullComboPercentageCounter
 			EventHandler<NoteRatingUpdateEventArgs> handler = OnRatingFinished;
 			if (handler != null)
 			{
-				NoteRatingUpdateEventArgs noteRatingUpdateEventArgs = new NoteRatingUpdateEventArgs();
-				noteRatingUpdateEventArgs.NoteData = noteData;
-				noteRatingUpdateEventArgs.NoteRating = noteRating;
+				NoteRatingUpdateEventArgs eventArgs = new NoteRatingUpdateEventArgs();
+				eventArgs.NoteData = noteData;
+				eventArgs.NoteRating = noteRating;
 
-				handler(this, noteRatingUpdateEventArgs);
+				handler(this, eventArgs);
+			}
+		}
+		protected virtual void InvokeNoteMissed(NoteData noteData, int noteCount)
+		{
+			EventHandler<NoteMissedEventArgs> handler = OnNoteMissed;
+			if (handler != null) 
+			{
+				NoteMissedEventArgs eventArgs = new NoteMissedEventArgs();
+				eventArgs.NoteData = noteData;
+				eventArgs.NoteCount = noteCount;
+
+				handler(this, eventArgs);
 			}
 		}
 	}
@@ -142,6 +156,12 @@ namespace FullComboPercentageCounter
 	{
 		public NoteData NoteData { get; set; }
 		public NoteRating NoteRating { get; set; }
+	}
+
+	public class NoteMissedEventArgs : EventArgs
+	{
+		public NoteData NoteData { get; set; }
+		public int NoteCount { get; set; }
 	}
 
 	public class NoteRating
