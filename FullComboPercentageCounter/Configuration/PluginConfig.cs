@@ -13,15 +13,15 @@ namespace FullComboPercentageCounter.Configuration
 		public virtual bool EnableLabel { get; set; } = true;
 		public virtual bool LabelAboveCount { get; set; } = false;
 		public virtual bool IgnoreMultiplier { get; set; } = false;
-		//public virtual ResultsScreenMode ResultsViewMode { get; set; } = ResultsScreenMode.On;
+		public virtual ResultsViewModes ResultsViewMode { get; set; } = ResultsViewModes.On;
 
 		// Extra settings available from config file
 		public virtual string CounterLabelTextPrefix { get; set; } = "FC : ";
 		public virtual string CounterLabelTextAboveCount { get; set; } = "FC Percent";
 		public virtual float CounterLabelOffsetAboveCount { get; set; } = 0.32f;
 		public virtual float CounterLabelSizeAboveCount { get; set; } = 0.95f;
-		public virtual string ResultScreenScorePrefix { get; set; } = "FC: ";
-		public virtual string ResultScreenPercentagePrefix { get; set; } = "FC: ";
+		public virtual string ResultScreenScorePrefix { get; set; } = "FC : ";
+		public virtual string ResultScreenPercentagePrefix { get; set; } = "FC : ";
 
 		/// <summary>
 		/// This is called whenever BSIPA reads the config from disk (including when file changes are detected).
@@ -46,7 +46,7 @@ namespace FullComboPercentageCounter.Configuration
 		{
 			// This instance's members populated from other
 		}
-
-		//public enum ResultsScreenMode { On, OffWhenFullCombo, Off }
 	}
+
+	public enum ResultsViewModes { On, OffWhenFullCombo, Off }
 }

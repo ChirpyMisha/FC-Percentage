@@ -31,6 +31,7 @@ namespace FullComboPercentageCounter
 			noteRatingTracker.OnRatingAdded += NoteRatingTracker_OnNoteRatingAdded;
 			noteRatingTracker.OnRatingFinished += NoteTracker_OnNoteRatingFinished;
 			noteRatingTracker.OnNoteMissed += NoteTracker_OnNoteMissed;
+			noteRatingTracker.OnComboBreak += NoteTracker_OnComboBreak;
 		}
 
 		public void Dispose()
@@ -39,6 +40,7 @@ namespace FullComboPercentageCounter
 			noteRatingTracker.OnRatingAdded -= NoteRatingTracker_OnNoteRatingAdded;
 			noteRatingTracker.OnRatingFinished -= NoteTracker_OnNoteRatingFinished;
 			noteRatingTracker.OnNoteMissed -= NoteTracker_OnNoteMissed;
+			noteRatingTracker.OnComboBreak -= NoteTracker_OnComboBreak;
 		}
 
 		private void NoteRatingTracker_OnNoteRatingAdded(object s, NoteRatingUpdateEventArgs e)
@@ -66,6 +68,11 @@ namespace FullComboPercentageCounter
 		private void NoteTracker_OnNoteMissed(object s, NoteMissedEventArgs e)
 		{
 			scoreManager.AddMissedScore(e.NoteData.colorType, ScoreModel.kMaxCutRawScore, GetMultiplier(e.NoteCount));
+		}
+
+		private void NoteTracker_OnComboBreak()
+		{
+			scoreManager.ComboBroke();
 		}
 	}
 }

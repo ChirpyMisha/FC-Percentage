@@ -12,7 +12,7 @@ namespace FullComboPercentageCounter
 	{
 		public event EventHandler OnScoreUpdate;
 
-		public double Percentage => Math.Round(((double)ScoreTotal / (double)MaxScoreTotal) * 100, PluginConfig.Instance.DecimalPrecision);
+		public double Percentage => (MaxScoreTotal == 0) ? 0 : Math.Round(((double)ScoreTotal / (double)MaxScoreTotal) * 100, PluginConfig.Instance.DecimalPrecision);
 		public string PercentageStr => Percentage.ToString(percentageStringFormat);
 		public int ScoreTotal => ScoreA + ScoreB;
 		public int ScoreA { get; private set; }
@@ -25,6 +25,8 @@ namespace FullComboPercentageCounter
 		public int MaxMissedScoreTotal => MaxMissedScoreA + MaxMissedScoreB;
 		public int MissedScoreTotal => CalculateMissedScore(ScoreTotal, MaxScoreTotal, MaxMissedScoreTotal);
 		public int ScoreTotalIncMissed => ScoreTotal + MissedScoreTotal;
+
+		public bool IsComboBroken { get; private set; }
 
 		private string percentageStringFormat;
 
@@ -51,6 +53,7 @@ namespace FullComboPercentageCounter
 			MaxScoreB = 0;
 			MaxMissedScoreA = 0;
 			MaxMissedScoreB = 0;
+			IsComboBroken = false;
 		}
 
 		public void AddScore(ColorType colorType, int score, int multiplier)
@@ -116,9 +119,15 @@ namespace FullComboPercentageCounter
 
 		private int CalculateMissedScore(int score, int maxScore, int missedMaxScore)
 		{
+			if (maxScore == 0) return 0;
 			double decPercent = ((double)score / (double)maxScore);
 			int missedScore = (int)Math.Round(decPercent * missedMaxScore);
 			return missedScore;
+		}
+
+		internal void ComboBroke()
+		{
+			IsComboBroken = true;
 		}
 
 		protected virtual void InvokeScoreUpdate()

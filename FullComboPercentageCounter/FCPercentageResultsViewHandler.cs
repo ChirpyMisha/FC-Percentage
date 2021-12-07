@@ -31,6 +31,8 @@ namespace FullComboPercentageCounter
 		private readonly ScoreManager scoreManager;
 		private readonly ResultsViewController resultsViewController;
 
+		private PluginConfig counterConfig;
+
 		public FCPercentageResultsViewHandler(ScoreManager scoreManager, ResultsViewController resultsViewController)
 		{
 			this.scoreManager = scoreManager;
@@ -41,6 +43,7 @@ namespace FullComboPercentageCounter
 		{
 			if (resultsViewController != null)
 				resultsViewController.didActivateEvent += ResultsViewController_OnActivateEvent;
+			counterConfig = PluginConfig.Instance;
 		}
 
 		public void Dispose()
@@ -51,14 +54,14 @@ namespace FullComboPercentageCounter
 
 		private void ResultsViewController_OnActivateEvent(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
 		{
-			string percent = scoreManager.PercentageStr;
-			Plugin.Log.Notice($"ResultsView Activated - currentScore = {scoreManager.ScoreTotal}, currentMaxScore = {scoreManager.MaxScoreTotal}, percentage = {percent}");
-
 			ParseBSML();
 
-			fcPercentText.text = PluginConfig.Instance.ResultScreenPercentagePrefix + percent + "%";
-			string scoreString = scoreManager.ScoreTotalIncMissed.ToString("n", new CultureInfo("nb-NO"));
-			fcScoreText.text = PluginConfig.Instance.ResultScreenScorePrefix + scoreString.Remove(scoreString.Length-3);
+			if (counterConfig.ResultsViewMode == ResultsViewModes.On)
+				SetResultsViewText();
+			else if (counterConfig.ResultsViewMode == ResultsViewModes.OffWhenFullCombo && scoreManager.IsComboBroken)
+				SetResultsViewText();
+			else
+				EmptyResultsViewText();
 		}
 
 		private void ParseBSML()
@@ -74,6 +77,22 @@ namespace FullComboPercentageCounter
 
 				Plugin.Instance.IsResultsViewBSMLParsed = true;
 			}
+		}
+
+		private void SetResultsViewText()
+		{
+			string percent = scoreManager.PercentageStr;
+			Plugin.Log.Notice($"ResultsView Activated - currentScore = {scoreManager.ScoreTotal}, currentMaxScore = {scoreManager.MaxScoreTotal}, percentage = {percent}");
+
+			fcPercentText.text = counterConfig.ResultScreenPercentagePrefix + percent + "%";
+			string scoreString = scoreManager.ScoreTotalIncMissed.ToString("n", new CultureInfo("nb-NO"));
+			fcScoreText.text = counterConfig.ResultScreenScorePrefix + scoreString.Remove(scoreString.Length - 3);
+		}
+
+		private void EmptyResultsViewText()
+		{
+			fcPercentText.text = "";
+			fcScoreText.text = "";
 		}
 	}
 }

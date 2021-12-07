@@ -1,4 +1,6 @@
 ﻿using BeatSaberMarkupLanguage.Attributes;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FullComboPercentageCounter.Configuration
 {
@@ -38,5 +40,25 @@ namespace FullComboPercentageCounter.Configuration
 			get { return PluginConfig.Instance.IgnoreMultiplier; }
 			set { PluginConfig.Instance.IgnoreMultiplier = value; }
 		}
+
+		[UIValue("ResultsViewMode")]
+		public virtual ResultsViewModes ResultsViewMode { 
+			get { return PluginConfig.Instance.ResultsViewMode; }
+			set { PluginConfig.Instance.ResultsViewMode = value; }
+		}
+
+		[UIValue(nameof(ResultsViewModeList))]
+		public List<object> ResultsViewModeList => ResultsViewModesToNames.Keys.Cast<object>().ToList();
+
+		[UIAction(nameof(ResultsViewModesFormat))]
+		public string ResultsViewModesFormat(ResultsViewModes mode) => ResultsViewModesToNames[mode];
+
+
+		private static Dictionary<ResultsViewModes, string> ResultsViewModesToNames = new Dictionary<ResultsViewModes, string>()
+		{
+			{ResultsViewModes.On, "On" },
+			{ResultsViewModes.OffWhenFullCombo, "Off When FC" },
+			{ResultsViewModes.Off, "Off" }
+		};
 	}
 }
