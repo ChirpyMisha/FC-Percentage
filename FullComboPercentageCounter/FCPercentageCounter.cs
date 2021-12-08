@@ -11,8 +11,6 @@ namespace FullComboPercentageCounter
 {
 	public class FCPercentageCounter : ICounter
 	{
-		private static double DefaultPercentage = 100.0;
-
 		private TMP_Text counterText;
 		private TMP_Text counterNameText;
 		private string counterPrefix;

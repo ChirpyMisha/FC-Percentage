@@ -12,7 +12,9 @@ namespace FullComboPercentageCounter
 	{
 		public event EventHandler OnScoreUpdate;
 
-		public double Percentage => (MaxScoreTotal == 0) ? 0 : Math.Round(((double)ScoreTotal / (double)MaxScoreTotal) * 100, PluginConfig.Instance.DecimalPrecision);
+		private static double defaultPercentage = 100;
+
+		public double Percentage => (MaxScoreTotal == 0) ? defaultPercentage : Math.Round(((double)ScoreTotal / (double)MaxScoreTotal) * 100, PluginConfig.Instance.DecimalPrecision);
 		public string PercentageStr => Percentage.ToString(percentageStringFormat);
 		public int ScoreTotal => ScoreA + ScoreB;
 		public int ScoreA { get; private set; }
