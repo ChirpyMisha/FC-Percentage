@@ -13,7 +13,7 @@ namespace FullComboPercentageCounter.Configuration
 		public virtual bool EnableLabel { get; set; } = true;
 		public virtual bool LabelAboveCount { get; set; } = false;
 		public virtual bool IgnoreMultiplier { get; set; } = false;
-		public virtual ResultsViewModes ResultsViewMode { get; set; } = ResultsViewModes.On;
+		public virtual ResultsViewModes ResultsViewMode { get; set; } = ResultsViewModes.OffWhenFullCombo;
 
 		// Extra settings available from config file
 		public virtual string CounterLabelTextPrefix { get; set; } = "FC : ";
