@@ -8,5 +8,5 @@
 	<checkbox-setting text='Enable Label' value='EnableLabel' apply-on-change='true' hover-hint='Enable the label. The label text can be changed in the config file in the UserData folder.'/>
 	<checkbox-setting text='Label Above Counter' value='LabelAboveCount' apply-on-change='true' hover-hint='Put the label above the number, similar to a usual Counters+ counter.'/>
 	<checkbox-setting text='Ignore Multiplier Ramp-up' value='IgnoreMultiplier' apply-on-change='true' hover-hint='When this is enabled all cuts will be weighed the same.'/>
-	<dropdown-list-setting text='Show On Results Screen' value='ResultsViewMode' options='ResultsViewModeList' formatter='ResultsViewModesFormat' apply-on-change='true' hover-hint='Select if or how the persentage should be shown on the results screen.'/>
+	<dropdown-list-setting text='Show On Results Screen' value='ResultsViewMode' options='ResultsViewModeList' formatter='ResultsViewModesFormat' apply-on-change='true' hover-hint='Select if or when the persentage should be shown on the results screen.'/>
 </vertical>
