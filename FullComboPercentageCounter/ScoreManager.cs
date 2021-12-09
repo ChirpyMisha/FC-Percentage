@@ -72,10 +72,6 @@ namespace FullComboPercentageCounter
 				ScoreB += score * multiplier;
 				MaxScoreB += ScoreModel.kMaxCutRawScore * multiplier;
 			}
-			else
-			{
-				Plugin.Log.Warn($"scoreManager, AddScore: Failed to add score of [score={score}, multiplier={multiplier}]. Reason: colorType is invalid [colorType={colorType}].");
-			}
 
 			// Inform listeners that the score has updated
 			InvokeScoreUpdate();
@@ -94,10 +90,6 @@ namespace FullComboPercentageCounter
 				ScoreB -= score * multiplier;
 				if (subtractFromMaxScore) MaxScoreB -= ScoreModel.kMaxCutRawScore * multiplier;
 			}
-			else
-			{
-				Plugin.Log.Warn($"scoreManager, SubtractScore: Failed to subtract score of [score={score}, multiplier={multiplier}]. Reason: colorType is invalid [colorType={colorType}].");
-			}
 
 			// Inform listeners that the score has updated
 			InvokeScoreUpdate();
@@ -114,15 +106,14 @@ namespace FullComboPercentageCounter
 			{
 				MaxMissedScoreB += maxMissedScore * multiplier;
 			}
-			else
-			{
-				Plugin.Log.Warn($"scoreManager, AddMissedScore: Failed to subtract score of [score={maxMissedScore}, multiplier={multiplier}]. Reason: colorType is invalid [colorType={colorType}].");
-			}
 		}
 
 		private int CalculateMissedScore(int score, int maxScore, int missedMaxScore)
 		{
-			if (maxScore == 0) return 0;
+			// Prevent divide by 0
+			if (maxScore == 0) 
+				return 0;
+
 			double decPercent = ((double)score / (double)maxScore);
 			int missedScore = (int)Math.Round(decPercent * missedMaxScore);
 			return missedScore;
@@ -135,8 +126,6 @@ namespace FullComboPercentageCounter
 
 		protected virtual void InvokeScoreUpdate()
 		{
-			//Plugin.Log.Notice($"Score Has Updated - currentScore = {ScoreTotal}, currentMaxScore = {MaxScoreTotal}");
-
 			// Create event handler
 			EventHandler handler = OnScoreUpdate;
 			if (handler != null)

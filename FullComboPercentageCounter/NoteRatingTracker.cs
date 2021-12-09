@@ -28,8 +28,6 @@ namespace FullComboPercentageCounter
 
 		public void Initialize()
 		{
-			//Plugin.Log.Notice("Initializing noteRatingTracker");
-
 			scoreController.noteWasMissedEvent += ScoreController_noteWasMissedEvent;
 			scoreController.noteWasCutEvent += ScoreController_noteWasCutEvent;
 			scoreController.comboBreakingEventHappenedEvent += ScoreController_OnComboBreakingEvent;
@@ -56,23 +54,26 @@ namespace FullComboPercentageCounter
 		private void ScoreController_noteWasCutEvent(NoteData noteData, in NoteCutInfo noteCutInfo, int multiplier)
 		{
 			noteCount++;
-			if (noteData.colorType != ColorType.None && noteCutInfo.allIsOK)
+			if (noteData.colorType != ColorType.None)
 			{
-				swingCounterCutInfo.Add(noteCutInfo.swingRatingCounter, noteCutInfo);
-				noteCutInfoData.Add(noteCutInfo, noteData);
-				noteCutInfo.swingRatingCounter.RegisterDidChangeReceiver(this);
-				noteCutInfo.swingRatingCounter.RegisterDidFinishReceiver(this);
+				if (noteCutInfo.allIsOK)
+				{
+					swingCounterCutInfo.Add(noteCutInfo.swingRatingCounter, noteCutInfo);
+					noteCutInfoData.Add(noteCutInfo, noteData);
+					noteCutInfo.swingRatingCounter.RegisterDidChangeReceiver(this);
+					noteCutInfo.swingRatingCounter.RegisterDidFinishReceiver(this);
 
-				int beforeCutRawScore, afterCutRawScore, accRawScore;
-				ScoreModel.RawScoreWithoutMultiplier(noteCutInfo.swingRatingCounter, noteCutInfo.cutDistanceToCenter, out beforeCutRawScore, out afterCutRawScore, out accRawScore);
-				NoteRating noteRating = new NoteRating(beforeCutRawScore, afterCutRawScore, accRawScore, multiplier, noteCount);
-				noteRatings.Add(noteData, noteRating);
+					int beforeCutRawScore, afterCutRawScore, accRawScore;
+					ScoreModel.RawScoreWithoutMultiplier(noteCutInfo.swingRatingCounter, noteCutInfo.cutDistanceToCenter, out beforeCutRawScore, out afterCutRawScore, out accRawScore);
+					NoteRating noteRating = new NoteRating(beforeCutRawScore, afterCutRawScore, accRawScore, multiplier, noteCount);
+					noteRatings.Add(noteData, noteRating);
 
-				InvokeRatingAdded(noteData, noteRating);
-			}
-			else if (!noteCutInfo.allIsOK)
-			{
-				InvokeNoteMissed(noteData, noteCount);
+					InvokeRatingAdded(noteData, noteRating);
+				}
+				else
+				{
+					InvokeNoteMissed(noteData, noteCount);
+				}
 			}
 		}
 
