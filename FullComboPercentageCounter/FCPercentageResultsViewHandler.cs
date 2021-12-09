@@ -70,10 +70,10 @@ namespace FullComboPercentageCounter
 			{
 				string bsml = Utilities.GetResourceContent(Assembly.GetExecutingAssembly(), ResourceNameFCPercentage);
 				BSMLParser.instance.Parse(bsml, resultsViewController.gameObject, this);
-				Plugin.Log.Notice($"BSML = \"{bsml}\"");
+				//Plugin.Log.Notice($"BSML = \"{bsml}\"");
 				bsml = Utilities.GetResourceContent(Assembly.GetExecutingAssembly(), ResourceNameFCScore);
 				BSMLParser.instance.Parse(bsml, resultsViewController.gameObject, this);
-				Plugin.Log.Notice($"BSML = \"{bsml}\"");
+				//Plugin.Log.Notice($"BSML = \"{bsml}\"");
 
 				Plugin.Instance.IsResultsViewBSMLParsed = true;
 			}
@@ -82,7 +82,7 @@ namespace FullComboPercentageCounter
 		private void SetResultsViewText()
 		{
 			string percent = scoreManager.PercentageStr;
-			Plugin.Log.Notice($"ResultsView Activated - currentScore = {scoreManager.ScoreTotal}, currentMaxScore = {scoreManager.MaxScoreTotal}, percentage = {percent}");
+			//Plugin.Log.Notice($"ResultsView Activated - currentScore = {scoreManager.ScoreTotal}, currentMaxScore = {scoreManager.MaxScoreTotal}, percentage = {percent}");
 
 			fcPercentText.text = counterConfig.ResultScreenPercentagePrefix + percent + "%";
 			string scoreString = scoreManager.ScoreTotalIncMissed.ToString("n", new CultureInfo("nb-NO"));

@@ -28,7 +28,7 @@ namespace FullComboPercentageCounter
 
 		public void Initialize()
 		{
-			Plugin.Log.Notice("Initializing noteRatingTracker");
+			//Plugin.Log.Notice("Initializing noteRatingTracker");
 
 			scoreController.noteWasMissedEvent += ScoreController_noteWasMissedEvent;
 			scoreController.noteWasCutEvent += ScoreController_noteWasCutEvent;

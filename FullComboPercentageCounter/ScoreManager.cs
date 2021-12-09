@@ -31,6 +31,7 @@ namespace FullComboPercentageCounter
 		public bool IsComboBroken { get; private set; }
 
 		private string percentageStringFormat;
+		//[Inject] private PlayerDataModel playerDataModel;
 
 		public void Initialize()
 		{
@@ -47,7 +48,7 @@ namespace FullComboPercentageCounter
 			return;
 		}
 
-		public void ResetScore()
+		public void ResetScore(/*PlayerDataModel playerDataModel*/)
 		{
 			ScoreA = 0;
 			ScoreB = 0;
@@ -134,7 +135,7 @@ namespace FullComboPercentageCounter
 
 		protected virtual void InvokeScoreUpdate()
 		{
-			Plugin.Log.Notice($"Score Has Updated - currentScore = {ScoreTotal}, currentMaxScore = {MaxScoreTotal}");
+			//Plugin.Log.Notice($"Score Has Updated - currentScore = {ScoreTotal}, currentMaxScore = {MaxScoreTotal}");
 
 			// Create event handler
 			EventHandler handler = OnScoreUpdate;

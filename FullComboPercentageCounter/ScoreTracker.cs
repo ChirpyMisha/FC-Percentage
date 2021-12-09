@@ -6,6 +6,8 @@ namespace FullComboPercentageCounter
 {
 	public class ScoreTracker : IInitializable, IDisposable
 	{
+		//[Inject] private PlayerDataModel playerDataModel;
+
 		private readonly Func<int, int> MultiplierAtNoteCount = noteCount => (noteCount > 13 ? 8 : (noteCount > 5 ? 4 : (noteCount > 1 ? 2 : 1)));
 		private readonly Func<int, int> MultiplierAtMax = noteCount => 8;
 		private Func<int, int> GetMultiplier;
