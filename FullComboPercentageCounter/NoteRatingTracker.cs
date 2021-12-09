@@ -43,6 +43,7 @@ namespace FullComboPercentageCounter
 		{
 			scoreController.noteWasMissedEvent -= ScoreController_noteWasMissedEvent;
 			scoreController.noteWasCutEvent -= ScoreController_noteWasCutEvent;
+			scoreController.comboBreakingEventHappenedEvent -= ScoreController_OnComboBreakingEvent;
 		}
 
 		private void ScoreController_noteWasMissedEvent(NoteData noteData, int _)
