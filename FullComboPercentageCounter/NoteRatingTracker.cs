@@ -11,7 +11,6 @@ namespace FullComboPercentageCounter
 		public event EventHandler<NoteRatingUpdateEventArgs> OnRatingAdded;
 		public event EventHandler<NoteRatingUpdateEventArgs> OnRatingFinished;
 		public event EventHandler<NoteMissedEventArgs> OnNoteMissed;
-		public event Action OnComboBreak;
 
 		private readonly ScoreController scoreController;
 
@@ -30,7 +29,6 @@ namespace FullComboPercentageCounter
 		{
 			scoreController.noteWasMissedEvent += ScoreController_noteWasMissedEvent;
 			scoreController.noteWasCutEvent += ScoreController_noteWasCutEvent;
-			scoreController.comboBreakingEventHappenedEvent += ScoreController_OnComboBreakingEvent;
 
 			noteRatings = new Dictionary<NoteData, NoteRating>();
 			swingCounterCutInfo = new Dictionary<ISaberSwingRatingCounter, NoteCutInfo>();
@@ -43,7 +41,6 @@ namespace FullComboPercentageCounter
 		{
 			scoreController.noteWasMissedEvent -= ScoreController_noteWasMissedEvent;
 			scoreController.noteWasCutEvent -= ScoreController_noteWasCutEvent;
-			scoreController.comboBreakingEventHappenedEvent -= ScoreController_OnComboBreakingEvent;
 		}
 
 		private void ScoreController_noteWasMissedEvent(NoteData noteData, int _)
@@ -76,11 +73,6 @@ namespace FullComboPercentageCounter
 					InvokeNoteMissed(noteData, noteCount);
 				}
 			}
-		}
-
-		private void ScoreController_OnComboBreakingEvent()
-		{
-			OnComboBreak.Invoke();
 		}
 
 		public void HandleSaberSwingRatingCounterDidChange(ISaberSwingRatingCounter saberSwingRatingCounter, float rating)

@@ -28,8 +28,6 @@ namespace FullComboPercentageCounter
 		public int MissedScoreTotal => CalculateMissedScore(ScoreTotal, MaxScoreTotal, MaxMissedScoreTotal);
 		public int ScoreTotalIncMissed => ScoreTotal + MissedScoreTotal;
 
-		public bool IsComboBroken { get; private set; }
-
 		private string percentageStringFormat;
 		//[Inject] private PlayerDataModel playerDataModel;
 
@@ -56,7 +54,6 @@ namespace FullComboPercentageCounter
 			MaxScoreB = 0;
 			MaxMissedScoreA = 0;
 			MaxMissedScoreB = 0;
-			IsComboBroken = false;
 		}
 
 		public void AddScore(ColorType colorType, int score, int multiplier)
@@ -117,11 +114,6 @@ namespace FullComboPercentageCounter
 			double decPercent = ((double)score / (double)maxScore);
 			int missedScore = (int)Math.Round(decPercent * missedMaxScore);
 			return missedScore;
-		}
-
-		internal void ComboBroke()
-		{
-			IsComboBroken = true;
 		}
 
 		protected virtual void InvokeScoreUpdate()

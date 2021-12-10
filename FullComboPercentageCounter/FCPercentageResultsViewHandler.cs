@@ -3,6 +3,7 @@ using BeatSaberMarkupLanguage.Attributes;
 using BeatSaberMarkupLanguage.Parser;
 using FullComboPercentageCounter.Configuration;
 using HMUI;
+using IPA.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -21,15 +22,15 @@ namespace FullComboPercentageCounter
 		private static readonly string ResourceNameFCPercentage = "FullComboPercentageCounter.UI.Views.ResultsViewFCPercentage.bsml";
 		private static readonly string ResourceNameFCScore = "FullComboPercentageCounter.UI.Views.ResultsViewFCScore.bsml";
 
-		[UIParams]
-		private BSMLParserParams parserParams;
+		public static FieldAccessor<ResultsViewController, LevelCompletionResults>.Accessor LevelCompletionResults = FieldAccessor<ResultsViewController, LevelCompletionResults>.GetAccessor("_levelCompletionResults");
+
 		[UIComponent("fc-percent-text")]
 		private TextMeshProUGUI fcPercentText;
 		[UIComponent("fc-score-text")]
 		private TextMeshProUGUI fcScoreText;
 
 		private readonly ScoreManager scoreManager;
-		private readonly ResultsViewController resultsViewController;
+		private ResultsViewController resultsViewController;
 
 		private PluginConfig counterConfig;
 
@@ -54,37 +55,42 @@ namespace FullComboPercentageCounter
 
 		private void ResultsViewController_OnActivateEvent(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
 		{
-			ParseBSML();
+			ParseAllBSML();
+			EmptyResultsViewText();
 
-			if (counterConfig.ResultsViewMode == ResultsViewModes.On)
-				SetResultsViewText();
-			else if (counterConfig.ResultsViewMode == ResultsViewModes.OffWhenFullCombo && scoreManager.IsComboBroken)
-				SetResultsViewText();
-			else
-				EmptyResultsViewText();
+			LevelCompletionResults levelCompletionResults = LevelCompletionResults(ref resultsViewController);
+
+			if (levelCompletionResults.levelEndStateType == global::LevelCompletionResults.LevelEndStateType.Cleared)
+			{
+				if (counterConfig.ResultsViewMode == ResultsViewModes.On)
+					SetResultsViewText();
+				else if (counterConfig.ResultsViewMode == ResultsViewModes.OffWhenFullCombo && !levelCompletionResults.fullCombo)
+					SetResultsViewText();
+			}
 		}
 
-		private void ParseBSML()
+		private void ParseAllBSML()
 		{
 			if (!Plugin.Instance.IsResultsViewBSMLParsed)
 			{
-				string bsml = Utilities.GetResourceContent(Assembly.GetExecutingAssembly(), ResourceNameFCPercentage);
-				BSMLParser.instance.Parse(bsml, resultsViewController.gameObject, this);
-				//Plugin.Log.Notice($"BSML = \"{bsml}\"");
-				bsml = Utilities.GetResourceContent(Assembly.GetExecutingAssembly(), ResourceNameFCScore);
-				BSMLParser.instance.Parse(bsml, resultsViewController.gameObject, this);
-				//Plugin.Log.Notice($"BSML = \"{bsml}\"");
+				ParseBSML(ResourceNameFCScore);
+				ParseBSML(ResourceNameFCPercentage);
 
 				Plugin.Instance.IsResultsViewBSMLParsed = true;
 			}
 		}
 
+		private void ParseBSML(string bsmlPath)
+		{
+			BSMLParser.instance.Parse(Utilities.GetResourceContent(Assembly.GetExecutingAssembly(), bsmlPath), resultsViewController.gameObject, this);
+		}
+
 		private void SetResultsViewText()
 		{
-			string percent = scoreManager.PercentageStr;
-			//Plugin.Log.Notice($"ResultsView Activated - currentScore = {scoreManager.ScoreTotal}, currentMaxScore = {scoreManager.MaxScoreTotal}, percentage = {percent}");
+			string percentString = scoreManager.PercentageStr;
+			fcPercentText.text = counterConfig.ResultScreenPercentagePrefix + percentString + "%";
 
-			fcPercentText.text = counterConfig.ResultScreenPercentagePrefix + percent + "%";
+			// Format the score to norwegian notation (which uses spaces as seperator in large numbers) and then remove the decimal characters ",00" from the end.
 			string scoreString = scoreManager.ScoreTotalIncMissed.ToString("n", new CultureInfo("nb-NO"));
 			fcScoreText.text = counterConfig.ResultScreenScorePrefix + scoreString.Remove(scoreString.Length - 3);
 		}
