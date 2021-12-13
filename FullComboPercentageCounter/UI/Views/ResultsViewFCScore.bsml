@@ -1,3 +1,4 @@
-﻿<horizontal anchor-pos-x="-1" anchor-pos-y="-20">
-	<text id='fc-score-text' text='FC: 9001' anchor-pos-x="73.8" anchor-pos-y="-20" align='Center'></text>
-</horizontal>
+﻿<vertical anchor-pos-x='-1' anchor-pos-y='-21.7' child-control-height='false' vertical-fit='PreferredSize' pref-height='1' spacing='-46.5' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
+	<text id='fc-score-text' text='Def aul tVa lue' align='Center' italics='true'></text>
+	<text id='fc-score-diff-text' text='Def aul tVa lue' align='Center' italics='true'></text>
+</vertical>

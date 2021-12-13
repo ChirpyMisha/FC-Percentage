@@ -1,6 +1,7 @@
 ﻿using FullComboPercentageCounter.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,8 +15,9 @@ namespace FullComboPercentageCounter
 
 		private static double defaultPercentage = 100;
 
-		public double Percentage => (MaxScoreTotal == 0) ? defaultPercentage : Math.Round(((double)ScoreTotal / (double)MaxScoreTotal) * 100, PluginConfig.Instance.DecimalPrecision);
-		public string PercentageStr => Percentage.ToString(percentageStringFormat);
+		private string percentageStringFormat;
+
+		public double Percentage => CalculatePercentage(ScoreTotal, MaxScoreTotal, PluginConfig.Instance.DecimalPrecision);
 		public int ScoreTotal => ScoreA + ScoreB;
 		public int ScoreA { get; private set; }
 		public int ScoreB { get; private set; }
@@ -27,18 +29,22 @@ namespace FullComboPercentageCounter
 		public int MaxMissedScoreTotal => MaxMissedScoreA + MaxMissedScoreB;
 		public int MissedScoreTotal => CalculateMissedScore(ScoreTotal, MaxScoreTotal, MaxMissedScoreTotal);
 		public int ScoreTotalIncMissed => ScoreTotal + MissedScoreTotal;
-
-		private string percentageStringFormat;
-		//[Inject] private PlayerDataModel playerDataModel;
+		public int HighscoreAtLevelStartScore { get; private set; }
+		public int HighscoreAtLevelStartMaxScore { get; private set; }
+		public double HighscoreAtLevelStartPercentage => CalculatePercentage(HighscoreAtLevelStartScore, HighscoreAtLevelStartMaxScore, PluginConfig.Instance.DecimalPrecision);
+		
 
 		public void Initialize()
 		{
 			ResetScore();
+			InitPercentageStringFormat();
+		}
 
+		private void InitPercentageStringFormat()
+		{
 			percentageStringFormat = "0";
-			int decimalPrecision = PluginConfig.Instance.DecimalPrecision;
-			if (decimalPrecision > 0)
-				percentageStringFormat += "." + new string('0', decimalPrecision);
+			if (PluginConfig.Instance.DecimalPrecision > 0)
+				percentageStringFormat += "." + new string('0', PluginConfig.Instance.DecimalPrecision);
 		}
 
 		public void Dispose()
@@ -46,7 +52,7 @@ namespace FullComboPercentageCounter
 			return;
 		}
 
-		public void ResetScore(/*PlayerDataModel playerDataModel*/)
+		private void ResetScore()
 		{
 			ScoreA = 0;
 			ScoreB = 0;
@@ -56,7 +62,19 @@ namespace FullComboPercentageCounter
 			MaxMissedScoreB = 0;
 		}
 
-		public void AddScore(ColorType colorType, int score, int multiplier)
+		internal void ResetScoreManager(IDifficultyBeatmap beatmap, PlayerDataModel playerDataModel)
+		{
+			ResetScore();
+			InitPercentageStringFormat();
+
+			PlayerLevelStatsData stats = playerDataModel.playerData.GetPlayerLevelStatsData(beatmap);
+			HighscoreAtLevelStartScore = stats.highScore;
+			HighscoreAtLevelStartMaxScore = CalculateMaxScore(beatmap.beatmapData.cuttableNotesCount);
+
+			Plugin.Log.Notice("Highscore at level start = " + HighscoreAtLevelStartScore + "/" + HighscoreAtLevelStartMaxScore);
+		}
+
+		internal void AddScore(ColorType colorType, int score, int multiplier)
 		{
 			// Update score for left or right saber
 			if (colorType == ColorType.ColorA)
@@ -74,7 +92,7 @@ namespace FullComboPercentageCounter
 			InvokeScoreUpdate();
 		}
 
-		public void SubtractScore(ColorType colorType, int score, int multiplier, bool subtractFromMaxScore = false)
+		internal void SubtractScore(ColorType colorType, int score, int multiplier, bool subtractFromMaxScore = false)
 		{
 			// Update score for left or right saber
 			if (colorType == ColorType.ColorA)
@@ -114,6 +132,45 @@ namespace FullComboPercentageCounter
 			double decPercent = ((double)score / (double)maxScore);
 			int missedScore = (int)Math.Round(decPercent * missedMaxScore);
 			return missedScore;
+		}
+
+		private int CalculateMaxScore(int noteCount)
+		{
+			if (noteCount < 14)
+			{
+				if (noteCount == 1)
+					return 115;
+				else if (noteCount < 5)
+					return (noteCount - 1) * 230 + 115;
+				else
+					return (noteCount - 5) * 460 + 1035;
+			}
+			else
+				return (noteCount - 13) * 920 + 4715;
+		}
+
+		private double CalculatePercentage(int val, int maxVal, int decimalPrecision)
+		{
+			if (maxVal == 0)
+				return defaultPercentage;
+			return Math.Round(CalculateRatio(val, maxVal) * 100, decimalPrecision);
+		}
+
+		private double CalculateRatio(int val, int maxVal)
+		{
+			return (double)val / (double)maxVal;
+		}
+
+		public string PercentageToString(double percentage)
+		{
+			return percentage.ToString(percentageStringFormat) + "%";
+		}
+
+		public string ScoreToString(int score)
+		{
+			// Format the score to norwegian notation (which uses spaces as seperator in large numbers) and then remove the decimal characters ",00" from the end.
+			string scoreString = score.ToString("n", new CultureInfo("nb-NO"));
+			return scoreString.Remove(scoreString.Length - 3);
 		}
 
 		protected virtual void InvokeScoreUpdate()

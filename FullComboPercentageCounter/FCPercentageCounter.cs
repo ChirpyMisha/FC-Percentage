@@ -14,7 +14,7 @@ namespace FullComboPercentageCounter
 		private TMP_Text counterText;
 		private TMP_Text counterNameText;
 		private string counterPrefix;
-		private string CounterTextFormat => $"{counterPrefix}{ScoreManager.PercentageStr}%";
+		private string CounterTextFormat => $"{counterPrefix}{ScoreManager.PercentageToString(ScoreManager.Percentage)}";
 
 		private PluginConfig counterConfig;
 		

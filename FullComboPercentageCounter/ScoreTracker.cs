@@ -6,7 +6,8 @@ namespace FullComboPercentageCounter
 {
 	public class ScoreTracker : IInitializable, IDisposable
 	{
-		//[Inject] private PlayerDataModel playerDataModel;
+		[Inject] private GameplayCoreSceneSetupData data;
+		[Inject] private PlayerDataModel playerDataModel;
 
 		private readonly Func<int, int> MultiplierAtNoteCount = noteCount => (noteCount > 13 ? 8 : (noteCount > 5 ? 4 : (noteCount > 1 ? 2 : 1)));
 		private readonly Func<int, int> MultiplierAtMax = noteCount => 8;
@@ -23,16 +24,40 @@ namespace FullComboPercentageCounter
 
 		public void Initialize()
 		{
+			if (HasNullReferences())
+				return;
+
 			// Set function for multiplier according to setting
 			GetMultiplier = PluginConfig.Instance.IgnoreMultiplier ? MultiplierAtMax : MultiplierAtNoteCount;
 
-			// Reset the stored score back to 0
-			scoreManager.ResetScore();
+			// Reset ScoreManager at level start
+			scoreManager.ResetScoreManager(data.difficultyBeatmap, playerDataModel);
 
 			// Assign events
 			noteRatingTracker.OnRatingAdded += NoteRatingTracker_OnNoteRatingAdded;
 			noteRatingTracker.OnRatingFinished += NoteTracker_OnNoteRatingFinished;
 			noteRatingTracker.OnNoteMissed += NoteTracker_OnNoteMissed;
+		}
+
+		public bool HasNullReferences()
+		{
+			if (scoreManager == null || noteRatingTracker == null || data == null || playerDataModel == null)
+			{
+				Plugin.Log.Error("FullComboPercentageCounter : ScoreTracker has a null reference and cannot initialize! Please notify ChirpyMisha about this bug.");
+				Plugin.Log.Error("The following objects are null:");
+				if (scoreManager == null)
+					Plugin.Log.Error("- scoreManager");
+				if (noteRatingTracker == null)
+					Plugin.Log.Error("- noteRatingTracker");
+				if (data == null)
+					Plugin.Log.Error("- data");
+				if (playerDataModel == null)
+					Plugin.Log.Error("- playerDataModel");
+
+				return true;
+			}
+
+			return false;
 		}
 
 		public void Dispose()

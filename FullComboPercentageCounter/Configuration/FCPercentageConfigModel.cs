@@ -47,6 +47,13 @@ namespace FullComboPercentageCounter.Configuration
 			set { PluginConfig.Instance.ResultsViewMode = value; }
 		}
 
+		[UIValue("EnableScorePercentageDifference")]
+		public virtual bool EnableScorePercentageDifference
+		{
+			get { return PluginConfig.Instance.EnableScorePercentageDifference; }
+			set { PluginConfig.Instance.EnableScorePercentageDifference = value; }
+		}
+
 		[UIValue(nameof(ResultsViewModeList))]
 		public List<object> ResultsViewModeList => ResultsViewModesToNames.Keys.Cast<object>().ToList();
 

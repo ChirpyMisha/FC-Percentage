@@ -9,4 +9,5 @@
 	<checkbox-setting text='Label Above Counter' value='LabelAboveCount' apply-on-change='true' hover-hint='Put the label above the number, similar to a usual Counters+ counter.'/>
 	<checkbox-setting text='Ignore Multiplier Ramp-up' value='IgnoreMultiplier' apply-on-change='true' hover-hint='When this is enabled all cuts will be weighed the same.'/>
 	<dropdown-list-setting text='Show On Results Screen' value='ResultsViewMode' options='ResultsViewModeList' formatter='ResultsViewModesFormat' apply-on-change='true' hover-hint='Select if or when the persentage should be shown on the results screen.'/>
+	<checkbox-setting text='Enable Score Percentage Difference' value='EnableScorePercentageDifference' apply-on-change='true' hover-hint='Shows the difference between your previous highscore and the FC score and percentage.'/>
 </vertical>

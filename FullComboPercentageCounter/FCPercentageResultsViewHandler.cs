@@ -22,12 +22,19 @@ namespace FullComboPercentageCounter
 		private static readonly string ResourceNameFCPercentage = "FullComboPercentageCounter.UI.Views.ResultsViewFCPercentage.bsml";
 		private static readonly string ResourceNameFCScore = "FullComboPercentageCounter.UI.Views.ResultsViewFCScore.bsml";
 
+		private static string colorPositive = "#00B300";
+		private static string colorNegative = "#FF0000";
+
 		public static FieldAccessor<ResultsViewController, LevelCompletionResults>.Accessor LevelCompletionResults = FieldAccessor<ResultsViewController, LevelCompletionResults>.GetAccessor("_levelCompletionResults");
 
-		[UIComponent("fc-percent-text")]
-		private TextMeshProUGUI fcPercentText;
 		[UIComponent("fc-score-text")]
 		private TextMeshProUGUI fcScoreText;
+		[UIComponent("fc-score-diff-text")]
+		private TextMeshProUGUI fcScoreDiffText;
+		[UIComponent("fc-percent-text")]
+		private TextMeshProUGUI fcPercentText;
+		[UIComponent("fc-percent-diff-text")]
+		private TextMeshProUGUI fcPercentDiffText;
 
 		private readonly ScoreManager scoreManager;
 		private ResultsViewController resultsViewController;
@@ -87,18 +94,37 @@ namespace FullComboPercentageCounter
 
 		private void SetResultsViewText()
 		{
-			string percentString = scoreManager.PercentageStr;
-			fcPercentText.text = counterConfig.ResultScreenPercentagePrefix + percentString + "%";
+			int currentScore = scoreManager.ScoreTotalIncMissed;
+			double currentPercent = scoreManager.Percentage;
 
-			// Format the score to norwegian notation (which uses spaces as seperator in large numbers) and then remove the decimal characters ",00" from the end.
-			string scoreString = scoreManager.ScoreTotalIncMissed.ToString("n", new CultureInfo("nb-NO"));
-			fcScoreText.text = counterConfig.ResultScreenScorePrefix + scoreString.Remove(scoreString.Length - 3);
+			fcScoreText.text = counterConfig.ResultScreenScorePrefix + scoreManager.ScoreToString(currentScore);
+			fcPercentText.text = counterConfig.ResultScreenPercentagePrefix + scoreManager.PercentageToString(currentPercent);
+			//fcScoreDiffText.text = "ScoreDiffText";
+			//fcPercentDiffText.text = "PercDiffText";
+
+
+			if (PluginConfig.Instance.EnableScorePercentageDifference && scoreManager.HighscoreAtLevelStartScore > 0)
+			{
+				int scoreDiff = currentScore - scoreManager.HighscoreAtLevelStartScore;
+				double percentDiff = currentPercent - scoreManager.HighscoreAtLevelStartPercentage;
+
+				string diffStringFormat;
+				if (scoreDiff >= 0)
+					diffStringFormat = $"<size=90%><color={colorPositive}>+";
+				else
+					diffStringFormat = $"<size=90%><color={colorNegative}>";
+
+				fcScoreDiffText.text = diffStringFormat + scoreManager.ScoreToString(scoreDiff);
+				fcPercentDiffText.text = diffStringFormat + scoreManager.PercentageToString(percentDiff);
+			}
 		}
 
 		private void EmptyResultsViewText()
 		{
-			fcPercentText.text = "";
 			fcScoreText.text = "";
+			fcScoreDiffText.text = "";
+			fcPercentText.text = "";
+			fcPercentDiffText.text = "";
 		}
 	}
 }
