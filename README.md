@@ -34,7 +34,7 @@ Known bugs:
     - Enable the "Ignore Multiplier Ramp-up" setting.
     - Play and finish any song.
     - The score should be around 7000 too high (on maps with more than 15 blocks)
-  - Bug status: Cause found. Fix will liley be applied in the next update.
+  - Bug status: Cause found. Fix will likeley be applied in the next update.
 
 Ideas for Future Features:
 - Counter: Add setting to show FC Score
