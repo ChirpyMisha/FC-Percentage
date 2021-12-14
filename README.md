@@ -22,19 +22,19 @@ Extra settings in config file:
 
 Known bugs:
 - Stuck on results screen. 
- - How to reproduce: 
-  - Play and finish any song. 
-  - Click on the gear icon and going into the game's settings menu or the mod settings menu.
-  - Exiting by clicking the "OK" button. (Settings do not need to be changed for this bug to appear).
-  - Play and finish any song.
-  - The results screen should not function correctly and any buttons are not functional.
- - Bug status: Cause found. Solution found. Fix will be applied in the next update.
+  - How to reproduce: 
+    - Play and finish any song. 
+    - Click on the gear icon and going into the game's settings menu or the mod settings menu.
+    - Exiting by clicking the "OK" button. (Settings do not need to be changed for this bug to appear).
+    - Play and finish any song.
+    - The results screen should not function correctly and any buttons are not functional.
+  - Bug status: Cause found. Solution found. Fix will be applied in the next update.
 - "Ignore Multiplier Ramp-up" setting shows incorrect score on results screen.
- - How to reproduce:
-  - Enable the "Ignore Multiplier Ramp-up" setting.
-  - Play and finish any song.
-  - The score should be around 7000 too high (on maps with more than 15 blocks)
- - Bug status: Cause found. Fix will liley be applied in the next update.
+  - How to reproduce:
+    - Enable the "Ignore Multiplier Ramp-up" setting.
+    - Play and finish any song.
+    - The score should be around 7000 too high (on maps with more than 15 blocks)
+  - Bug status: Cause found. Fix will liley be applied in the next update.
 
 Ideas for Future Features:
 - Counter: Add setting to show FC Score
