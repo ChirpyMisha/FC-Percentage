@@ -21,14 +21,27 @@ Extra settings in config file:
 - Result Screen Percentage Prefix: The text used as prefix for the percentage on the results screen.
 
 Known bugs:
-- [No known bugs]
+- Stuck on results screen. 
+ - How to reproduce: 
+  - Play and finish any song. 
+  - Click on the gear icon and going into the game's settings menu or the mod settings menu.
+  - Exiting by clicking the "OK" button. (Settings do not need to be changed for this bug to appear).
+  - Play and finish any song.
+  - The results screen should not function correctly and any buttons are not functional.
+ - Bug status: Cause found. Solution found. Fix will be applied in the next update.
+- "Ignore Multiplier Ramp-up" setting shows incorrect score on results screen.
+ - How to reproduce:
+  - Enable the "Ignore Multiplier Ramp-up" setting.
+  - Play and finish any song.
+  - The score should be around 7000 too high (on maps with more than 15 blocks)
+ - Bug status: Cause found. Fix will liley be applied in the next update.
 
 Ideas for Future Features:
 - Counter: Add setting to show FC Score
 - Counter & Results: Add setting to split percentage for left & right saber.
-- Results: Add setting to show difference in score and percentage compared to highscore (similar to the ScorePercentage mod)
-- Remove dependency on Counters+
-  - Add settings to the mods menu (possibly only when Counters+ is not installed?)
+- Results: Add setting to show difference in score and percentage compared to highscore (similar to the ScorePercentage mod) (Included in upcoming version)
+- Remove dependency on Counters+ (Included in upcoming version)
+  - Add settings to the mods menu (Included in upcoming version)
 - Make extra settings accessible through the mods menu.
 
 Want to contribute?
