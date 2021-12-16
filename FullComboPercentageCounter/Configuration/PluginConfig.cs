@@ -6,15 +6,22 @@ namespace FullComboPercentageCounter.Configuration
 {
 	internal class PluginConfig
 	{
-		// Counters+ Settings
 		public static PluginConfig Instance { get; set; }
+
+
+		// Shared Settings (Custom Counters+ Counter & Results View)
 		public virtual int DecimalPrecision { get; set; } = 2;
-		public virtual float PercentageSize { get; set; } = 0.85f;
-		public virtual bool EnableLabel { get; set; } = true;
-		public virtual bool LabelAboveCount { get; set; } = false;
 		public virtual bool IgnoreMultiplier { get; set; } = false;
+
+		// FCPercentageCounter Settings (Custom Counters+ Counter)
+		public virtual float PercentageSize { get; set; } = 0.85f;
+		public virtual bool EnableLabel_Counter { get; set; } = true;
+		public virtual bool LabelAboveCount { get; set; } = false;
+
+		//FCScorePercentage Settings (Results View)
 		public virtual ResultsViewModes ResultsViewMode { get; set; } = ResultsViewModes.OffWhenFullCombo;
 		public virtual bool EnableScorePercentageDifference { get; set; } = true;
+		public virtual bool EnableLabel_ScorePercentage { get; set; } = true;
 
 		// Extra settings available from config file
 		public virtual string CounterLabelTextPrefix { get; set; } = "FC : ";

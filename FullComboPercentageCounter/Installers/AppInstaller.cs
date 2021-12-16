@@ -1,8 +1,9 @@
-﻿using Zenject;
+﻿using FullComboPercentageCounter.Configuration;
+using Zenject;
 
 namespace FullComboPercentageCounter.Installers
 {
-	public class AppInstaller : Installer
+	class AppInstaller : Installer
 	{
 		public override void InstallBindings()
 		{

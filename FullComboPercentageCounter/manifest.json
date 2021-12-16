@@ -3,13 +3,12 @@
   "id": "FullComboPercentageCounter",
   "name": "FullComboPercentageCounter",
   "author": "ChirpyMisha",
-  "version": "1.1.2",
+  "version": "1.2.0",
   "description": "",
   "gameVersion": "1.18.3",
   "dependsOn": {
     "BSIPA": "^4.2.0",
-    "SiraUtil": "^2.5.8",
-    "Counters+": "^2.2.2"
+    "SiraUtil": "^2.5.8"
   },
   "loadAfter": [
     "Counters+"
@@ -24,8 +23,8 @@
         "Distance": 0
       },
       "BSML": {
-        "Resource": "FullComboPercentageCounter.Configuration.BSML.FCPercentageSettings.bsml",
-        "Host": "FullComboPercentageCounter.Configuration.FCPercentageConfigModel",
+        "Resource": "FullComboPercentageCounter.Configuration.BSML.SettingsFCPercentageCounter.bsml",
+        "Host": "FullComboPercentageCounter.Configuration.ConfigController",
         "Icon": "FullComboPercentageCounter.Resources.Icon.png"
       }
     }

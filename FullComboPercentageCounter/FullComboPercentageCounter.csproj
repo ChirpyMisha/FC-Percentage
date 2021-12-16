@@ -5,6 +5,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
+    <LangVersion>8</LangVersion>
+    <Nullable>enable</Nullable>
     <ProjectGuid>{CB06A406-8024-4100-958F-7E8F37B96AE7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -20,6 +22,7 @@
     <!--<PathMap>$(AppOutputBase)=X:\$(AssemblyName)\</PathMap>-->
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
     <Optimize>false</Optimize>
@@ -132,7 +135,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\FCPercentageConfigModel.cs" />
+    <Compile Include="Configuration\ConfigController.cs" />
+    <Compile Include="Configuration\ConfigManager.cs" />
     <Compile Include="FCPercentageCounter.cs" />
     <Compile Include="FCPercentageResultsViewHandler.cs" />
     <Compile Include="Installers\AppInstaller.cs" />
@@ -149,7 +153,8 @@
     <EmbeddedResource Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Configuration\BSML\FCPercentageSettings.bsml" />
+    <EmbeddedResource Include="Configuration\BSML\SettingsFCPercentageCounter.bsml" />
+    <EmbeddedResource Include="Configuration\BSML\SettingsFCScorePercentage.bsml" />
     <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
     <None Include="Directory.Build.targets" Condition="Exists('Directory.Build.targets')" />
     <None Include="FullComboPercentageCounter.csproj.user" Condition="Exists('FullComboPercentageCounter.csproj.user')" />

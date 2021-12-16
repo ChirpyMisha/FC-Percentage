@@ -4,6 +4,9 @@ using FullComboPercentageCounter.Installers;
 using IPA.Config;
 using IPA.Config.Stores;
 using IPALogger = IPA.Logging.Logger;
+using IPA.Loader;
+using FullComboPercentageCounter.Configuration;
+using System.Reflection;
 
 namespace FullComboPercentageCounter
 {
@@ -12,7 +15,10 @@ namespace FullComboPercentageCounter
 	{
 		internal static Plugin Instance { get; private set; }
 		internal static IPALogger Log { get; private set; }
-		internal bool IsResultsViewBSMLParsed { get; set; }
+
+		private static PluginMetadata metadata;
+		private static string name;
+		internal static string PluginName => name ??= metadata?.Name ?? Assembly.GetExecutingAssembly().GetName().Name;
 
 		[Init]
 		/// <summary>
@@ -20,22 +26,24 @@ namespace FullComboPercentageCounter
 		/// [Init] methods that use a Constructor or called before regular methods like InitWithConfig.
 		/// Only use [Init] with one Constructor.
 		/// </summary>
-		public void Init(IPALogger logger, Zenjector zenjector)
+		public void Init(IPALogger logger, PluginMetadata metaData, Zenjector zenjector)
 		{
 			Instance = this;
 			Log = logger;
-			IsResultsViewBSMLParsed = false;
+
+			metadata = metaData;
+
 			zenjector.OnApp<AppInstaller>();
 			zenjector.OnMenu<MenuInstaller>();
 			zenjector.OnGame<GameInstaller>(false);
+
 			Log.Info("FullComboPercentageCounter initialized.");
 		}
 
-		//Uncomment to use BSIPA's config
 		[Init]
 		public void InitWithConfig(Config conf)
 		{
-			Configuration.PluginConfig.Instance = conf.Generated<Configuration.PluginConfig>();
+			PluginConfig.Instance = conf.Generated<PluginConfig>();
 			Log.Debug("Config loaded");
 		}
 

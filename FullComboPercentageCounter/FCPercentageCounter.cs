@@ -36,7 +36,7 @@ namespace FullComboPercentageCounter
 		private void InitCounterText()
 		{
 			counterPrefix = "";
-			if (counterConfig.EnableLabel)
+			if (counterConfig.EnableLabel_Counter)
 			{
 				if (counterConfig.LabelAboveCount)
 				{

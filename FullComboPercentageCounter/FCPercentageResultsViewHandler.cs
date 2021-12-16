@@ -78,13 +78,10 @@ namespace FullComboPercentageCounter
 
 		private void ParseAllBSML()
 		{
-			if (!Plugin.Instance.IsResultsViewBSMLParsed)
-			{
+			if (fcScoreText == null)
 				ParseBSML(ResourceNameFCScore);
+			if (fcPercentText == null)
 				ParseBSML(ResourceNameFCPercentage);
-
-				Plugin.Instance.IsResultsViewBSMLParsed = true;
-			}
 		}
 
 		private void ParseBSML(string bsmlPath)
@@ -94,18 +91,22 @@ namespace FullComboPercentageCounter
 
 		private void SetResultsViewText()
 		{
-			int currentScore = scoreManager.ScoreTotalIncMissed;
+			int currentScore = scoreManager.ScoreAtCurrentPercentage;
 			double currentPercent = scoreManager.Percentage;
 
-			fcScoreText.text = counterConfig.ResultScreenScorePrefix + scoreManager.ScoreToString(currentScore);
-			fcPercentText.text = counterConfig.ResultScreenPercentagePrefix + scoreManager.PercentageToString(currentPercent);
-			//fcScoreDiffText.text = "ScoreDiffText";
-			//fcPercentDiffText.text = "PercDiffText";
-
-
-			if (PluginConfig.Instance.EnableScorePercentageDifference && scoreManager.HighscoreAtLevelStartScore > 0)
+			if (counterConfig.EnableLabel_ScorePercentage)
 			{
-				int scoreDiff = currentScore - scoreManager.HighscoreAtLevelStartScore;
+				fcScoreText.text = counterConfig.ResultScreenScorePrefix;
+				fcPercentText.text = counterConfig.ResultScreenPercentagePrefix;
+			}
+
+			fcScoreText.text += scoreManager.ScoreToString(currentScore);
+			fcPercentText.text += scoreManager.PercentageToString(currentPercent);
+
+
+			if (PluginConfig.Instance.EnableScorePercentageDifference && scoreManager.HighscoreAtLevelStart > 0)
+			{
+				int scoreDiff = currentScore - scoreManager.HighscoreAtLevelStart;
 				double percentDiff = currentPercent - scoreManager.HighscoreAtLevelStartPercentage;
 
 				string diffStringFormat;

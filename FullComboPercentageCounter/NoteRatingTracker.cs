@@ -10,7 +10,6 @@ namespace FullComboPercentageCounter
 	{
 		public event EventHandler<NoteRatingUpdateEventArgs> OnRatingAdded;
 		public event EventHandler<NoteRatingUpdateEventArgs> OnRatingFinished;
-		public event EventHandler<NoteMissedEventArgs> OnNoteMissed;
 
 		private readonly ScoreController scoreController;
 
@@ -46,32 +45,24 @@ namespace FullComboPercentageCounter
 		private void ScoreController_noteWasMissedEvent(NoteData noteData, int _)
 		{
 			noteCount++;
-			InvokeNoteMissed(noteData, noteCount);
 		}
 
 		private void ScoreController_noteWasCutEvent(NoteData noteData, in NoteCutInfo noteCutInfo, int multiplier)
 		{
 			noteCount++;
-			if (noteData.colorType != ColorType.None)
+			if (noteData.colorType != ColorType.None && noteCutInfo.allIsOK)
 			{
-				if (noteCutInfo.allIsOK)
-				{
-					swingCounterCutInfo.Add(noteCutInfo.swingRatingCounter, noteCutInfo);
-					noteCutInfoData.Add(noteCutInfo, noteData);
-					noteCutInfo.swingRatingCounter.RegisterDidChangeReceiver(this);
-					noteCutInfo.swingRatingCounter.RegisterDidFinishReceiver(this);
+				swingCounterCutInfo.Add(noteCutInfo.swingRatingCounter, noteCutInfo);
+				noteCutInfoData.Add(noteCutInfo, noteData);
+				noteCutInfo.swingRatingCounter.RegisterDidChangeReceiver(this);
+				noteCutInfo.swingRatingCounter.RegisterDidFinishReceiver(this);
 
-					int beforeCutRawScore, afterCutRawScore, accRawScore;
-					ScoreModel.RawScoreWithoutMultiplier(noteCutInfo.swingRatingCounter, noteCutInfo.cutDistanceToCenter, out beforeCutRawScore, out afterCutRawScore, out accRawScore);
-					NoteRating noteRating = new NoteRating(beforeCutRawScore, afterCutRawScore, accRawScore, multiplier, noteCount);
-					noteRatings.Add(noteData, noteRating);
+				int beforeCutRawScore, afterCutRawScore, accRawScore;
+				ScoreModel.RawScoreWithoutMultiplier(noteCutInfo.swingRatingCounter, noteCutInfo.cutDistanceToCenter, out beforeCutRawScore, out afterCutRawScore, out accRawScore);
+				NoteRating noteRating = new NoteRating(beforeCutRawScore, afterCutRawScore, accRawScore, multiplier, noteCount);
+				noteRatings.Add(noteData, noteRating);
 
-					InvokeRatingAdded(noteData, noteRating);
-				}
-				else
-				{
-					InvokeNoteMissed(noteData, noteCount);
-				}
+				InvokeRatingAdded(noteData, noteRating);
 			}
 		}
 
@@ -143,30 +134,12 @@ namespace FullComboPercentageCounter
 				handler(this, eventArgs);
 			}
 		}
-		protected virtual void InvokeNoteMissed(NoteData noteData, int noteCount)
-		{
-			EventHandler<NoteMissedEventArgs> handler = OnNoteMissed;
-			if (handler != null) 
-			{
-				NoteMissedEventArgs eventArgs = new NoteMissedEventArgs();
-				eventArgs.NoteData = noteData;
-				eventArgs.NoteCount = noteCount;
-
-				handler(this, eventArgs);
-			}
-		}
 	}
 
 	public class NoteRatingUpdateEventArgs : EventArgs
 	{
 		public NoteData NoteData { get; set; }
 		public NoteRating NoteRating { get; set; }
-	}
-
-	public class NoteMissedEventArgs : EventArgs
-	{
-		public NoteData NoteData { get; set; }
-		public int NoteCount { get; set; }
 	}
 
 	public class NoteRating

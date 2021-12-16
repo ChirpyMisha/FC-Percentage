@@ -1,0 +1,11 @@
+﻿<vertical xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd' spacing='1' horizontal-fit='PreferredSize' vertical-fit='PreferredSize'>
+	<increment-setting text='Percentage Precision' hover-hint='How precise should the precentage be? (Also applies to resuls screen)' 
+										 value='DecimalPrecision' apply-on-change='true'
+										 integer-only='true' min='0' max='4' increment='1'/>
+	<slider-setting text='Percentage Size' hover-hint='What size should the percentage text be?'
+										 value='PercentageSize' apply-on-change='true'
+										 min='0.5' max='1.5' increment='0.05'/>
+	<checkbox-setting text='Enable Label' value='EnableLabel_Counter' apply-on-change='true' hover-hint='Enable the label. The label text can be changed in the config file in the UserData folder.'/>
+	<checkbox-setting text='Label Above Counter' value='LabelAboveCount' apply-on-change='true' hover-hint='Put the label above the number, similar to a usual Counters+ counter.'/>
+	<checkbox-setting text='Ignore Multiplier Ramp-up' value='IgnoreMultiplier' apply-on-change='true' hover-hint='When this is enabled all cuts will be weighed the same. (Also applies to resuls screen)'/>
+</vertical>

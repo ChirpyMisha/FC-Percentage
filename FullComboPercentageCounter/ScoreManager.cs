@@ -24,14 +24,20 @@ namespace FullComboPercentageCounter
 		public int MaxScoreTotal => MaxScoreA + MaxScoreB;
 		public int MaxScoreA { get; private set; }
 		public int MaxScoreB { get; private set; }
-		public int MaxMissedScoreA { get; private set; }
-		public int MaxMissedScoreB { get; private set; }
-		public int MaxMissedScoreTotal => MaxMissedScoreA + MaxMissedScoreB;
-		public int MissedScoreTotal => CalculateMissedScore(ScoreTotal, MaxScoreTotal, MaxMissedScoreTotal);
-		public int ScoreTotalIncMissed => ScoreTotal + MissedScoreTotal;
-		public int HighscoreAtLevelStartScore { get; private set; }
-		public int HighscoreAtLevelStartMaxScore { get; private set; }
-		public double HighscoreAtLevelStartPercentage => CalculatePercentage(HighscoreAtLevelStartScore, HighscoreAtLevelStartMaxScore, PluginConfig.Instance.DecimalPrecision);
+		public int ScoreAtCurrentPercentage => CalculateScoreFromCurrentPercentage();
+
+		private int CalculateScoreFromCurrentPercentage()
+		{
+			if (MaxScoreTotal == 0)
+				return 0;
+
+			double currentRatio = CalculateRatio(ScoreTotal, MaxScoreTotal);
+			return (int)Math.Round(currentRatio * MaxScoreAtLevelStart);
+		}
+
+		public int HighscoreAtLevelStart { get; private set; }
+		public int MaxScoreAtLevelStart { get; private set; }
+		public double HighscoreAtLevelStartPercentage => CalculatePercentage(HighscoreAtLevelStart, MaxScoreAtLevelStart, PluginConfig.Instance.DecimalPrecision);
 		
 
 		public void Initialize()
@@ -58,8 +64,6 @@ namespace FullComboPercentageCounter
 			ScoreB = 0;
 			MaxScoreA = 0;
 			MaxScoreB = 0;
-			MaxMissedScoreA = 0;
-			MaxMissedScoreB = 0;
 		}
 
 		internal void ResetScoreManager(IDifficultyBeatmap beatmap, PlayerDataModel playerDataModel)
@@ -68,10 +72,10 @@ namespace FullComboPercentageCounter
 			InitPercentageStringFormat();
 
 			PlayerLevelStatsData stats = playerDataModel.playerData.GetPlayerLevelStatsData(beatmap);
-			HighscoreAtLevelStartScore = stats.highScore;
-			HighscoreAtLevelStartMaxScore = CalculateMaxScore(beatmap.beatmapData.cuttableNotesCount);
+			HighscoreAtLevelStart = stats.highScore;
+			MaxScoreAtLevelStart = CalculateMaxScore(beatmap.beatmapData.cuttableNotesCount);
 
-			Plugin.Log.Notice("Highscore at level start = " + HighscoreAtLevelStartScore + "/" + HighscoreAtLevelStartMaxScore);
+			Plugin.Log.Notice("Highscore at level start = " + HighscoreAtLevelStart + "/" + MaxScoreAtLevelStart);
 		}
 
 		internal void AddScore(ColorType colorType, int score, int multiplier)
@@ -110,30 +114,6 @@ namespace FullComboPercentageCounter
 			InvokeScoreUpdate();
 		}
 
-		internal void AddMissedScore(ColorType colorType, int maxMissedScore, int multiplier)
-		{
-			// Update max missed score for left or right saber
-			if (colorType == ColorType.ColorA)
-			{
-				MaxMissedScoreA += maxMissedScore * multiplier;
-			}
-			else if (colorType == ColorType.ColorB)
-			{
-				MaxMissedScoreB += maxMissedScore * multiplier;
-			}
-		}
-
-		private int CalculateMissedScore(int score, int maxScore, int missedMaxScore)
-		{
-			// Prevent divide by 0
-			if (maxScore == 0) 
-				return 0;
-
-			double decPercent = ((double)score / (double)maxScore);
-			int missedScore = (int)Math.Round(decPercent * missedMaxScore);
-			return missedScore;
-		}
-
 		private int CalculateMaxScore(int noteCount)
 		{
 			if (noteCount < 14)
@@ -151,13 +131,13 @@ namespace FullComboPercentageCounter
 
 		private double CalculatePercentage(int val, int maxVal, int decimalPrecision)
 		{
-			if (maxVal == 0)
-				return defaultPercentage;
 			return Math.Round(CalculateRatio(val, maxVal) * 100, decimalPrecision);
 		}
 
 		private double CalculateRatio(int val, int maxVal)
 		{
+			if (maxVal == 0)
+				return defaultPercentage / 100;
 			return (double)val / (double)maxVal;
 		}
 
