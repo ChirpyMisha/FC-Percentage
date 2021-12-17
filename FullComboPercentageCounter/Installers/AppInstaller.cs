@@ -1,5 +1,4 @@
-﻿using FullComboPercentageCounter.Configuration;
-using Zenject;
+﻿using Zenject;
 
 namespace FullComboPercentageCounter.Installers
 {

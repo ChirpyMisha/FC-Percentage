@@ -13,11 +13,13 @@ namespace FullComboPercentageCounter
 	[Plugin(RuntimeOptions.SingleStartInit)]
 	public class Plugin
 	{
+#pragma warning disable CS8618
 		internal static Plugin Instance { get; private set; }
 		internal static IPALogger Log { get; private set; }
 
 		private static PluginMetadata metadata;
 		private static string name;
+#pragma warning restore CS8618
 		internal static string PluginName => name ??= metadata?.Name ?? Assembly.GetExecutingAssembly().GetName().Name;
 
 		[Init]

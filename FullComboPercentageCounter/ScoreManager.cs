@@ -1,4 +1,5 @@
-﻿using FullComboPercentageCounter.Configuration;
+﻿#nullable enable
+using FullComboPercentageCounter.Configuration;
 using System;
 using System.Globalization;
 using Zenject;
@@ -7,11 +8,11 @@ namespace FullComboPercentageCounter
 {
 	public class ScoreManager : IInitializable, IDisposable
 	{
-		public event EventHandler OnScoreUpdate;
+		public event EventHandler? OnScoreUpdate;
 
 		private static double defaultPercentage = 100;
 
-		private string percentageStringFormat;
+		private string percentageStringFormat = "";
 
 		public double Percentage => CalculatePercentage(ScoreTotal, MaxScoreTotal, PluginConfig.Instance.DecimalPrecision);
 		public int ScoreTotal => ScoreA + ScoreB;
@@ -35,11 +36,19 @@ namespace FullComboPercentageCounter
 		public int MaxScoreAtLevelStart { get; private set; }
 		public double HighscoreAtLevelStartPercentage => CalculatePercentage(HighscoreAtLevelStart, MaxScoreAtLevelStart, PluginConfig.Instance.DecimalPrecision);
 		
-
-		public void Initialize()
+		public ScoreManager()
 		{
 			ResetScore();
 			InitPercentageStringFormat();
+		}
+
+		public void Initialize()
+		{
+			return;
+		}
+		public void Dispose()
+		{
+			return;
 		}
 
 		private void InitPercentageStringFormat()
@@ -48,11 +57,7 @@ namespace FullComboPercentageCounter
 			if (PluginConfig.Instance.DecimalPrecision > 0)
 				percentageStringFormat += "." + new string('0', PluginConfig.Instance.DecimalPrecision);
 		}
-
-		public void Dispose()
-		{
-			return;
-		}
+		
 
 		private void ResetScore()
 		{
@@ -152,7 +157,7 @@ namespace FullComboPercentageCounter
 		protected virtual void InvokeScoreUpdate()
 		{
 			// Create event handler
-			EventHandler handler = OnScoreUpdate;
+			EventHandler? handler = OnScoreUpdate;
 			if (handler != null)
 			{
 				// Invoke event

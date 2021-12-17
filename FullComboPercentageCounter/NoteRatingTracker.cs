@@ -1,15 +1,15 @@
-﻿using System;
+﻿#nullable enable
+using System;
 using System.Collections.Generic;
 using Zenject;
 
 // I copied a part of PikminBloom's homework and changed a few things so it isn't obvious.
-
 namespace FullComboPercentageCounter
 {
 	public class NoteRatingTracker : IInitializable, IDisposable, ISaberSwingRatingCounterDidChangeReceiver, ISaberSwingRatingCounterDidFinishReceiver
 	{
-		public event EventHandler<NoteRatingUpdateEventArgs> OnRatingAdded;
-		public event EventHandler<NoteRatingUpdateEventArgs> OnRatingFinished;
+		public event EventHandler<NoteRatingUpdateEventArgs>? OnRatingAdded;
+		public event EventHandler<NoteRatingUpdateEventArgs>? OnRatingFinished;
 
 		private readonly ScoreController scoreController;
 
@@ -22,18 +22,18 @@ namespace FullComboPercentageCounter
 		public NoteRatingTracker(ScoreController scoreController)
 		{
 			this.scoreController = scoreController;
-		}
-
-		public void Initialize()
-		{
-			scoreController.noteWasMissedEvent += ScoreController_noteWasMissedEvent;
-			scoreController.noteWasCutEvent += ScoreController_noteWasCutEvent;
 
 			noteRatings = new Dictionary<NoteData, NoteRating>();
 			swingCounterCutInfo = new Dictionary<ISaberSwingRatingCounter, NoteCutInfo>();
 			noteCutInfoData = new Dictionary<NoteCutInfo, NoteData>();
 
 			noteCount = 0;
+		}
+
+		public void Initialize()
+		{
+			scoreController.noteWasMissedEvent += ScoreController_noteWasMissedEvent;
+			scoreController.noteWasCutEvent += ScoreController_noteWasCutEvent;
 		}
 
 		public void Dispose()
@@ -112,24 +112,20 @@ namespace FullComboPercentageCounter
 
 		protected virtual void InvokeRatingAdded(NoteData noteData, NoteRating noteRating)
 		{
-			EventHandler<NoteRatingUpdateEventArgs> handler = OnRatingAdded;
+			EventHandler<NoteRatingUpdateEventArgs>? handler = OnRatingAdded;
 			if (handler != null)
 			{
-				NoteRatingUpdateEventArgs noteRatingUpdateEventArgs = new NoteRatingUpdateEventArgs();
-				noteRatingUpdateEventArgs.NoteData = noteData;
-				noteRatingUpdateEventArgs.NoteRating = noteRating;
+				NoteRatingUpdateEventArgs eventArgs = new NoteRatingUpdateEventArgs(noteData, noteRating);
 
-				handler(this, noteRatingUpdateEventArgs);
+				handler(this, eventArgs);
 			}
 		}
 		protected virtual void InvokeRatingFinished(NoteData noteData, NoteRating noteRating)
 		{
-			EventHandler<NoteRatingUpdateEventArgs> handler = OnRatingFinished;
+			EventHandler<NoteRatingUpdateEventArgs>? handler = OnRatingFinished;
 			if (handler != null)
 			{
-				NoteRatingUpdateEventArgs eventArgs = new NoteRatingUpdateEventArgs();
-				eventArgs.NoteData = noteData;
-				eventArgs.NoteRating = noteRating;
+				NoteRatingUpdateEventArgs eventArgs = new NoteRatingUpdateEventArgs(noteData, noteRating);
 
 				handler(this, eventArgs);
 			}
@@ -140,6 +136,11 @@ namespace FullComboPercentageCounter
 	{
 		public NoteData NoteData { get; set; }
 		public NoteRating NoteRating { get; set; }
+		public NoteRatingUpdateEventArgs(NoteData noteData, NoteRating noteRating)
+		{
+			NoteData = noteData;
+			NoteRating = noteRating;
+		}
 	}
 
 	public class NoteRating

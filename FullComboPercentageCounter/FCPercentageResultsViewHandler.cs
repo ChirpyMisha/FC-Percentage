@@ -1,15 +1,10 @@
-﻿using BeatSaberMarkupLanguage;
+﻿#nullable enable
+using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.Attributes;
-using BeatSaberMarkupLanguage.Parser;
 using FullComboPercentageCounter.Configuration;
-using HMUI;
 using IPA.Utilities;
 using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
 using System.Reflection;
-using System.Text;
 using TMPro;
 using Zenject;
 
@@ -26,13 +21,13 @@ namespace FullComboPercentageCounter
 		public static FieldAccessor<ResultsViewController, LevelCompletionResults>.Accessor LevelCompletionResults = FieldAccessor<ResultsViewController, LevelCompletionResults>.GetAccessor("_levelCompletionResults");
 
 		[UIComponent("fc-score-text")]
-		private TextMeshProUGUI fcScoreText;
+		private TextMeshProUGUI? fcScoreText = null!;
 		[UIComponent("fc-score-diff-text")]
-		private TextMeshProUGUI fcScoreDiffText;
+		private TextMeshProUGUI? fcScoreDiffText = null!;
 		[UIComponent("fc-percent-text")]
-		private TextMeshProUGUI fcPercentText;
+		private TextMeshProUGUI? fcPercentText = null!;
 		[UIComponent("fc-percent-diff-text")]
-		private TextMeshProUGUI fcPercentDiffText;
+		private TextMeshProUGUI? fcPercentDiffText = null!;
 
 		private readonly ScoreManager scoreManager;
 		private ResultsViewController resultsViewController;
@@ -43,13 +38,13 @@ namespace FullComboPercentageCounter
 		{
 			this.scoreManager = scoreManager;
 			this.resultsViewController = resultsViewController;
+			counterConfig = PluginConfig.Instance;
 		}
 
 		public void Initialize()
 		{
 			if (resultsViewController != null)
 				resultsViewController.didActivateEvent += ResultsViewController_OnActivateEvent;
-			counterConfig = PluginConfig.Instance;
 		}
 
 		public void Dispose()
@@ -87,6 +82,7 @@ namespace FullComboPercentageCounter
 			BSMLParser.instance.Parse(Utilities.GetResourceContent(Assembly.GetExecutingAssembly(), bsmlPath), resultsViewController.gameObject, this);
 		}
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
 		private void SetResultsViewText()
 		{
 			int currentScore = scoreManager.ScoreAtCurrentPercentage;
@@ -125,5 +121,6 @@ namespace FullComboPercentageCounter
 			fcPercentText.text = "";
 			fcPercentDiffText.text = "";
 		}
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 	}
 }

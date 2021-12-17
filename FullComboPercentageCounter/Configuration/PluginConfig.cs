@@ -6,8 +6,9 @@ namespace FullComboPercentageCounter.Configuration
 {
 	internal class PluginConfig
 	{
+#pragma warning disable CS8618
 		public static PluginConfig Instance { get; set; }
-
+#pragma warning restore CS8618
 
 		// Shared Settings (Custom Counters+ Counter & Results View)
 		public virtual int DecimalPrecision { get; set; } = 2;

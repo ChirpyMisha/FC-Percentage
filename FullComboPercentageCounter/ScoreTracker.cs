@@ -6,8 +6,8 @@ namespace FullComboPercentageCounter
 {
 	public class ScoreTracker : IInitializable, IDisposable
 	{
-		[Inject] private GameplayCoreSceneSetupData data;
-		[Inject] private PlayerDataModel playerDataModel;
+		[Inject] private GameplayCoreSceneSetupData data = null!;
+		[Inject] private PlayerDataModel playerDataModel = null!;
 
 		private readonly Func<int, int> MultiplierAtNoteCount = noteCount => (noteCount > 13 ? 8 : (noteCount > 5 ? 4 : (noteCount > 1 ? 2 : 1)));
 		private readonly Func<int, int> MultiplierAtMax = noteCount => 8;
@@ -20,15 +20,15 @@ namespace FullComboPercentageCounter
 		{
 			this.scoreManager = scoreManager;
 			this.noteRatingTracker = noteRatingTracker;
+
+			// Set function for multiplier according to setting
+			GetMultiplier = PluginConfig.Instance.IgnoreMultiplier ? MultiplierAtMax : MultiplierAtNoteCount;
 		}
 
 		public void Initialize()
 		{
 			if (HasNullReferences())
 				return;
-
-			// Set function for multiplier according to setting
-			GetMultiplier = PluginConfig.Instance.IgnoreMultiplier ? MultiplierAtMax : MultiplierAtNoteCount;
 
 			// Reset ScoreManager at level start
 			scoreManager.ResetScoreManager(data.difficultyBeatmap, playerDataModel);
