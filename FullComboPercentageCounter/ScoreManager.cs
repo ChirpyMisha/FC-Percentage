@@ -75,8 +75,6 @@ namespace FullComboPercentageCounter
 			PlayerLevelStatsData stats = playerDataModel.playerData.GetPlayerLevelStatsData(beatmap);
 			HighscoreAtLevelStart = stats.highScore;
 			MaxScoreAtLevelStart = CalculateMaxScore(beatmap.beatmapData.cuttableNotesCount);
-
-			Plugin.Log.Notice("Highscore at level start = " + HighscoreAtLevelStart + "/" + MaxScoreAtLevelStart);
 		}
 
 		internal void AddScore(ColorType colorType, int score, int multiplier)
