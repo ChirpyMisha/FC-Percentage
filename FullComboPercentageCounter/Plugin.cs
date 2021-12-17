@@ -17,10 +17,8 @@ namespace FullComboPercentageCounter
 		internal static Plugin Instance { get; private set; }
 		internal static IPALogger Log { get; private set; }
 
-		private static PluginMetadata metadata;
-		private static string name;
 #pragma warning restore CS8618
-		internal static string PluginName => name ??= metadata?.Name ?? Assembly.GetExecutingAssembly().GetName().Name;
+		internal static string PluginName = "FCPercentage";
 
 		[Init]
 		/// <summary>
@@ -28,12 +26,10 @@ namespace FullComboPercentageCounter
 		/// [Init] methods that use a Constructor or called before regular methods like InitWithConfig.
 		/// Only use [Init] with one Constructor.
 		/// </summary>
-		public void Init(IPALogger logger, PluginMetadata metaData, Zenjector zenjector)
+		public void Init(IPALogger logger, Zenjector zenjector)
 		{
 			Instance = this;
 			Log = logger;
-
-			metadata = metaData;
 
 			zenjector.OnApp<AppInstaller>();
 			zenjector.OnMenu<MenuInstaller>();
