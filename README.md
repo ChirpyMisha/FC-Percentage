@@ -4,13 +4,19 @@ Full Combo Percentage Counter is a custom counter which is used with Counters+.
 It shows your percentage without misses, bad cuts, or any other thing that may lower your combo.
 This is the first mod I've made. Any feedback is greatly appreciated!
 
-Available settings:
-- Decimal Precision: The precision of the counter from 0 decimals up to 4 decimals.
+Available FC Percentage Counter settings:
+- Decimal Precision: The precision of the counter from 0 decimals up to 4 decimals. (Linked to FC Score Percentage Decimal Precision setting).
 - Percentage Size: The size of the counter value.
 - Enable Label: Enables the label.
 - Label Above Count: Put the label above the number, similar to a usual Counters+ counter.
-- Ignore Multiplier Ramp-up: When this is enabled all cuts will be weighed the same.
+- Ignore Multiplier Ramp-up: When this is enabled all cuts will be weighed the same. (Linked to FC Score Percentage Ignore Multiplier Ramp-up setting).
+
+Available FC Score Percentage:
 - Show On Results Screen: Select if or when the persentage should be shown on the results screen.
+- Decimal Precision: The precision of the counter from 0 decimals up to 4 decimals. (Linked to FC Percentage Counter Decimal Precision setting).
+- Enable Score Percentage Difference: Shows the difference between your previous highscore and the FC score and percentage.
+- Enable Label: Enables the label.
+- Ignore Multiplier Ramp-up: When this is enabled all cuts will be weighed the same. (Linked to FC Percentage Counter Ignore Multiplier Ramp-up setting).
 
 Extra settings in config file:
 - Label Text Prefix: The text used for the label if "LabelAboveCount" is false.
@@ -20,7 +26,7 @@ Extra settings in config file:
 - Result Screen Score Prefix: The text used as prefix for the score on the results screen.
 - Result Screen Percentage Prefix: The text used as prefix for the percentage on the results screen.
 
-Known bugs:
+Bugs fixed in the latest update:
 - Stuck on results screen. 
   - How to reproduce: 
     - Play and finish any song. 
@@ -35,6 +41,9 @@ Known bugs:
     - Play and finish any song.
     - The score should be around 7000 too high (on maps with more than 15 blocks)
   - Bug status: Cause found. Fix will likely be applied in the next update.
+
+Known bugs:
+[No known bugs]
 
 Ideas for Future Features:
 - Counter: Add setting to show FC Score
