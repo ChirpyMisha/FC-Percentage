@@ -12,9 +12,7 @@ namespace FullComboPercentageCounter
 
 		private static double defaultPercentage = 100;
 
-		private string percentageStringFormat = "";
-
-		public double Percentage => CalculatePercentage(ScoreTotal, MaxScoreTotal, PluginConfig.Instance.DecimalPrecision);
+		public double Percentage => CalculatePercentage(ScoreTotal, MaxScoreTotal);
 		public int ScoreTotal => ScoreA + ScoreB;
 		public int ScoreA { get; private set; }
 		public int ScoreB { get; private set; }
@@ -34,12 +32,11 @@ namespace FullComboPercentageCounter
 
 		public int HighscoreAtLevelStart { get; private set; }
 		public int MaxScoreAtLevelStart { get; private set; }
-		public double HighscoreAtLevelStartPercentage => CalculatePercentage(HighscoreAtLevelStart, MaxScoreAtLevelStart, PluginConfig.Instance.DecimalPrecision);
+		public double HighscoreAtLevelStartPercentage => CalculatePercentage(HighscoreAtLevelStart, MaxScoreAtLevelStart);
 		
 		public ScoreManager()
 		{
 			ResetScore();
-			InitPercentageStringFormat();
 		}
 
 		public void Initialize()
@@ -49,15 +46,7 @@ namespace FullComboPercentageCounter
 		public void Dispose()
 		{
 			return;
-		}
-
-		private void InitPercentageStringFormat()
-		{
-			percentageStringFormat = "0";
-			if (PluginConfig.Instance.DecimalPrecision > 0)
-				percentageStringFormat += "." + new string('0', PluginConfig.Instance.DecimalPrecision);
-		}
-		
+		}		
 
 		private void ResetScore()
 		{
@@ -70,7 +59,6 @@ namespace FullComboPercentageCounter
 		internal void ResetScoreManager(IDifficultyBeatmap beatmap, PlayerDataModel playerDataModel)
 		{
 			ResetScore();
-			InitPercentageStringFormat();
 
 			PlayerLevelStatsData stats = playerDataModel.playerData.GetPlayerLevelStatsData(beatmap);
 			HighscoreAtLevelStart = stats.highScore;
@@ -128,9 +116,9 @@ namespace FullComboPercentageCounter
 				return (noteCount - 13) * 920 + 4715;
 		}
 
-		private double CalculatePercentage(int val, int maxVal, int decimalPrecision)
+		private double CalculatePercentage(int val, int maxVal)
 		{
-			return Math.Round(CalculateRatio(val, maxVal) * 100, decimalPrecision);
+			return CalculateRatio(val, maxVal) * 100;
 		}
 
 		private double CalculateRatio(int val, int maxVal)
@@ -140,9 +128,22 @@ namespace FullComboPercentageCounter
 			return (double)val / (double)maxVal;
 		}
 
-		public string PercentageToString(double percentage)
+		public string PercentageToString(double percentage, string decimalFormat, bool keepTrailingZeros)
 		{
-			return percentage.ToString(percentageStringFormat) + "%";
+			int decimalPrecision = 0;
+			if (decimalFormat.Length >= 3) // A length smaller than 3 means that it contains less than 1 decimal.
+				decimalPrecision = decimalFormat.Length - 2;
+
+			percentage = Math.Round(percentage, decimalPrecision);
+
+			string result;
+			if (keepTrailingZeros)
+				result = percentage.ToString(decimalFormat);
+			else
+				result = percentage.ToString();
+
+			result += "%";
+			return result;
 		}
 
 		public string ScoreToString(int score)
@@ -161,6 +162,14 @@ namespace FullComboPercentageCounter
 				// Invoke event
 				handler(this, EventArgs.Empty);
 			}
+		}
+
+		public string CreatePercentageStringFormat(int decimalPrecision)
+		{
+			string percentageStringFormat = "0";
+			if (decimalPrecision > 0)
+				percentageStringFormat += "." + new string('0', decimalPrecision);
+			return percentageStringFormat;
 		}
 	}
 }

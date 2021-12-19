@@ -7,13 +7,6 @@ namespace FullComboPercentageCounter.Configuration
 	class ConfigController
 	{
 		#region Shared Settings (Custom Counters+ Counter & Results View)
-		[UIValue("DecimalPrecision")]
-		public virtual int DecimalPrecision
-		{
-			get { return PluginConfig.Instance.DecimalPrecision; }
-			set { PluginConfig.Instance.DecimalPrecision = value; }
-		}
-
 		[UIValue("IgnoreMultiplier")]
 		public virtual bool IgnoreMultiplier
 		{
@@ -25,6 +18,20 @@ namespace FullComboPercentageCounter.Configuration
 
 
 		#region FCPercentageCounter Settings (Custom Counters+ Counter)
+		[UIValue("DecimalPrecision_Counter")]
+		public virtual int DecimalPrecision_Counter
+		{
+			get { return PluginConfig.Instance.DecimalPrecision_Counter; }
+			set { PluginConfig.Instance.DecimalPrecision_Counter = value; }
+		}
+
+		[UIValue("KeepTrailingZeros_Counter")]
+		public virtual bool KeepTrailingZeros_Counter
+		{
+			get { return PluginConfig.Instance.KeepTrailingZeros_Counter; }
+			set { PluginConfig.Instance.KeepTrailingZeros_Counter = value; }
+		}
+
 		[UIValue("PercentageSize")]
 		public virtual float PercentageSize
 		{
@@ -55,6 +62,20 @@ namespace FullComboPercentageCounter.Configuration
 		{
 			get { return PluginConfig.Instance.ResultsViewMode; }
 			set { PluginConfig.Instance.ResultsViewMode = value; }
+		}
+
+		[UIValue("DecimalPrecision_ScorePercentage")]
+		public virtual int DecimalPrecision_ScorePercentage
+		{
+			get { return PluginConfig.Instance.DecimalPrecision_ScorePercentage; }
+			set { PluginConfig.Instance.DecimalPrecision_ScorePercentage = value; }
+		}
+		
+		[UIValue("KeepTrailingZeros_ScorePercentage")]
+		public virtual bool KeepTrailingZeros_ScorePercentage
+		{
+			get { return PluginConfig.Instance.KeepTrailingZeros_ScorePercentage; }
+			set { PluginConfig.Instance.KeepTrailingZeros_ScorePercentage = value; }
 		}
 
 		[UIValue("EnableScorePercentageDifference")]

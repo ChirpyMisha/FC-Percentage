@@ -14,43 +14,49 @@ namespace FullComboPercentageCounter
 	{
 		private TMP_Text counterText = null!;
 		private TMP_Text counterNameText = null!;
-		private string counterPrefix;
+		private string counterPrefix = "";
+		private string percentageStringFormat = "";
 
 		private PluginConfig config;
 		
-		[Inject] protected ScoreManager ScoreManager = null!;
-		[Inject] protected CanvasUtility CanvasUtility = null!;
-		[Inject] protected CustomConfigModel Settings = null!;
+		private readonly ScoreManager scoreManager;
+		private readonly CanvasUtility canvasUtility;
+		private readonly CustomConfigModel settings;
 
-		public FCPercentageCounter()
+		public FCPercentageCounter(ScoreManager scoreManager, CanvasUtility canvasUtility, CustomConfigModel settings)
 		{
+			this.scoreManager = scoreManager;
+			this.canvasUtility = canvasUtility;
+			this.settings = settings;
+
 			config = PluginConfig.Instance;
 
 			counterPrefix = config.EnableLabel_Counter && !config.LabelAboveCount ? config.CounterLabelTextPrefix : "";
+
+			if (!HasNullReferences())
+				percentageStringFormat = scoreManager.CreatePercentageStringFormat(config.DecimalPrecision_Counter);
 		}
 
 		public void CounterInit()
 		{
-			Plugin.Log.Info("Starting FCPercentageCounter Init");
-
 			if (HasNullReferences())
 				return;
 
 			InitCounterText();
 
-			ScoreManager.OnScoreUpdate += OnScoreUpdateHandler;
+			scoreManager.OnScoreUpdate += OnScoreUpdateHandler;
 		}
 
 		private void InitCounterText()
 		{
 			if (config.EnableLabel_Counter && config.LabelAboveCount)
 			{
-				counterNameText = CanvasUtility.CreateTextFromSettings(Settings, new Vector3(0.0f, config.CounterLabelOffsetAboveCount, 0.0f));
+				counterNameText = canvasUtility.CreateTextFromSettings(settings, new Vector3(0.0f, config.CounterLabelOffsetAboveCount, 0.0f));
 				counterNameText.text = config.CounterLabelTextAboveCount;
 				counterNameText.fontSize *= config.CounterLabelSizeAboveCount;
 			}
 
-			counterText = CanvasUtility.CreateTextFromSettings(Settings);
+			counterText = canvasUtility.CreateTextFromSettings(settings);
 			counterText.fontSize *= config.PercentageSize;
 
 			RefreshCounterText();
@@ -58,20 +64,20 @@ namespace FullComboPercentageCounter
 
 		public void CounterDestroy()
 		{
-			ScoreManager.OnScoreUpdate -= OnScoreUpdateHandler;
+			scoreManager.OnScoreUpdate -= OnScoreUpdateHandler;
 		}
 
 		public bool HasNullReferences()
 		{
-			if (ScoreManager == null || CanvasUtility == null || Settings == null)
+			if (scoreManager == null || canvasUtility == null || settings == null)
 			{
 				Plugin.Log.Error("FullComboPercentageCounter : FCPercentageCounter has a null reference and cannot initialize! Please notify ChirpyMisha about this bug.");
 				Plugin.Log.Error("The following objects are null:");
-				if (ScoreManager == null)
+				if (scoreManager == null)
 					Plugin.Log.Error("- ScoreManager");
-				if (CanvasUtility == null)
+				if (canvasUtility == null)
 					Plugin.Log.Error("- CanvasUtility");
-				if (Settings == null)
+				if (settings == null)
 					Plugin.Log.Error("- Settings");
 
 				return true;
@@ -87,7 +93,7 @@ namespace FullComboPercentageCounter
 
 		private void RefreshCounterText()
 		{
-			counterText.text = $"{counterPrefix}{ScoreManager.PercentageToString(ScoreManager.Percentage)}";
+			counterText.text = $"{counterPrefix}{scoreManager.PercentageToString(scoreManager.Percentage, percentageStringFormat, config.KeepTrailingZeros_Counter)}";
 		}
 	}
 }

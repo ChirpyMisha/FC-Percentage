@@ -32,13 +32,16 @@ namespace FullComboPercentageCounter
 		private readonly ScoreManager scoreManager;
 		private ResultsViewController resultsViewController;
 
-		private PluginConfig counterConfig;
+		private PluginConfig config;
+
+		private string percentageStringFormat = "";
 
 		public FCPercentageResultsViewHandler(ScoreManager scoreManager, ResultsViewController resultsViewController)
 		{
 			this.scoreManager = scoreManager;
 			this.resultsViewController = resultsViewController;
-			counterConfig = PluginConfig.Instance;
+			config = PluginConfig.Instance;
+			percentageStringFormat = scoreManager.CreatePercentageStringFormat(config.DecimalPrecision_ScorePercentage);
 		}
 
 		public void Initialize()
@@ -62,9 +65,9 @@ namespace FullComboPercentageCounter
 
 			if (levelCompletionResults.levelEndStateType == global::LevelCompletionResults.LevelEndStateType.Cleared)
 			{
-				if (counterConfig.ResultsViewMode == ResultsViewModes.On)
+				if (config.ResultsViewMode == ResultsViewModes.On)
 					SetResultsViewText();
-				else if (counterConfig.ResultsViewMode == ResultsViewModes.OffWhenFullCombo && !levelCompletionResults.fullCombo)
+				else if (config.ResultsViewMode == ResultsViewModes.OffWhenFullCombo && !levelCompletionResults.fullCombo)
 					SetResultsViewText();
 			}
 		}
@@ -88,14 +91,14 @@ namespace FullComboPercentageCounter
 			int currentScore = scoreManager.ScoreAtCurrentPercentage;
 			double currentPercent = scoreManager.Percentage;
 
-			if (counterConfig.EnableLabel_ScorePercentage)
+			if (config.EnableLabel_ScorePercentage)
 			{
-				fcScoreText.text = counterConfig.ResultScreenScorePrefix;
-				fcPercentText.text = counterConfig.ResultScreenPercentagePrefix;
+				fcScoreText.text = config.ResultScreenScorePrefix;
+				fcPercentText.text = config.ResultScreenPercentagePrefix;
 			}
 
 			fcScoreText.text += scoreManager.ScoreToString(currentScore);
-			fcPercentText.text += scoreManager.PercentageToString(currentPercent);
+			fcPercentText.text += scoreManager.PercentageToString(currentPercent, percentageStringFormat, config.KeepTrailingZeros_ScorePercentage);
 
 
 			if (PluginConfig.Instance.EnableScorePercentageDifference && scoreManager.HighscoreAtLevelStart > 0)
@@ -110,7 +113,7 @@ namespace FullComboPercentageCounter
 					diffStringFormat = $"<size=90%><color={colorNegative}>";
 
 				fcScoreDiffText.text = diffStringFormat + scoreManager.ScoreToString(scoreDiff);
-				fcPercentDiffText.text = diffStringFormat + scoreManager.PercentageToString(percentDiff);
+				fcPercentDiffText.text = diffStringFormat + scoreManager.PercentageToString(percentDiff, percentageStringFormat, config.KeepTrailingZeros_ScorePercentage);
 			}
 		}
 

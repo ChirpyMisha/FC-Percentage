@@ -4,9 +4,7 @@ using FullComboPercentageCounter.Installers;
 using IPA.Config;
 using IPA.Config.Stores;
 using IPALogger = IPA.Logging.Logger;
-using IPA.Loader;
 using FullComboPercentageCounter.Configuration;
-using System.Reflection;
 
 namespace FullComboPercentageCounter
 {

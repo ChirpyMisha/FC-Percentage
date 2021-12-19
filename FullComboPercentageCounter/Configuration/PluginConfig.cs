@@ -11,16 +11,19 @@ namespace FullComboPercentageCounter.Configuration
 #pragma warning restore CS8618
 
 		// Shared Settings (Custom Counters+ Counter & Results View)
-		public virtual int DecimalPrecision { get; set; } = 2;
 		public virtual bool IgnoreMultiplier { get; set; } = false;
 
 		// FCPercentageCounter Settings (Custom Counters+ Counter)
+		public virtual int DecimalPrecision_Counter { get; set; } = 2;
+		public virtual bool KeepTrailingZeros_Counter { get; set; } = true;
 		public virtual float PercentageSize { get; set; } = 0.85f;
 		public virtual bool EnableLabel_Counter { get; set; } = true;
 		public virtual bool LabelAboveCount { get; set; } = false;
 
 		//FCScorePercentage Settings (Results View)
 		public virtual ResultsViewModes ResultsViewMode { get; set; } = ResultsViewModes.OffWhenFullCombo;
+		public virtual int DecimalPrecision_ScorePercentage { get; set; } = 2;
+		public virtual bool KeepTrailingZeros_ScorePercentage { get; set; } = false;
 		public virtual bool EnableScorePercentageDifference { get; set; } = true;
 		public virtual bool EnableLabel_ScorePercentage { get; set; } = true;
 
