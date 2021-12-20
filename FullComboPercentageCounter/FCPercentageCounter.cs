@@ -15,10 +15,10 @@ namespace FullComboPercentageCounter
 		private TMP_Text counterText = null!;
 		private TMP_Text counterNameText = null!;
 		private readonly string counterPrefix;
-		private readonly string counterSeparator;
-		private readonly string counterColorTagLeft;
-		private readonly string counterColorTagRight;
-		private readonly string percentageStringFormat;
+		private readonly string counterSeparator = "";
+		private readonly string counterColorTagLeft = "";
+		private readonly string counterColorTagRight = "";
+		private readonly string percentageStringFormat = "";
 
 		private PluginConfig config;
 		
