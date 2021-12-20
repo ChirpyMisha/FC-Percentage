@@ -8,4 +8,6 @@
 	<checkbox-setting text='Enable Score Percentage Difference' value='EnableScorePercentageDifference' apply-on-change='true' hover-hint='Shows the difference between your previous highscore and the FC score and percentage.'/>
 	<checkbox-setting text='Enable Label' value='EnableLabel_ScorePercentage' apply-on-change='true' hover-hint='Enable the label. The label text can be changed in the config file in the UserData folder.'/>
 	<checkbox-setting text='Ignore Multiplier Ramp-up' value='IgnoreMultiplier' apply-on-change='true' hover-hint='When this is enabled all cuts will be weighed the same. (Also applies to ingame counter)'/>
+	<checkbox-setting text='Split Percentage' value='SplitPercentage_ScorePercentage' apply-on-change='true' hover-hint='Show the percentage for your left and right saber separately.'/>
+	<checkbox-setting text='Use Saber Color Scheme' value='UseSaberColorScheme_ScorePercentage' apply-on-change='true' hover-hint='Use the saber color scheme when "Split Percentage" is enabled?'/>
 </settings-container>

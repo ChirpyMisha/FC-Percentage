@@ -10,9 +10,13 @@ namespace FullComboPercentageCounter
 	{
 		public event EventHandler? OnScoreUpdate;
 
-		private static double defaultPercentage = 100;
+		private static double defaultPercentageAtStart = 100;
+		private static double defaultPercentageAtEnd = 0;
+		private double defaultPercentage;
 
-		public double Percentage => CalculatePercentage(ScoreTotal, MaxScoreTotal);
+		public double PercentageTotal => CalculatePercentage(ScoreTotal, MaxScoreTotal);
+		public double PercentageA => CalculatePercentage(ScoreA, MaxScoreA);
+		public double PercentageB => CalculatePercentage(ScoreB, MaxScoreB);
 		public int ScoreTotal => ScoreA + ScoreB;
 		public int ScoreA { get; private set; }
 		public int ScoreB { get; private set; }
@@ -54,6 +58,12 @@ namespace FullComboPercentageCounter
 			ScoreB = 0;
 			MaxScoreA = 0;
 			MaxScoreB = 0;
+			defaultPercentage = defaultPercentageAtStart;
+		}
+
+		internal void NotifyOfSongEnded()
+		{
+			defaultPercentage = defaultPercentageAtEnd;
 		}
 
 		internal void ResetScoreManager(IDifficultyBeatmap beatmap, PlayerDataModel playerDataModel)

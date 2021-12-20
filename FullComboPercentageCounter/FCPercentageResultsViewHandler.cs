@@ -58,6 +58,7 @@ namespace FullComboPercentageCounter
 
 		private void ResultsViewController_OnActivateEvent(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
 		{
+			scoreManager.NotifyOfSongEnded();
 			ParseAllBSML();
 			EmptyResultsViewText();
 
@@ -89,7 +90,7 @@ namespace FullComboPercentageCounter
 		private void SetResultsViewText()
 		{
 			int currentScore = scoreManager.ScoreAtCurrentPercentage;
-			double currentPercent = scoreManager.Percentage;
+			double currentPercent = scoreManager.PercentageTotal;
 
 			if (config.EnableLabel_ScorePercentage)
 			{

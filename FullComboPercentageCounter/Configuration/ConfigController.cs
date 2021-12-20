@@ -53,6 +53,20 @@ namespace FullComboPercentageCounter.Configuration
 			set { PluginConfig.Instance.LabelAboveCount = value; }
 		}
 
+		[UIValue("SplitPercentage_Counter")]
+		public virtual bool SplitPercentage_Counter
+		{
+			get { return PluginConfig.Instance.SplitPercentage_Counter; }
+			set { PluginConfig.Instance.SplitPercentage_Counter = value; }
+		}
+
+		[UIValue("UseSaberColorScheme_Counter")]
+		public virtual bool UseSaberColorScheme_Counter
+		{
+			get { return PluginConfig.Instance.UseSaberColorScheme_Counter; }
+			set { PluginConfig.Instance.UseSaberColorScheme_Counter = value; }
+		}
+
 		#endregion
 
 
@@ -90,6 +104,20 @@ namespace FullComboPercentageCounter.Configuration
 		{
 			get { return PluginConfig.Instance.EnableLabel_ScorePercentage; }
 			set { PluginConfig.Instance.EnableLabel_ScorePercentage = value; }
+		}
+
+		[UIValue("SplitPercentage_ScorePercentage")]
+		public virtual bool SplitPercentage_ScorePercentage
+		{
+			get { return PluginConfig.Instance.SplitPercentage_ScorePercentage; }
+			set { PluginConfig.Instance.SplitPercentage_ScorePercentage = value; }
+		}
+
+		[UIValue("UseSaberColorScheme_ScorePercentage")]
+		public virtual bool UseSaberColorScheme_ScorePercentage
+		{
+			get { return PluginConfig.Instance.UseSaberColorScheme_ScorePercentage; }
+			set { PluginConfig.Instance.UseSaberColorScheme_ScorePercentage = value; }
 		}
 
 		#endregion
