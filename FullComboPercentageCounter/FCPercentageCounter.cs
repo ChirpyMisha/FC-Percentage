@@ -12,42 +12,40 @@ namespace FullComboPercentageCounter
 {
 	public class FCPercentageCounter : ICounter
 	{
-		private TMP_Text counterText = null!;
+		private TMP_Text counterPercentageText = null!;
 		private TMP_Text counterNameText = null!;
-		private readonly string counterPrefix;
-		private readonly string counterSeparator = "";
-		private readonly string counterColorTagLeft = "";
-		private readonly string counterColorTagRight = "";
-		private readonly string percentageStringFormat = "";
+		private readonly string percentagePrefix;
+		private string percentageSeparator = "";
+		private string percentageColorTagLeft = "";
+		private string percentageColorTagRight = "";
+		private string percentageStringFormat = "";
 
 		private PluginConfig config;
 		
 		private readonly ScoreManager scoreManager;
 		private readonly CanvasUtility canvasUtility;
 		private readonly CustomConfigModel settings;
-		private readonly ColorScheme colorScheme;
 
 		public FCPercentageCounter(ScoreManager scoreManager, CanvasUtility canvasUtility, CustomConfigModel settings, GameplayCoreSceneSetupData sceneSetupData)
 		{
 			this.scoreManager = scoreManager;
 			this.canvasUtility = canvasUtility;
 			this.settings = settings;
-			this.colorScheme = sceneSetupData.colorScheme;
 
 			config = PluginConfig.Instance;
 
-			counterPrefix = config.EnableLabel_Counter && !config.LabelAboveCount ? config.CounterLabelTextPrefix : "";
+			percentagePrefix = config.EnableLabel_Counter && !config.LabelAboveCount ? config.CounterLabelTextPrefix : "";
 
 			if (!HasNullReferences())
 			{
 				if (config.SplitPercentage_Counter)
 				{
-					counterSeparator = config.SplitPercentageSeparatorText_Counter;
+					percentageSeparator = config.SplitPercentageSeparatorText_Counter;
 					if (config.UseSaberColorScheme_Counter)
 					{
-						counterSeparator = $"<color=#FFFFFF>{counterSeparator}";
-						counterColorTagLeft = $"<color=#{ColorUtility.ToHtmlStringRGB(colorScheme.saberAColor)}>";
-						counterColorTagRight = $"<color=#{ColorUtility.ToHtmlStringRGB(colorScheme.saberBColor)}>";
+						percentageSeparator = $"<color=#FFFFFF>{percentageSeparator}";
+						percentageColorTagLeft = $"<color=#{ColorUtility.ToHtmlStringRGB(sceneSetupData.colorScheme.saberAColor)}>";
+						percentageColorTagRight = $"<color=#{ColorUtility.ToHtmlStringRGB(sceneSetupData.colorScheme.saberBColor)}>";
 					}
 				}
 
@@ -62,7 +60,7 @@ namespace FullComboPercentageCounter
 
 			InitCounterText();
 
-			scoreManager.OnScoreUpdate += OnScoreUpdateHandler;
+			scoreManager.OnScoreUpdate += ScoreManager_OnScoreUpdate;
 		}
 
 		private void InitCounterText()
@@ -74,20 +72,20 @@ namespace FullComboPercentageCounter
 				counterNameText.fontSize *= config.CounterLabelSizeAboveCount;
 			}
 
-			counterText = canvasUtility.CreateTextFromSettings(settings);
-			counterText.fontSize *= config.PercentageSize;
+			counterPercentageText = canvasUtility.CreateTextFromSettings(settings);
+			counterPercentageText.fontSize *= config.PercentageSize;
 
 			RefreshCounterText();
 		}
 
 		public void CounterDestroy()
 		{
-			scoreManager.OnScoreUpdate -= OnScoreUpdateHandler;
+			scoreManager.OnScoreUpdate -= ScoreManager_OnScoreUpdate;
 		}
 
 		public bool HasNullReferences()
 		{
-			if (scoreManager == null || canvasUtility == null || settings == null || colorScheme == null)
+			if (scoreManager == null || canvasUtility == null || settings == null)
 			{
 				Plugin.Log.Error("FullComboPercentageCounter : FCPercentageCounter has a null reference and cannot initialize! Please notify ChirpyMisha about this bug.");
 				Plugin.Log.Error("The following objects are null:");
@@ -97,8 +95,6 @@ namespace FullComboPercentageCounter
 					Plugin.Log.Error("- CanvasUtility");
 				if (settings == null)
 					Plugin.Log.Error("- Settings");
-				if (colorScheme == null)
-					Plugin.Log.Error("- ColorScheme");
 
 				return true;
 			}
@@ -106,23 +102,23 @@ namespace FullComboPercentageCounter
 			return false;
 		}
 
-		private void OnScoreUpdateHandler(object s, EventArgs e)
+		private void ScoreManager_OnScoreUpdate(object sender, EventArgs e)
 		{
 			RefreshCounterText();
 		}
 
 		private void RefreshCounterText()
 		{
-			counterText.text = config.SplitPercentage_Counter
+			counterPercentageText.text = config.SplitPercentage_Counter
 			?
 				config.UseSaberColorScheme_Counter
 				?
-					$"{counterPrefix}{counterColorTagLeft}{PercentageToString(scoreManager.PercentageA)}" +
-						$"{counterSeparator}{counterColorTagRight}{PercentageToString(scoreManager.PercentageB)}"
+					$"{percentagePrefix}{percentageColorTagLeft}{PercentageToString(scoreManager.PercentageA)}" +
+						$"{percentageSeparator}{percentageColorTagRight}{PercentageToString(scoreManager.PercentageB)}"
 				:
-					$"{counterPrefix}{PercentageToString(scoreManager.PercentageA)}{counterSeparator}{PercentageToString(scoreManager.PercentageB)}"
+					$"{percentagePrefix}{PercentageToString(scoreManager.PercentageA)}{percentageSeparator}{PercentageToString(scoreManager.PercentageB)}"
 			:
-				 $"{counterPrefix}{PercentageToString(scoreManager.PercentageTotal)}";
+				 $"{percentagePrefix}{PercentageToString(scoreManager.PercentageTotal)}";
 		}
 
 		private string PercentageToString(double percent)

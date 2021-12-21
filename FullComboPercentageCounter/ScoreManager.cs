@@ -2,6 +2,7 @@
 using FullComboPercentageCounter.Configuration;
 using System;
 using System.Globalization;
+using UnityEngine;
 using Zenject;
 
 namespace FullComboPercentageCounter
@@ -24,6 +25,9 @@ namespace FullComboPercentageCounter
 		public int MaxScoreA { get; private set; }
 		public int MaxScoreB { get; private set; }
 		public int ScoreAtCurrentPercentage => CalculateScoreFromCurrentPercentage();
+
+		public string SaberAColor { get; private set; } = "#FFFFFF";
+		public string SaberBColor { get; private set; } = "#FFFFFF";
 
 		private int CalculateScoreFromCurrentPercentage()
 		{
@@ -66,13 +70,16 @@ namespace FullComboPercentageCounter
 			defaultPercentage = defaultPercentageAtEnd;
 		}
 
-		internal void ResetScoreManager(IDifficultyBeatmap beatmap, PlayerDataModel playerDataModel)
+		internal void ResetScoreManager(IDifficultyBeatmap beatmap, PlayerDataModel playerDataModel, ColorScheme colorScheme)
 		{
 			ResetScore();
 
 			PlayerLevelStatsData stats = playerDataModel.playerData.GetPlayerLevelStatsData(beatmap);
 			HighscoreAtLevelStart = stats.highScore;
 			MaxScoreAtLevelStart = CalculateMaxScore(beatmap.beatmapData.cuttableNotesCount);
+
+			SaberAColor = "#" + ColorUtility.ToHtmlStringRGB(colorScheme.saberAColor);
+			SaberBColor = "#" + ColorUtility.ToHtmlStringRGB(colorScheme.saberBColor);
 		}
 
 		internal void AddScore(ColorType colorType, int score, int multiplier)
