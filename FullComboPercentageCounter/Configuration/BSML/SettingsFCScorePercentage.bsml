@@ -1,13 +1,29 @@
-﻿<settings-container xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
-					xsi:noNamespaceSchemaLocation='https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
-	<dropdown-list-setting text='Show On Results Screen' value='ResultsViewMode' options='ResultsViewModeList' formatter='ResultsViewModesFormat' apply-on-change='true' hover-hint='Select if or when the percentage should be shown on the results screen.'/>
+﻿<settings-container xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
+	<dropdown-list-setting text='Show FC Percentage' hover-hint='Select if or when the FC percentage should be shown on the results screen.'
+												 value='TotalPercentageMode' options='ResultsViewModeList' formatter='ResultsViewModesFormat' apply-on-change='true'/>
+	
+	<dropdown-list-setting text='Show Split FC Percentage' hover-hint='Select if or when the split FC percentage should be shown on the results screen.'
+												 value='SplitPercentageMode' options='ResultsViewModeList' formatter='ResultsViewModesFormat' apply-on-change='true'/>
+	
+	<dropdown-list-setting text='Show FC Score' hover-hint='Select if or when the FC score should be shown on the results screen.'
+												 value='TotalScoreMode' options='ResultsViewModeList' formatter='ResultsViewModesFormat' apply-on-change='true'/>
+	
 	<increment-setting text='Decimal Precision' hover-hint='How precise should the precentage be?' 
-										 value='DecimalPrecision_ScorePercentage' apply-on-change='true'
+										 value='DecimalPrecision' apply-on-change='true'
 										 integer-only='true' min='0' max='69' increment='1'/>
-	<checkbox-setting text='Keep Trailing Zeros' value='KeepTrailingZeros_ScorePercentage' apply-on-change='true' hover-hint='Should the percentage have zeros at the end?&#xA;Example without trailing zeros: 80%&#xA;Example with trailing zeros: 80.00%'/>
-	<checkbox-setting text='Enable Score Percentage Difference' value='EnableScorePercentageDifference' apply-on-change='true' hover-hint='Shows the difference between your previous highscore and the FC score and percentage.'/>
-	<checkbox-setting text='Enable Label' value='EnableLabel_ScorePercentage' apply-on-change='true' hover-hint='Enable the label. The label text can be changed in the config file in the UserData folder.'/>
-	<checkbox-setting text='Ignore Multiplier Ramp-up' value='IgnoreMultiplier' apply-on-change='true' hover-hint='When this is enabled all cuts will be weighed the same. (Also applies to ingame counter)'/>
-	<checkbox-setting text='Split Percentage' value='SplitPercentage_ScorePercentage' apply-on-change='true' hover-hint='Show the percentage for your left and right saber separately.'/>
-	<checkbox-setting text='Use Saber Color Scheme' value='UseSaberColorScheme_ScorePercentage' apply-on-change='true' hover-hint='Use the saber color scheme when "Split Percentage" is enabled?'/>
+	
+	<checkbox-setting text='Enable Score Percentage Difference' hover-hint='Shows the difference between your previous highscore and the FC score and percentage.'
+										value='EnableScorePercentageDifference' apply-on-change='true'/>
+	
+	<dropdown-list-setting text='Enable Label' hover-hint='Enable the label. The label text can be changed in the config file in the UserData folder.'
+												 value='EnableLabel' options='ResultsViewLabelOptionList' formatter='ResultsViewLabelOptionsFormat' apply-on-change='true'/>
+	
+	<checkbox-setting text='Use Saber Color Scheme' hover-hint='Use the saber color scheme when "Split Percentage" is enabled?'	
+										value='SplitPercentageUseSaberColorScheme' apply-on-change='true'/>
+	
+	<checkbox-setting text='Keep Trailing Zeros' hover-hint='Should the percentage have zeros at the end?&#xA;Example without trailing zeros: 80%&#xA;Example with trailing zeros: 80.00%'
+										value='KeepTrailingZeros' apply-on-change='true'/>
+	
+	<checkbox-setting text='Ignore Multiplier Ramp-up' hover-hint='When this is enabled all cuts will be weighed the same. (Also applies to ingame counter)'
+										value='IgnoreMultiplier' apply-on-change='true'/>
 </settings-container>

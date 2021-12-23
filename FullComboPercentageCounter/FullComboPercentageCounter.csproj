@@ -137,8 +137,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\ConfigController.cs" />
+    <Compile Include="Configuration\ConfigControllers\FCPercentageCounterConfigController.cs" />
     <Compile Include="Configuration\ConfigManager.cs" />
+    <Compile Include="Configuration\ConfigControllers\FCScorePercentageConfigController.cs" />
+    <Compile Include="Configuration\SettingsCategories\FormatSettingsFCPercentageCounter.cs" />
+    <Compile Include="Configuration\SettingsCategories\FormatSettingsFCScorePercentage.cs" />
+    <Compile Include="Configuration\SettingsCategories\SettingsFCPercentageCounter.cs" />
+    <Compile Include="Configuration\SettingsCategories\SettingsFCScorePercentage.cs" />
     <Compile Include="FCPercentageCounter.cs" />
     <Compile Include="FCPercentageResultsViewHandler.cs" />
     <Compile Include="Installers\AppInstaller.cs" />

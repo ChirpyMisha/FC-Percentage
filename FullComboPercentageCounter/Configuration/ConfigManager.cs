@@ -6,10 +6,10 @@ namespace FullComboPercentageCounter.Configuration
 {
 	class ConfigManager : IInitializable, IDisposable
 	{
-		private ConfigController configHost;
+		private FCScorePercentageConfigController configHost;
 
 		[Inject]
-		public ConfigManager(ConfigController configHost)
+		public ConfigManager(FCScorePercentageConfigController configHost)
 		{
 			this.configHost = configHost;
 		}

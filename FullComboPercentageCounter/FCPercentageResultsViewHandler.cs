@@ -17,9 +17,11 @@ namespace FullComboPercentageCounter
 		private static readonly string ResourceNameFCPercentage = "FullComboPercentageCounter.UI.Views.ResultsViewFCPercentage.bsml";
 		private static readonly string ResourceNameFCScore = "FullComboPercentageCounter.UI.Views.ResultsViewFCScore.bsml";
 
-		// Color values of score and percentage difference.
-		private static string colorPositive = "#00B300";
-		private static string colorNegative = "#FF0000";
+		// Color tags of score/percentage difference.
+		private static string colorPositiveTag = "<color=#00B300>+";
+		private static string colorNegativeTag = "<color=#FF0000>";
+		// Color tag for default color.
+		//private static string colorDefaultTag = "<color=#FFFFFF>";
 
 		// Text fields in the bsml
 		[UIComponent("fc-score-text")]
@@ -34,12 +36,12 @@ namespace FullComboPercentageCounter
 		private readonly ScoreManager scoreManager;
 		private ResultsViewController resultsViewController;
 		private static FieldAccessor<ResultsViewController, LevelCompletionResults>.Accessor LevelCompletionResults = FieldAccessor<ResultsViewController, LevelCompletionResults>.GetAccessor("_levelCompletionResults");
+		private LevelCompletionResults levelCompletionResults = null!;
 
-		private PluginConfig config;
+		private SettingsFCScorePercentage config;
 
-		private string percentageSeparator = "";
-		private string percentageColorTagLeft = "";
-		private string percentageColorTagRight = "";
+		private string percentageColorTagA = "";
+		private string percentageColorTagB = "";
 		private string percentageStringFormat = "";
 
 		public FCPercentageResultsViewHandler(ScoreManager scoreManager, ResultsViewController resultsViewController)
@@ -47,7 +49,7 @@ namespace FullComboPercentageCounter
 			this.scoreManager = scoreManager;
 			this.resultsViewController = resultsViewController;
 
-			config = PluginConfig.Instance;
+			config = PluginConfig.Instance.FcScorePercentageSettings;
 		}
 
 		public void Initialize()
@@ -64,18 +66,18 @@ namespace FullComboPercentageCounter
 
 		private void RefreshPercentageTextFormatting()
 		{
-			if (config.SplitPercentage_Counter)
+			if (config.SplitPercentageUseSaberColorScheme)
 			{
-				percentageSeparator = config.SplitPercentageSeparatorText_ScorePercentage;
-				if (config.UseSaberColorScheme_Counter)
-				{
-					percentageSeparator = $"<color=#FFFFFF>{percentageSeparator}";
-					percentageColorTagLeft = $"<color={scoreManager.SaberAColor}>";
-					percentageColorTagRight = $"<color={scoreManager.SaberBColor}>";
-				}
+				percentageColorTagA = $"<color={scoreManager.SaberAColor}>";
+				percentageColorTagB = $"<color={scoreManager.SaberBColor}>";
+			}
+			else
+			{
+				percentageColorTagA = "";
+				percentageColorTagB = "";
 			}
 
-			percentageStringFormat = scoreManager.CreatePercentageStringFormat(config.DecimalPrecision_ScorePercentage);
+			percentageStringFormat = scoreManager.CreatePercentageStringFormat(config.DecimalPrecision);
 		}
 
 		private void ResultsViewController_OnActivateEvent(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
@@ -83,32 +85,47 @@ namespace FullComboPercentageCounter
 			scoreManager.NotifyOfSongEnded();
 			ParseAllBSML();
 
-			LevelCompletionResults levelCompletionResults = LevelCompletionResults(ref resultsViewController);
+			levelCompletionResults = LevelCompletionResults(ref resultsViewController);
 
 			if (levelCompletionResults.levelEndStateType == global::LevelCompletionResults.LevelEndStateType.Cleared)
-			{
-				if (config.ResultsViewMode == ResultsViewModes.On)
-					SetResultsViewText();
-				else if (config.ResultsViewMode == ResultsViewModes.OffWhenFullCombo && !levelCompletionResults.fullCombo)
-					SetResultsViewText();
-			}
+				SetResultsViewText();
 			else
-			{
 				EmptyResultsViewText();
-			}
 		}
 
 		private void ParseAllBSML()
 		{
 			if (fcScoreText == null)
+			{
 				ParseBSML(ResourceNameFCScore);
+
+				if (fcScoreDiffText != null)
+					fcScoreDiffText.fontSize *= 0.85f;
+				else
+					Plugin.Log.Error($"Parsing BSML ({ResourceNameFCScore}) has failed. Please notify ChirpyMisha! Game will crash in 3, 2, 1 . . .");
+			}
 			if (fcPercentText == null)
+			{
 				ParseBSML(ResourceNameFCPercentage);
+
+				if (fcPercentDiffText != null)
+					fcPercentDiffText.fontSize *= 0.85f;
+				else
+					Plugin.Log.Error($"Parsing BSML ({ResourceNameFCPercentage}) has failed. Please notify ChirpyMisha! Game will crash in 3, 2, 1 . . .");
+			}
 		}
 
 		private void ParseBSML(string bsmlPath)
 		{
 			BSMLParser.instance.Parse(Utilities.GetResourceContent(Assembly.GetExecutingAssembly(), bsmlPath), resultsViewController.gameObject, this);
+		}
+
+		private bool IsActiveOnResultsView(ResultsViewModes mode)
+		{
+			// Checks if the result should be shown
+			if (mode == ResultsViewModes.On || (mode == ResultsViewModes.OffWhenFC && !levelCompletionResults.fullCombo))
+				return true;
+			return false;
 		}
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
@@ -118,44 +135,117 @@ namespace FullComboPercentageCounter
 			EmptyResultsViewText();
 			RefreshPercentageTextFormatting();
 
-			int currentScore = scoreManager.ScoreAtCurrentPercentage;
-			double currentPercent = scoreManager.PercentageTotal;
+			SetPercentageText();
+			SetScoreText();
+		}
 
-			// Set prefix lables if enabled
-			if (config.EnableLabel_ScorePercentage)
+		private void SetPercentageText()
+		{
+			bool isPercentageAdded = false;
+			// Add total percentage if enabled.
+			if (IsActiveOnResultsView(config.TotalPercentageMode))
 			{
-				fcScoreText.text = config.ResultScreenScorePrefix;
-				fcPercentText.text = config.ResultScreenPercentagePrefix;
+				isPercentageAdded = true;
+				fcPercentText.text += GetTotalPercentageText();
+
+				// Add the total percentage difference if enabled.
+				if (config.EnableScorePercentageDifference && scoreManager.HighscoreAtLevelStart > 0)
+					fcPercentDiffText.text += GetTotalPercentageDiffText();
+			}
+			// Add split percentage if enabled.
+			if (IsActiveOnResultsView(config.SplitPercentageMode))
+			{
+				isPercentageAdded = true;
+				fcPercentText.text += GetSplitPercentageText();
+
+				// Add the split percentage difference if enabled.
+				if (config.EnableScorePercentageDifference && scoreManager.HighscoreAtLevelStart > 0)
+					fcPercentDiffText.text += GetSplitPercentageDiffText();
 			}
 
-			// Add the score and percentage to the string.
-			fcScoreText.text += scoreManager.ScoreToString(currentScore);
-			fcPercentText.text += config.SplitPercentage_ScorePercentage
-			?
-				config.UseSaberColorScheme_ScorePercentage
-				?
-					$"{percentageColorTagLeft}{PercentageToString(scoreManager.PercentageA)}" +
-						$"{percentageSeparator}{percentageColorTagRight}{PercentageToString(scoreManager.PercentageB)}"
-				:
-					$"{PercentageToString(scoreManager.PercentageA)}{percentageSeparator}{PercentageToString(scoreManager.PercentageB)}"
-			:
-				 $"{PercentageToString(currentPercent)}";
-
-			// Add the score and percentage difference if it's enabled.
-			if (PluginConfig.Instance.EnableScorePercentageDifference && scoreManager.HighscoreAtLevelStart > 0)
+			// Set prefix label if enabled.
+			if (isPercentageAdded && (config.EnableLabel == ResultsViewLabelOptions.BothOn || config.EnableLabel == ResultsViewLabelOptions.PercentageOn))
 			{
-				int scoreDiff = currentScore - scoreManager.HighscoreAtLevelStart;
-				double percentDiff = currentPercent - scoreManager.HighscoreAtLevelStartPercentage;
-
-				string diffStringFormat;
-				if (scoreDiff >= 0)
-					diffStringFormat = $"<size=90%><color={colorPositive}>+";
-				else
-					diffStringFormat = $"<size=90%><color={colorNegative}>";
-
-				fcScoreDiffText.text = diffStringFormat + scoreManager.ScoreToString(scoreDiff);
-				fcPercentDiffText.text = diffStringFormat + PercentageToString(percentDiff);
+				fcPercentText.text = config.Formatting.PercentagePrefixText + fcPercentText.text;
+				fcPercentDiffText.text = $"<color=#FFFFFF00>{config.Formatting.PercentagePrefixText}{fcPercentDiffText.text}";
 			}
+
+			fcPercentText.text = fcPercentText.text.TrimEnd();
+			fcPercentDiffText.text = fcPercentDiffText.text.TrimEnd();
+		}
+
+		private void SetScoreText()
+		{
+			bool isScoreAdded = false;
+			// Add total score if it's enabled.
+			if (IsActiveOnResultsView(config.TotalScoreMode))
+			{
+				isScoreAdded = true;
+				fcScoreText.text += GetScoreText();
+
+				// Add the score difference if it's enabled.
+				if (config.EnableScorePercentageDifference && scoreManager.HighscoreAtLevelStart > 0)
+					fcScoreDiffText.text += GetTotalScoreDiffText();
+			}
+
+			// Set prefix label if enabled.
+			if (isScoreAdded && (config.EnableLabel == ResultsViewLabelOptions.BothOn || config.EnableLabel == ResultsViewLabelOptions.ScoreOn))
+			{
+				fcScoreText.text = config.Formatting.ScorePrefixText + fcScoreText.text;
+			}
+		}
+
+		private string GetTotalPercentageText()
+		{
+			// Percentage Total Prefix Text can be set in the config file. Default value is "".
+			return $"{config.Formatting.PercentageTotalPrefixText}{PercentageToString(scoreManager.PercentageTotal)} ";
+		}
+
+		private string GetSplitPercentageText()
+		{
+			// Percentage Split Saber A/B Prefix Text can be set in the config file. Default value is "".
+			return $"{percentageColorTagA}{config.Formatting.PercentageSplitSaberAPrefixText}{PercentageToString(scoreManager.PercentageA)} " +
+				   $"{percentageColorTagB}{config.Formatting.PercentageSplitSaberBPrefixText}{PercentageToString(scoreManager.PercentageB)} ";
+		}
+
+		private string GetScoreText()
+		{
+			return ScoreToString(scoreManager.ScoreAtCurrentPercentage);
+		}
+
+		private string GetTotalPercentageDiffText()
+		{
+			// Set total percentage diff text.
+			double percentTotalDiff = scoreManager.PercentageTotal - scoreManager.HighscoreAtLevelStartPercentage;
+			string percentTotalDiffColorTag = GetColorTagFor(percentTotalDiff);
+
+			return $"{percentTotalDiffColorTag}{PercentageToString(percentTotalDiff)}  ";
+		}
+
+		private string GetSplitPercentageDiffText()
+		{
+			// Set split percentage diff text.
+			double percentDiffA = scoreManager.PercentageA - scoreManager.HighscoreAtLevelStartPercentage;
+			double percentDiffB = scoreManager.PercentageB - scoreManager.HighscoreAtLevelStartPercentage;
+			string percentDiffColorTagA = GetColorTagFor(percentDiffA);
+			string percentDiffColorTagB = GetColorTagFor(percentDiffB);
+
+			return $"{percentDiffColorTagA}{config.Formatting.PercentageSplitSaberAPrefixText}{PercentageToString(percentDiffA)}  " +
+				   $"{percentDiffColorTagB}{config.Formatting.PercentageSplitSaberBPrefixText}{PercentageToString(percentDiffB)}  ";
+		}
+
+		private string GetTotalScoreDiffText()
+		{
+			// Set score diff text.
+			int scoreTotalDiff = scoreManager.ScoreAtCurrentPercentage - scoreManager.HighscoreAtLevelStart;
+			string scoreTotalDiffColorTag = GetColorTagFor(scoreTotalDiff);
+
+			return $"{scoreTotalDiffColorTag}{ScoreToString(scoreTotalDiff)}";
+		}
+
+		private string GetColorTagFor(double val)
+		{
+			return val >= 0 ? colorPositiveTag : colorNegativeTag;
 		}
 
 		private void EmptyResultsViewText()
@@ -169,7 +259,11 @@ namespace FullComboPercentageCounter
 
 		private string PercentageToString(double percent)
 		{
-			return scoreManager.PercentageToString(percent, percentageStringFormat, config.KeepTrailingZeros_ScorePercentage);
+			return scoreManager.PercentageToString(percent, percentageStringFormat, config.KeepTrailingZeros);
+		}
+		private string ScoreToString(int score)
+		{
+			return scoreManager.ScoreToString(score);
 		}
 	}
 }

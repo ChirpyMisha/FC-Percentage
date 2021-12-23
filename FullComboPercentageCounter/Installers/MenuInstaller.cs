@@ -7,7 +7,7 @@ namespace FullComboPercentageCounter.Installers
 	{
 		public override void InstallBindings()
 		{
-			Container.BindInterfacesAndSelfTo<ConfigController>().AsCached();
+			Container.BindInterfacesAndSelfTo<FCScorePercentageConfigController>().AsCached();
 			Container.BindInterfacesAndSelfTo<ConfigManager>().AsSingle();
 			Container.BindInterfacesAndSelfTo<FCPercentageResultsViewHandler>().AsSingle();
 		}

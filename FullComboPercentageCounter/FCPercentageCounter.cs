@@ -15,12 +15,11 @@ namespace FullComboPercentageCounter
 		private TMP_Text counterPercentageText = null!;
 		private TMP_Text counterNameText = null!;
 		private readonly string percentagePrefix;
-		private string percentageSeparator = "";
-		private string percentageColorTagLeft = "";
-		private string percentageColorTagRight = "";
+		private string percentageColorTagA = "";
+		private string percentageColorTagB = "";
 		private string percentageStringFormat = "";
 
-		private PluginConfig config;
+		private SettingsFCPercentageCounter config;
 		
 		private readonly ScoreManager scoreManager;
 		private readonly CanvasUtility canvasUtility;
@@ -32,24 +31,22 @@ namespace FullComboPercentageCounter
 			this.canvasUtility = canvasUtility;
 			this.settings = settings;
 
-			config = PluginConfig.Instance;
+			config = PluginConfig.Instance.FcCounterSettings;
 
-			percentagePrefix = config.EnableLabel_Counter && !config.LabelAboveCount ? config.CounterLabelTextPrefix : "";
+			percentagePrefix = config.EnableLabel == CounterLabelOptions.AsPrefix ? config.Formatting.LabelPrefixText : "";
 
 			if (!HasNullReferences())
 			{
-				if (config.SplitPercentage_Counter)
+				if (config.PercentageMode == CounterPercentageModes.Split || config.PercentageMode == CounterPercentageModes.TotalAndSplit)
 				{
-					percentageSeparator = config.SplitPercentageSeparatorText_Counter;
-					if (config.UseSaberColorScheme_Counter)
+					if (config.SplitPercentageUseSaberColorScheme)
 					{
-						percentageSeparator = $"<color=#FFFFFF>{percentageSeparator}";
-						percentageColorTagLeft = $"<color=#{ColorUtility.ToHtmlStringRGB(sceneSetupData.colorScheme.saberAColor)}>";
-						percentageColorTagRight = $"<color=#{ColorUtility.ToHtmlStringRGB(sceneSetupData.colorScheme.saberBColor)}>";
+						percentageColorTagA = $"<color=#{ColorUtility.ToHtmlStringRGB(sceneSetupData.colorScheme.saberAColor)}>";
+						percentageColorTagB = $"<color=#{ColorUtility.ToHtmlStringRGB(sceneSetupData.colorScheme.saberBColor)}>";
 					}
 				}
 
-				percentageStringFormat = scoreManager.CreatePercentageStringFormat(config.DecimalPrecision_Counter);
+				percentageStringFormat = scoreManager.CreatePercentageStringFormat(config.DecimalPrecision);
 			}
 		}
 
@@ -65,15 +62,16 @@ namespace FullComboPercentageCounter
 
 		private void InitCounterText()
 		{
-			if (config.EnableLabel_Counter && config.LabelAboveCount)
+			if (config.EnableLabel == CounterLabelOptions.AboveCounter)
 			{
-				counterNameText = canvasUtility.CreateTextFromSettings(settings, new Vector3(0.0f, config.CounterLabelOffsetAboveCount, 0.0f));
-				counterNameText.text = config.CounterLabelTextAboveCount;
-				counterNameText.fontSize *= config.CounterLabelSizeAboveCount;
+				counterNameText = canvasUtility.CreateTextFromSettings(settings, new Vector3(0.0f, config.Formatting.LabelAboveCounterTextOffset, 0.0f));
+				counterNameText.text = config.Formatting.LabelAboveCounterText;
+				counterNameText.fontSize *= config.Formatting.LabelAboveCounterTextSize;
 			}
 
-			counterPercentageText = canvasUtility.CreateTextFromSettings(settings);
+			counterPercentageText = canvasUtility.CreateTextFromSettings(settings, new Vector3(0.0f, config.Formatting.PercentageTextOffset, 0.0f));
 			counterPercentageText.fontSize *= config.PercentageSize;
+			
 
 			RefreshCounterText();
 		}
@@ -109,21 +107,21 @@ namespace FullComboPercentageCounter
 
 		private void RefreshCounterText()
 		{
-			counterPercentageText.text = config.SplitPercentage_Counter
-			?
-				config.UseSaberColorScheme_Counter
-				?
-					$"{percentagePrefix}{percentageColorTagLeft}{PercentageToString(scoreManager.PercentageA)}" +
-						$"{percentageSeparator}{percentageColorTagRight}{PercentageToString(scoreManager.PercentageB)}"
-				:
-					$"{percentagePrefix}{PercentageToString(scoreManager.PercentageA)}{percentageSeparator}{PercentageToString(scoreManager.PercentageB)}"
-			:
-				 $"{percentagePrefix}{PercentageToString(scoreManager.PercentageTotal)}";
+			if (config.PercentageMode == CounterPercentageModes.Total)
+				counterPercentageText.text = $"{percentagePrefix}{PercentageToString(scoreManager.PercentageTotal)}";
+			else if (config.PercentageMode == CounterPercentageModes.Split)
+				counterPercentageText.text = $"{percentagePrefix}" +
+											 $"{percentageColorTagA}{config.Formatting.PercentageSplitSaberAPrefixText}{PercentageToString(scoreManager.PercentageA)}" +
+											 $"{percentageColorTagB}{config.Formatting.PercentageSplitSaberBPrefixText}{PercentageToString(scoreManager.PercentageB)}";
+			else if (config.PercentageMode == CounterPercentageModes.TotalAndSplit)
+				counterPercentageText.text = $"<line-height={config.Formatting.PercentageTotalAndSplitLineHeight}%>{percentagePrefix}{PercentageToString(scoreManager.PercentageTotal)}\n" +
+											 $"{percentageColorTagA}{config.Formatting.PercentageSplitSaberAPrefixText}{PercentageToString(scoreManager.PercentageA)}" +
+											 $"{percentageColorTagB}{config.Formatting.PercentageSplitSaberBPrefixText}{PercentageToString(scoreManager.PercentageB)}";
 		}
 
 		private string PercentageToString(double percent)
 		{
-			return scoreManager.PercentageToString(percent, percentageStringFormat, config.KeepTrailingZeros_Counter);
+			return scoreManager.PercentageToString(percent, percentageStringFormat, config.KeepTrailingZeros);
 		}
 	}
 }

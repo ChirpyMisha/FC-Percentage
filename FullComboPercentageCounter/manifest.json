@@ -24,7 +24,7 @@
       },
       "BSML": {
         "Resource": "FullComboPercentageCounter.Configuration.BSML.SettingsFCPercentageCounter.bsml",
-        "Host": "FullComboPercentageCounter.Configuration.ConfigController",
+        "Host": "FullComboPercentageCounter.Configuration.FCPercentageCounterConfigController",
         "Icon": "FullComboPercentageCounter.Resources.Icon.png"
       }
     }
