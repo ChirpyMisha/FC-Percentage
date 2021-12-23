@@ -15,17 +15,17 @@
   ],
   "features": {
     "CountersPlus.CustomCounter": {
-      "Name": "FC Percentage Counter",
-      "CounterLocation": "FullComboPercentageCounter.FCPercentageCounter",
+      "Name": "FC Percentage",
+      "CounterLocation": "FullComboPercentageCounter.FCPCounterController",
       "ConfigDefaults": {
         "Enabled": true,
         "Position": "BelowMultiplier",
         "Distance": 0
       },
       "BSML": {
-        "Resource": "FullComboPercentageCounter.Configuration.BSML.SettingsFCPercentageCounter.bsml",
-        "Host": "FullComboPercentageCounter.Configuration.FCPercentageCounterConfigController",
-        "Icon": "FullComboPercentageCounter.Resources.Icon.png"
+        "Resource": "FullComboPercentageCounter.FCPCounter.Configuration.BSML.CounterSettings.bsml",
+        "Host": "FullComboPercentageCounter.Configuration.CounterConfigController",
+        "Icon": "FullComboPercentageCounter.FCPCounter.Resources.Icon.png"
       }
     }
   }

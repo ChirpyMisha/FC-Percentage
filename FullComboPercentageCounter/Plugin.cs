@@ -14,8 +14,8 @@ namespace FullComboPercentageCounter
 #pragma warning disable CS8618
 		internal static Plugin Instance { get; private set; }
 		internal static IPALogger Log { get; private set; }
-
 #pragma warning restore CS8618
+
 		internal static string PluginName = "FCPercentage";
 
 		[Init]
@@ -33,7 +33,7 @@ namespace FullComboPercentageCounter
 			zenjector.OnMenu<MenuInstaller>();
 			zenjector.OnGame<GameInstaller>(false);
 
-			Log.Info("FullComboPercentageCounter initialized.");
+			Log.Info($"{PluginName} initialized.");
 		}
 
 		[Init]

@@ -1,71 +1,67 @@
 ﻿using BeatSaberMarkupLanguage.Attributes;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FullComboPercentageCounter.Configuration
 {
-	class FCScorePercentageConfigController
+	class ResultsConfigController
 	{
-		private SettingsFCScorePercentage FcScorePercentageSettings => PluginConfig.Instance.FcScorePercentageSettings;
-		//private FormatSettingsFCScorePercentage FormatSettings => FcScorePercentageSettings.FormatSettings;
+		private ResultsSettings settings => PluginConfig.Instance.ResultsSettings;
 
-		[UIValue("TotalPercentageMode")]
-		public virtual ResultsViewModes TotalPercentageMode
+		[UIValue("PercentageTotalMode")]
+		public virtual ResultsViewModes PercentageTotalMode
 		{
-			get { return FcScorePercentageSettings.TotalPercentageMode; }
-			set { FcScorePercentageSettings.TotalPercentageMode = value; }
+			get { return settings.PercentageTotalMode; }
+			set { settings.PercentageTotalMode = value; }
 		}
 
-		[UIValue("SplitPercentageMode")]
-		public virtual ResultsViewModes SplitPercentageMode
+		[UIValue("PercentageSplitMode")]
+		public virtual ResultsViewModes PercentageSplitMode
 		{
-			get { return FcScorePercentageSettings.SplitPercentageMode; }
-			set { FcScorePercentageSettings.SplitPercentageMode = value; }
+			get { return settings.PercentageSplitMode; }
+			set { settings.PercentageSplitMode = value; }
 		}
 
-		[UIValue("TotalScoreMode")]
-		public virtual ResultsViewModes TotalScoreMode
+		[UIValue("ScoreTotalMode")]
+		public virtual ResultsViewModes ScoreTotalMode
 		{
-			get { return FcScorePercentageSettings.TotalScoreMode; }
-			set { FcScorePercentageSettings.TotalScoreMode = value; }
+			get { return settings.ScoreTotalMode; }
+			set { settings.ScoreTotalMode = value; }
 		}
 
 		[UIValue("DecimalPrecision")]
 		public virtual int DecimalPrecision
 		{
-			get { return FcScorePercentageSettings.DecimalPrecision; }
-			set { FcScorePercentageSettings.DecimalPrecision = value; }
+			get { return settings.DecimalPrecision; }
+			set { settings.DecimalPrecision = value; }
 		}
 
 		[UIValue("EnableScorePercentageDifference")]
 		public virtual bool EnableScorePercentageDifference
 		{
-			get { return FcScorePercentageSettings.EnableScorePercentageDifference; }
-			set { FcScorePercentageSettings.EnableScorePercentageDifference = value; }
+			get { return settings.EnableScorePercentageDifference; }
+			set { settings.EnableScorePercentageDifference = value; }
 		}
 
 		[UIValue("EnableLabel")]
 		public virtual ResultsViewLabelOptions EnableLabel
 		{
-			get { return FcScorePercentageSettings.EnableLabel; }
-			set { FcScorePercentageSettings.EnableLabel = value; }
+			get { return settings.EnableLabel; }
+			set { settings.EnableLabel = value; }
 		}
 
 		[UIValue("SplitPercentageUseSaberColorScheme")]
 		public virtual bool SplitPercentageUseSaberColorScheme
 		{
-			get { return FcScorePercentageSettings.SplitPercentageUseSaberColorScheme; }
-			set { FcScorePercentageSettings.SplitPercentageUseSaberColorScheme = value; }
+			get { return settings.SplitPercentageUseSaberColorScheme; }
+			set { settings.SplitPercentageUseSaberColorScheme = value; }
 		}
 
 		[UIValue("KeepTrailingZeros")]
 		public virtual bool KeepTrailingZeros
 		{
-			get { return FcScorePercentageSettings.KeepTrailingZeros; }
-			set { FcScorePercentageSettings.KeepTrailingZeros = value; }
+			get { return settings.KeepTrailingZeros; }
+			set { settings.KeepTrailingZeros = value; }
 		}
 
 		[UIValue("IgnoreMultiplier")]
@@ -86,9 +82,9 @@ namespace FullComboPercentageCounter.Configuration
 
 		private static Dictionary<ResultsViewModes, string> ResultsViewModesToNames = new Dictionary<ResultsViewModes, string>()
 		{
-			{ResultsViewModes.On, "On" },
-			{ResultsViewModes.OffWhenFC, "Off When FC" },
-			{ResultsViewModes.Off, "Off" }
+			{ResultsViewModes.On, "Show Always" },
+			{ResultsViewModes.OffWhenFC, "Hide When FC" },
+			{ResultsViewModes.Off, "Hide Always" }
 		};
 
 		[UIValue(nameof(ResultsViewLabelOptionList))]

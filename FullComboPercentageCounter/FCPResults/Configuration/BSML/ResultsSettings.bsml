@@ -1,12 +1,12 @@
 ﻿<settings-container xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
 	<dropdown-list-setting text='Show FC Percentage' hover-hint='Select if or when the FC percentage should be shown on the results screen.'
-												 value='TotalPercentageMode' options='ResultsViewModeList' formatter='ResultsViewModesFormat' apply-on-change='true'/>
+												 value='PercentageTotalMode' options='ResultsViewModeList' formatter='ResultsViewModesFormat' apply-on-change='true'/>
 	
 	<dropdown-list-setting text='Show Split FC Percentage' hover-hint='Select if or when the split FC percentage should be shown on the results screen.'
-												 value='SplitPercentageMode' options='ResultsViewModeList' formatter='ResultsViewModesFormat' apply-on-change='true'/>
+												 value='PercentageSplitMode' options='ResultsViewModeList' formatter='ResultsViewModesFormat' apply-on-change='true'/>
 	
 	<dropdown-list-setting text='Show FC Score' hover-hint='Select if or when the FC score should be shown on the results screen.'
-												 value='TotalScoreMode' options='ResultsViewModeList' formatter='ResultsViewModesFormat' apply-on-change='true'/>
+												 value='ScoreTotalMode' options='ResultsViewModeList' formatter='ResultsViewModesFormat' apply-on-change='true'/>
 	
 	<increment-setting text='Decimal Precision' hover-hint='How precise should the precentage be?' 
 										 value='DecimalPrecision' apply-on-change='true'

@@ -4,19 +4,19 @@ using Zenject;
 
 namespace FullComboPercentageCounter.Configuration
 {
-	class ConfigManager : IInitializable, IDisposable
+	class ResultsConfigManager : IInitializable, IDisposable
 	{
-		private FCScorePercentageConfigController configHost;
+		private ResultsConfigController configHost;
 
 		[Inject]
-		public ConfigManager(FCScorePercentageConfigController configHost)
+		public ResultsConfigManager(ResultsConfigController configHost)
 		{
 			this.configHost = configHost;
 		}
 
 		public void Initialize()
 		{
-			BSMLSettings.instance.AddSettingsMenu(Plugin.PluginName, "FullComboPercentageCounter.Configuration.BSML.SettingsFCScorePercentage.bsml", configHost);
+			BSMLSettings.instance.AddSettingsMenu(Plugin.PluginName, "FullComboPercentageCounter.FCPResults.Configuration.BSML.ResultsSettings.bsml", configHost);
 		}
 
 		public void Dispose()

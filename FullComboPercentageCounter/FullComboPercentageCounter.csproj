@@ -137,36 +137,36 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\ConfigControllers\FCPercentageCounterConfigController.cs" />
-    <Compile Include="Configuration\ConfigManager.cs" />
-    <Compile Include="Configuration\ConfigControllers\FCScorePercentageConfigController.cs" />
-    <Compile Include="Configuration\SettingsCategories\FormatSettingsFCPercentageCounter.cs" />
-    <Compile Include="Configuration\SettingsCategories\FormatSettingsFCScorePercentage.cs" />
-    <Compile Include="Configuration\SettingsCategories\SettingsFCPercentageCounter.cs" />
-    <Compile Include="Configuration\SettingsCategories\SettingsFCScorePercentage.cs" />
-    <Compile Include="FCPercentageCounter.cs" />
-    <Compile Include="FCPercentageResultsViewHandler.cs" />
-    <Compile Include="Installers\AppInstaller.cs" />
-    <Compile Include="Installers\GameInstaller.cs" />
-    <Compile Include="Installers\MenuInstaller.cs" />
-    <Compile Include="ScoreTracker.cs" />
+    <Compile Include="FCPCounter\Configuration\ConfigControllers\CounterConfigController.cs" />
+    <Compile Include="FCPResults\Configuration\ResultsConfigManager.cs" />
+    <Compile Include="FCPResults\Configuration\ConfigControllers\ResultsConfigController.cs" />
+    <Compile Include="FCPCounter\Configuration\Settings\CounterAdvancedSettings.cs" />
+    <Compile Include="FCPResults\Configuration\SettingsCategories\ResultsAdvancedSettings.cs" />
+    <Compile Include="FCPCounter\Configuration\Settings\CounterSettings.cs" />
+    <Compile Include="FCPResults\Configuration\SettingsCategories\ResultsSettings.cs" />
+    <Compile Include="FCPCounter\FCPCounterController.cs" />
+    <Compile Include="FCPResults\FCPResultsViewController.cs" />
+    <Compile Include="FCPCore\Installers\AppInstaller.cs" />
+    <Compile Include="FCPCore\Installers\GameInstaller.cs" />
+    <Compile Include="FCPCore\Installers\MenuInstaller.cs" />
+    <Compile Include="FCPCore\Trackers\ScoreTracker.cs" />
     <Compile Include="Plugin.cs" />
-    <Compile Include="Configuration\PluginConfig.cs" />
+    <Compile Include="FCPCore\Configuration\PluginConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="NoteRatingTracker.cs" />
-    <Compile Include="ScoreManager.cs" />
+    <Compile Include="FCPCore\Trackers\NoteRatingTracker.cs" />
+    <Compile Include="FCPCore\Managers\ScoreManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Configuration\BSML\SettingsFCPercentageCounter.bsml" />
-    <EmbeddedResource Include="Configuration\BSML\SettingsFCScorePercentage.bsml" />
+    <EmbeddedResource Include="FCPCounter\Configuration\BSML\CounterSettings.bsml" />
+    <EmbeddedResource Include="FCPResults\Configuration\BSML\ResultsSettings.bsml" />
     <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
     <None Include="Directory.Build.targets" Condition="Exists('Directory.Build.targets')" />
     <None Include="FullComboPercentageCounter.csproj.user" Condition="Exists('FullComboPercentageCounter.csproj.user')" />
-    <EmbeddedResource Include="UI\Views\ResultsViewFCPercentage.bsml" />
-    <EmbeddedResource Include="UI\Views\ResultsViewFCScore.bsml" />
+    <EmbeddedResource Include="FCPResults\UI\Views\ResultsPercentageResult.bsml" />
+    <EmbeddedResource Include="FCPResults\UI\Views\ResultsScoreResult.bsml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BeatSaberModdingTools.Tasks">
@@ -176,12 +176,8 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Icon.png" />
+    <EmbeddedResource Include="FCPCounter\Resources\Icon.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="DataManagers\" />
-    <Folder Include="OnGame\" />
-    <Folder Include="OnMenu\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

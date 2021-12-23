@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace FullComboPercentageCounter.Configuration
+﻿namespace FullComboPercentageCounter.Configuration
 {
-	class FormatSettingsFCPercentageCounter
+	class CounterAdvancedSettings
 	{
-		// Format settings available from config file
+		// Advanced settings available from config file
 		public virtual float LabelAboveCounterTextOffset { get; set; } = 0.32f;
 		public virtual float LabelAboveCounterTextSize { get; set; } = 0.95f;
 		public virtual float PercentageTotalAndSplitLineHeight { get; set; } = 55.0f;

@@ -4,10 +4,9 @@ using System.Linq;
 
 namespace FullComboPercentageCounter.Configuration
 {
-	class FCPercentageCounterConfigController
+	class CounterConfigController
 	{
-		private SettingsFCPercentageCounter FcCounterSettings => PluginConfig.Instance.FcCounterSettings;
-		//private FormatSettingsFCPercentageCounter FormatSettings => FcCounterSettings.FormatSettings;
+		private CounterSettings FcCounterSettings => PluginConfig.Instance.CounterSettings;
 
 
 		[UIValue("PercentageMode")]
@@ -69,9 +68,9 @@ namespace FullComboPercentageCounter.Configuration
 
 		private static Dictionary<CounterPercentageModes, string> CounterPercentageModesToNames = new Dictionary<CounterPercentageModes, string>()
 		{
-			{CounterPercentageModes.Total, "Total FC Percentage" },
+			{CounterPercentageModes.Total, "FC Percentage" },
 			{CounterPercentageModes.Split, "Split FC Percentage" },
-			{CounterPercentageModes.TotalAndSplit, "Total & Split FC Percentages" }
+			{CounterPercentageModes.TotalAndSplit, "Both" }
 		};
 
 		[UIValue(nameof(CounterLabelOptionList))]

@@ -11,8 +11,8 @@ namespace FullComboPercentageCounter.Configuration
 #pragma warning restore CS8618
 
 		// Settings Category Objects
-		public virtual SettingsFCPercentageCounter FcCounterSettings { get; set; } = new SettingsFCPercentageCounter();
-		public virtual SettingsFCScorePercentage FcScorePercentageSettings { get; set; } = new SettingsFCScorePercentage();
+		public virtual CounterSettings CounterSettings { get; set; } = new CounterSettings();
+		public virtual ResultsSettings ResultsSettings { get; set; } = new ResultsSettings();
 
 		// Shared Settings (Custom Counters+ Counter & Results View)
 		public virtual bool IgnoreMultiplier { get; set; } = false;

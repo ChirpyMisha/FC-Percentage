@@ -1,5 +1,4 @@
 ﻿#nullable enable
-using FullComboPercentageCounter.Configuration;
 using System;
 using System.Globalization;
 using UnityEngine;

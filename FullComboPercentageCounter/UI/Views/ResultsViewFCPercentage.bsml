@@ -1,4 +1,0 @@
-﻿<vertical anchor-pos-x='38.6' anchor-pos-y='-21.7' child-control-height='false' vertical-fit='PreferredSize' pref-height='1' spacing='-46.5' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
-	<text id='fc-percent-text' text='DefaultValue%' align='Center' italics='true'></text>
-	<text id='fc-percent-diff-text' text='DefaultValue%' align='Center' italics='true'></text>
-</vertical>
