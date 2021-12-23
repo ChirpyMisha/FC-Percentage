@@ -31,11 +31,7 @@ namespace FullComboPercentageCounter
 
 			config = PluginConfig.Instance.CounterSettings;
 
-			percentagePrefix = "";
-			if (config.PercentageMode == CounterPercentageModes.TotalAndSplit)
-				percentagePrefix += $"<line-height={config.Advanced.PercentageTotalAndSplitLineHeight}%>";
-			if (config.EnableLabel == CounterLabelOptions.AsPrefix)
-				percentagePrefix += config.Advanced.LabelPrefixText;
+			percentagePrefix = config.EnableLabel == CounterLabelOptions.AsPrefix ? config.Advanced.LabelPrefixText : "";
 
 			if (!HasNullReferences())
 			{
@@ -73,6 +69,7 @@ namespace FullComboPercentageCounter
 
 			counterPercentageText = canvasUtility.CreateTextFromSettings(settings, new Vector3(0.0f, config.Advanced.PercentageTextOffset, 0.0f));
 			counterPercentageText.fontSize *= config.PercentageSize;
+			counterPercentageText.lineSpacing = config.Advanced.PercentageTotalAndSplitLineHeight * 100;
 			
 
 			RefreshCounterText();
