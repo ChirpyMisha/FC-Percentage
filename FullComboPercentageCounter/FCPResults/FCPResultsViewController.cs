@@ -214,18 +214,20 @@ namespace FullComboPercentageCounter
 
 		private string GetTotalPercentageDiffText()
 		{
-			// Set total percentage diff text.
-			double percentTotalDiff = scoreManager.PercentageTotal - scoreManager.HighscoreAtLevelStartPercentage;
-			string percentTotalDiffColorTag = GetColorTagFor(percentTotalDiff);
+			// scoreTotalDiff is used since for instance a score difference of -2 could give a percent difference of 0.00%. Then the score would be red and the percentage would be green.
+			int scoreTotalDiff = scoreManager.ScoreAtCurrentPercentage - scoreManager.HighscoreAtLevelStart;
+			string percentTotalDiffColorTag = GetColorTagFor(scoreTotalDiff);
+			double percentTotalDiff = Math.Round(scoreManager.PercentageTotal, config.DecimalPrecision) - scoreManager.HighscoreAtLevelStartPercentage;
 
+			// Set total percentage diff text.
 			return $"{percentTotalDiffColorTag}{PercentageToString(percentTotalDiff)}  ";
 		}
 
 		private string GetSplitPercentageDiffText()
 		{
 			// Set split percentage diff text.
-			double percentDiffA = scoreManager.PercentageA - scoreManager.HighscoreAtLevelStartPercentage;
-			double percentDiffB = scoreManager.PercentageB - scoreManager.HighscoreAtLevelStartPercentage;
+			double percentDiffA = Math.Round(scoreManager.PercentageA, config.DecimalPrecision) - scoreManager.HighscoreAtLevelStartPercentage;
+			double percentDiffB = Math.Round(scoreManager.PercentageB, config.DecimalPrecision) - scoreManager.HighscoreAtLevelStartPercentage;
 			string percentDiffColorTagA = GetColorTagFor(percentDiffA);
 			string percentDiffColorTagB = GetColorTagFor(percentDiffB);
 
