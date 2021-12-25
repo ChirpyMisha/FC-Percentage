@@ -18,8 +18,8 @@
 												 options='ResultsViewModeList' formatter='ResultsViewModesFormat' bind-value='true'/>
 
 	<dropdown-list-setting text='Enable Label' hover-hint='Enable the label. The label text can be changed in the config file in the UserData folder.'
-												 value='EnableLabel' apply-on-change='false'
-												 options='ResultsViewLabelOptionList' formatter='ResultsViewLabelOptionsFormat'/>
+												 value='EnableLabel' apply-on-change='true'
+												 options='ResultsViewLabelOptionList' formatter='ResultsViewLabelOptionsFormat' bind-value='true'/>
 
 	<increment-setting text='Decimal Precision' hover-hint='How precise should the precentage be?'
 											value='DecimalPrecision' apply-on-change='false' interactable='~is-any-percent-on'
@@ -49,19 +49,19 @@
 			</horizontal>
 
 			<string-setting text='Score Prefix' hover-hint='When Enable Label is on for the score, this is used as a prefix.'
-											value='ScorePrefixText' apply-on-change='false' interactable='~ScorePrefixTextActive'/>
+											value='ScorePrefixText' apply-on-change='false' interactable='~score-prefix-text-active' font-color ='~score-prefix-text-active-color'/>
 
 			<string-setting text='Percentage Prefix' hover-hint='When Enable Label is on for the percentage, this is used as a prefix.'
-											value='PercentagePrefixText' apply-on-change='false' interactable='~PercentagePrefixTextActive'/>
+											value='PercentagePrefixText' apply-on-change='false' interactable='~percentage-prefix-text-active' font-color='~percentage-prefix-text-active-color'/>
 
 			<string-setting text='Total Percentage Prefix' hover-hint='When showing the total percentage (Activate with the "Show FC Percentage" setting), this string is used as a prefix for the total percentage.'
-											value='PercentageTotalPrefixText' apply-on-change='false' interactable='~is-percentage-total-on'/>
+											value='PercentageTotalPrefixText' apply-on-change='false' interactable='~is-percentage-total-on' font-color='~is-percentage-total-on-color'/>
 					
 			<string-setting text='Split Percentage Prefix Left' hover-hint='When showing the split percentage (Activate with the "Show Split FC Percentage" setting), this string is used as a prefix for the left saber&#39;s percentage.'
-											value='PercentageSplitSaberAPrefixText' apply-on-change='false' interactable='~is-percentage-split-on'/>
+											value='PercentageSplitSaberAPrefixText' apply-on-change='false' interactable='~is-percentage-split-on' font-color='~is-percentage-split-on-color'/>
 
 			<string-setting text='Split Percentage Prefix Right' hover-hint='When showing the split percentage (Activate with the "Show Split FC Percentage" setting), this string is used as a prefix for the right saber&#39;s percentage.'
-											value='PercentageSplitSaberBPrefixText' apply-on-change='false' interactable='~is-percentage-split-on'/>
+											value='PercentageSplitSaberBPrefixText' apply-on-change='false' interactable='~is-percentage-split-on' font-color='~is-percentage-split-on-color'/>
 					
 		</settings-container>
 		
