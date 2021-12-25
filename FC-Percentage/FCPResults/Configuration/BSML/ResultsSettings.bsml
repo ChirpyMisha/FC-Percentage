@@ -7,15 +7,15 @@
 	<!-- Results Settings -->
 	<dropdown-list-setting text='Show FC Percentage' hover-hint='Select if or when the FC percentage should be shown on the results screen.'
 											   value='PercentageTotalMode' apply-on-change='true'
-												 options='ResultsViewModeList' formatter='ResultsViewModesFormat' />
+												 options='ResultsViewModeList' formatter='ResultsViewModesFormat' bind-value='true'/>
 
 	<dropdown-list-setting text='Show Split FC Percentage' hover-hint='Select if or when the split FC percentage should be shown on the results screen.'
 												 value='PercentageSplitMode' apply-on-change='true'
-												 options='ResultsViewModeList' formatter='ResultsViewModesFormat' />
+												 options='ResultsViewModeList' formatter='ResultsViewModesFormat' bind-value='true'/>
 
 	<dropdown-list-setting text='Show FC Score' hover-hint='Select if or when the FC score should be shown on the results screen.'
 												 value='ScoreTotalMode' apply-on-change='true'
-												 options='ResultsViewModeList' formatter='ResultsViewModesFormat'/>
+												 options='ResultsViewModeList' formatter='ResultsViewModesFormat' bind-value='true'/>
 
 	<dropdown-list-setting text='Enable Label' hover-hint='Enable the label. The label text can be changed in the config file in the UserData folder.'
 												 value='EnableLabel' apply-on-change='false'
