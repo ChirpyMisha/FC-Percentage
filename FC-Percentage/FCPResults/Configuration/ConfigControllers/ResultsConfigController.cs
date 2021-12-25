@@ -40,16 +40,14 @@ namespace FCPercentage.Configuration
 
 		private void RevertChanges()
 		{
-			settings.PercentageTotalMode = percentageTotalMode;
-			settings.PercentageSplitMode = percentageSplitMode;
-			settings.ScoreTotalMode = scoreTotalMode;
-
-			UpdateViewModes();
-		}
+            PercentageTotalMode = percentageTotalMode;
+            PercentageSplitMode = percentageSplitMode;
+            ScoreTotalMode = scoreTotalMode;
+        }
 
 		private void RaisePropertyChanged([CallerMemberName] string propertyName = "")
 		{
-			this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
 
 		[UIValue("is-any-on")]
@@ -96,15 +94,8 @@ namespace FCPercentage.Configuration
 			RaisePropertyChanged(nameof(IsScoreTotalOnColor));
 		}
 
-		private void UpdateViewModes()
-		{
-			RaisePropertyChanged(nameof(PercentageTotalMode));
-			RaisePropertyChanged(nameof(percentageSplitMode));
-			RaisePropertyChanged(nameof(ScoreTotalMode));
-		}
 
-
-		//[UIAction("#apply")]
+        //[UIAction("#apply")]
 		//public void OnApply()
 		//{
 		//	Plugin.Log.Notice("Saving percentage & score modes from local values.");
@@ -116,8 +107,7 @@ namespace FCPercentage.Configuration
 		{
 			Plugin.Log.Notice("Reverting changes. Setting local percentage & score modes from settings.");
 			RevertChanges();
-			UpdateViewModes();
-		}
+        }
 
 		
 
