@@ -1,29 +1,70 @@
-﻿<settings-container xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
+﻿<!-- Inspiration for this BSML file was taken from Shadnix's Saber Tailor mod -->
+<settings-container xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
+	<horizontal pref-width='90'>
+		<text text='FCP Results Settings' font-size='5' align='Center'/>
+	</horizontal>
+
+	<!-- Results Settings -->
 	<dropdown-list-setting text='Show FC Percentage' hover-hint='Select if or when the FC percentage should be shown on the results screen.'
-												 value='PercentageTotalMode' options='ResultsViewModeList' formatter='ResultsViewModesFormat' apply-on-change='true'/>
-	
+											   value='PercentageTotalMode' apply-on-change='true'
+												 options='ResultsViewModeList' formatter='ResultsViewModesFormat' />
+
 	<dropdown-list-setting text='Show Split FC Percentage' hover-hint='Select if or when the split FC percentage should be shown on the results screen.'
-												 value='PercentageSplitMode' options='ResultsViewModeList' formatter='ResultsViewModesFormat' apply-on-change='true'/>
-	
+												 value='PercentageSplitMode' apply-on-change='true'
+												 options='ResultsViewModeList' formatter='ResultsViewModesFormat' />
+
 	<dropdown-list-setting text='Show FC Score' hover-hint='Select if or when the FC score should be shown on the results screen.'
-												 value='ScoreTotalMode' options='ResultsViewModeList' formatter='ResultsViewModesFormat' apply-on-change='true'/>
-	
-	<increment-setting text='Decimal Precision' hover-hint='How precise should the precentage be?' 
-										 value='DecimalPrecision' apply-on-change='true'
-										 integer-only='true' min='0' max='69' increment='1'/>
-	
-	<checkbox-setting text='Enable Score Percentage Difference' hover-hint='Shows the difference between your previous highscore and the FC score and percentage.'
-										value='EnableScorePercentageDifference' apply-on-change='true'/>
-	
+												 value='ScoreTotalMode' apply-on-change='true'
+												 options='ResultsViewModeList' formatter='ResultsViewModesFormat'/>
+
 	<dropdown-list-setting text='Enable Label' hover-hint='Enable the label. The label text can be changed in the config file in the UserData folder.'
-												 value='EnableLabel' options='ResultsViewLabelOptionList' formatter='ResultsViewLabelOptionsFormat' apply-on-change='true'/>
-	
-	<checkbox-setting text='Use Saber Color Scheme' hover-hint='Use the saber color scheme when "Split Percentage" is enabled?'	
-										value='SplitPercentageUseSaberColorScheme' apply-on-change='true'/>
-	
-	<checkbox-setting text='Keep Trailing Zeros' hover-hint='Should the percentage have zeros at the end?&#xA;Example without trailing zeros: 80%&#xA;Example with trailing zeros: 80.00%'
-										value='KeepTrailingZeros' apply-on-change='true'/>
-	
+												 value='EnableLabel' apply-on-change='false'
+												 options='ResultsViewLabelOptionList' formatter='ResultsViewLabelOptionsFormat'/>
+
+	<increment-setting text='Decimal Precision' hover-hint='How precise should the precentage be?'
+											value='DecimalPrecision' apply-on-change='false' interactable='~is-any-percent-on'
+											integer-only='true' min='0' max='69' increment='1' font-color='~is-any-percent-on-color'/>
+
+	<checkbox-setting text='Enable Score Percentage Difference' hover-hint='Shows the difference between your previous highscore and the FC score and percentage.'
+										value='EnableScorePercentageDifference' apply-on-change='false' interactable='~is-any-percent-on' font-color='~is-any-percent-on-color'/>
+
+	<checkbox-setting text='Use Saber Color Scheme' hover-hint='Use the saber color scheme when "Split Percentage" is enabled?'
+										value='SplitPercentageUseSaberColorScheme' apply-on-change='false' interactable='~is-percentage-split-on' font-color='~is-percentage-split-on-color'/>
+
+	<checkbox-setting text='Keep Trailing Zeros' hover-hint='Should the percentage have zeros at the end of the decimals?&#xA;
+																												Example without trailing zeros: 80%&#xA;
+																												Example with trailing zeros: 80.00%'
+										value='KeepTrailingZeros' apply-on-change='false' interactable='~is-any-percent-on' font-color='~is-any-percent-on-color'/>
+
 	<checkbox-setting text='Ignore Multiplier Ramp-up' hover-hint='When this is enabled all cuts will be weighed the same. (Also applies to ingame counter)'
-										value='IgnoreMultiplier' apply-on-change='true'/>
+										value='IgnoreMultiplier' apply-on-change='false' interactable='~is-any-on' font-color='~is-any-on-color'/>
+			
+	<!-- Advanced Settings -->
+	<settings-submenu text='> Advanced Settings'>
+		<settings-container>
+
+			<horizontal pref-width='90'>
+				<clickable-text text='⮌ Back' align='Left' click-event='back' />
+				<text text='Advanced Settings' font-size='5' align='Center'/>
+			</horizontal>
+
+			<string-setting text='Score Prefix' hover-hint='When Enable Label is on for the score, this is used as a prefix.'
+											value='ScorePrefixText' apply-on-change='false' interactable='~ScorePrefixTextActive'/>
+
+			<string-setting text='Percentage Prefix' hover-hint='When Enable Label is on for the percentage, this is used as a prefix.'
+											value='PercentagePrefixText' apply-on-change='false' interactable='~PercentagePrefixTextActive'/>
+
+			<string-setting text='Total Percentage Prefix' hover-hint='When showing the total percentage (Activate with the "Show FC Percentage" setting), this string is used as a prefix for the total percentage.'
+											value='PercentageTotalPrefixText' apply-on-change='false' interactable='~is-percentage-total-on'/>
+					
+			<string-setting text='Split Percentage Prefix Left' hover-hint='When showing the split percentage (Activate with the "Show Split FC Percentage" setting), this string is used as a prefix for the left saber&#39;s percentage.'
+											value='PercentageSplitSaberAPrefixText' apply-on-change='false' interactable='~is-percentage-split-on'/>
+
+			<string-setting text='Split Percentage Prefix Right' hover-hint='When showing the split percentage (Activate with the "Show Split FC Percentage" setting), this string is used as a prefix for the right saber&#39;s percentage.'
+											value='PercentageSplitSaberBPrefixText' apply-on-change='false' interactable='~is-percentage-split-on'/>
+					
+		</settings-container>
+		
+	</settings-submenu>
+	
 </settings-container>

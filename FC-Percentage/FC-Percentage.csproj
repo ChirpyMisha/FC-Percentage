@@ -10,8 +10,8 @@
     <ProjectGuid>{CB06A406-8024-4100-958F-7E8F37B96AE7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>FullComboPercentageCounter</RootNamespace>
-    <AssemblyName>FullComboPercentageCounter</AssemblyName>
+    <RootNamespace>FCPercentage</RootNamespace>
+    <AssemblyName>FCPercentage</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <DebugSymbols>true</DebugSymbols>
@@ -28,6 +28,7 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
+	<NoWarn>$(NoWarn);MSB3277</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <Optimize>true</Optimize>
@@ -164,7 +165,6 @@
     <EmbeddedResource Include="FCPResults\Configuration\BSML\ResultsSettings.bsml" />
     <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
     <None Include="Directory.Build.targets" Condition="Exists('Directory.Build.targets')" />
-    <None Include="FullComboPercentageCounter.csproj.user" Condition="Exists('FullComboPercentageCounter.csproj.user')" />
     <EmbeddedResource Include="FCPResults\UI\Views\ResultsPercentageResult.bsml" />
     <EmbeddedResource Include="FCPResults\UI\Views\ResultsScoreResult.bsml" />
   </ItemGroup>
@@ -178,6 +178,8 @@
   <ItemGroup>
     <EmbeddedResource Include="FCPCounter\Resources\Icon.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="FC-Percentage.csproj.user" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

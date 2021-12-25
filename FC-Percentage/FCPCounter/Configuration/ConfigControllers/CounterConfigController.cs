@@ -1,54 +1,55 @@
 ﻿using BeatSaberMarkupLanguage.Attributes;
+using BeatSaberMarkupLanguage.ViewControllers;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 
 namespace FCPercentage.Configuration
 {
-	class CounterConfigController
+	class CounterConfigController// : BSMLAutomaticViewController
 	{
-		private CounterSettings FcCounterSettings => PluginConfig.Instance.CounterSettings;
-
+		private CounterSettings settings => PluginConfig.Instance.CounterSettings;
 
 		[UIValue("PercentageMode")]
 		public virtual CounterPercentageModes PercentageMode
 		{
-			get { return FcCounterSettings.PercentageMode; }
-			set { FcCounterSettings.PercentageMode = value; }
-		}
-
-		[UIValue("DecimalPrecision")]
-		public virtual int DecimalPrecision
-		{
-			get { return FcCounterSettings.DecimalPrecision; }
-			set { FcCounterSettings.DecimalPrecision = value; }
-		}
-
-		[UIValue("PercentageSize")]
-		public virtual float PercentageSize
-		{
-			get { return FcCounterSettings.PercentageSize; }
-			set { FcCounterSettings.PercentageSize = value; }
+			get { return settings.PercentageMode; }
+			set { settings.PercentageMode = value; }
 		}
 
 		[UIValue("EnableLabel")]
 		public virtual CounterLabelOptions EnableLabel
 		{
-			get { return FcCounterSettings.EnableLabel; }
-			set { FcCounterSettings.EnableLabel = value; }
+			get { return settings.EnableLabel; }
+			set 
+			{ 
+				settings.EnableLabel = value;
+				//NotifyPropertyChanged(nameof(SaberColorSchemeActive));
+			}
 		}
 
+		[UIValue("DecimalPrecision")]
+		public virtual int DecimalPrecision
+		{
+			get { return settings.DecimalPrecision; }
+			set { settings.DecimalPrecision = value; }
+		}
+
+		//[UIValue("SaberColorSchemeActive")]
+		//private bool SaberColorSchemeActive => settings.PercentageMode != CounterPercentageModes.Total;
 		[UIValue("SplitPercentageUseSaberColorScheme")]
 		public virtual bool SplitPercentageUseSaberColorScheme
 		{
-			get { return FcCounterSettings.SplitPercentageUseSaberColorScheme; }
-			set { FcCounterSettings.SplitPercentageUseSaberColorScheme = value; }
+			get { return settings.SplitPercentageUseSaberColorScheme; }
+			set { settings.SplitPercentageUseSaberColorScheme = value; }
 		}
 
 		[UIValue("KeepTrailingZeros")]
 		public virtual bool KeepTrailingZeros
 		{
-			get { return FcCounterSettings.KeepTrailingZeros; }
-			set { FcCounterSettings.KeepTrailingZeros = value; }
+			get { return settings.KeepTrailingZeros; }
+			set { settings.KeepTrailingZeros = value; }
 		}
 
 		[UIValue("IgnoreMultiplier")]
@@ -57,6 +58,71 @@ namespace FCPercentage.Configuration
 			get { return PluginConfig.Instance.IgnoreMultiplier; }
 			set { PluginConfig.Instance.IgnoreMultiplier = value; }
 		}
+
+		// Advanced Settings
+		[UIValue("CounterOffset")]
+		public virtual float CounterOffset
+		{
+			get { return settings.Advanced.CounterOffset; }
+			set { settings.Advanced.CounterOffset = value; }
+		}
+
+		[UIValue("LabelAboveCounterTextOffset")]
+		public virtual float LabelAboveCounterTextOffset
+		{
+			get { return settings.Advanced.LabelAboveCounterTextOffset; }
+			set { settings.Advanced.LabelAboveCounterTextOffset = value; }
+		}
+
+		[UIValue("LabelAboveCounterTextSize")]
+		public virtual float LabelAboveCounterTextSize
+		{
+			get { return settings.Advanced.LabelAboveCounterTextSize; }
+			set { settings.Advanced.LabelAboveCounterTextSize = value; }
+		}
+
+		[UIValue("PercentageSize")]
+		public virtual float PercentageSize
+		{
+			get { return settings.Advanced.PercentageSize; }
+			set { settings.Advanced.PercentageSize = value; }
+		}
+
+		[UIValue("PercentageTotalAndSplitLineHeight")]
+		public virtual float PercentageTotalAndSplitLineHeight
+		{
+			get { return settings.Advanced.PercentageTotalAndSplitLineHeight; }
+			set { settings.Advanced.PercentageTotalAndSplitLineHeight = value; }
+		}
+
+		[UIValue("LabelAboveCounterText")]
+		public virtual string LabelAboveCounterText
+		{
+			get { return settings.Advanced.LabelAboveCounterText; }
+			set { settings.Advanced.LabelAboveCounterText = value; }
+		}
+
+		[UIValue("LabelPrefixText")]
+		public virtual string LabelPrefixText
+		{
+			get { return settings.Advanced.LabelPrefixText; }
+			set { settings.Advanced.LabelPrefixText = value; }
+		}
+
+		[UIValue("PercentageSplitSaberAPrefixText")]
+		public virtual string PercentageSplitSaberAPrefixText
+		{
+			get { return settings.Advanced.PercentageSplitSaberAPrefixText; }
+			set { settings.Advanced.PercentageSplitSaberAPrefixText = value; }
+		}
+
+		[UIValue("PercentageSplitSaberBPrefixText")]
+		public virtual string PercentageSplitSaberBPrefixText
+		{
+			get { return settings.Advanced.PercentageSplitSaberBPrefixText; }
+			set { settings.Advanced.PercentageSplitSaberBPrefixText = value; }
+		}
+
 
 
 

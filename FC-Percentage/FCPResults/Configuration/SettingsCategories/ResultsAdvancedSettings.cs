@@ -1,4 +1,6 @@
-﻿namespace FCPercentage.Configuration
+﻿using UnityEngine;
+
+namespace FCPercentage.Configuration
 {
 	class ResultsAdvancedSettings
 	{
@@ -8,5 +10,7 @@
 		public virtual string PercentageTotalPrefixText { get; set; } = "";
 		public virtual string PercentageSplitSaberAPrefixText { get; set; } = "";
 		public virtual string PercentageSplitSaberBPrefixText { get; set; } = "";
+		public virtual string DifferencePositiveColor { get; set; } = "#00B300";
+		public virtual string DifferenceNegativeColor { get; set; } = "#FF0000";
 	}
 }

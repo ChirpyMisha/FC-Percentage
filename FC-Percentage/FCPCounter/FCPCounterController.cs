@@ -62,13 +62,13 @@ namespace FCPercentage
 		{
 			if (config.EnableLabel == CounterLabelOptions.AboveCounter)
 			{
-				labelAboveCounterText = canvasUtility.CreateTextFromSettings(settings, new Vector3(0.0f, config.Advanced.LabelAboveCounterTextOffset, 0.0f));
+				labelAboveCounterText = canvasUtility.CreateTextFromSettings(settings, new Vector3(0.0f, config.Advanced.LabelAboveCounterTextOffset + config.Advanced.CounterOffset, 0.0f));
 				labelAboveCounterText.text = config.Advanced.LabelAboveCounterText;
 				labelAboveCounterText.fontSize *= config.Advanced.LabelAboveCounterTextSize;
 			}
 
-			counterPercentageText = canvasUtility.CreateTextFromSettings(settings, new Vector3(0.0f, config.Advanced.PercentageTextOffset, 0.0f));
-			counterPercentageText.fontSize *= config.PercentageSize;
+			counterPercentageText = canvasUtility.CreateTextFromSettings(settings, new Vector3(0.0f, config.Advanced.CounterOffset, 0.0f));
+			counterPercentageText.fontSize *= config.Advanced.PercentageSize;
 			counterPercentageText.lineSpacing = config.Advanced.PercentageTotalAndSplitLineHeight * 100;
 			
 
