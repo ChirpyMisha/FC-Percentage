@@ -205,48 +205,6 @@ namespace FCPercentage.Configuration
 			RaisePropertyChanged(nameof(IsScorePercentageDiffOnColor));
 		}
 
-		//private void UpdateTextColors()
-		//{
-		//	RaisePropertyChanged(nameof(IsAnyOnColor));
-		//	RaisePropertyChanged(nameof(IsAnyPercentOnColor));
-		//	RaisePropertyChanged(nameof(IsPercentageTotalOnColor));
-		//	RaisePropertyChanged(nameof(IsPercentageSplitOnColor));
-		//	RaisePropertyChanged(nameof(IsScoreTotalOnColor));
-		//	RaisePropertyChanged(nameof(IsScorePrefixOnColor));
-		//	RaisePropertyChanged(nameof(IsPercentagePrefixOnColor));
-		//	RaisePropertyChanged(nameof(IsScorePercentageDiffOnColor));
-		//}
-
-		//private void UpdateInteractability()
-		//{
-		//	RaisePropertyChanged(nameof(IsAnyOn));
-		//	RaisePropertyChanged(nameof(IsAnyPercentOn));
-		//	RaisePropertyChanged(nameof(IsPercentageTotalOn));
-		//	RaisePropertyChanged(nameof(IsPercentageSplitOn));
-		//	RaisePropertyChanged(nameof(IsScoreTotalOn));
-		//	RaisePropertyChanged(nameof(IsPercentagePrefixOn));
-		//	RaisePropertyChanged(nameof(IsScorePrefixOn));
-		//	RaisePropertyChanged(nameof(IsScorePercentageDiffOn));
-		//
-		//	UpdateTextColors();
-		//}
-
-
-		//[UIAction("#apply")]
-		//public void OnApply()
-		//{
-		//
-		//}
-
-		[UIAction("#cancel")]
-		public void OnCancel()
-		{
-			Plugin.Log.Notice("Reverting changes. Setting local percentage & score modes from settings.");
-			RevertChanges();
-        }
-
-		
-
 
 		[UIValue("PercentageTotalMode")]
 		public virtual ResultsViewModes PercentageTotalMode
@@ -423,6 +381,19 @@ namespace FCPercentage.Configuration
 		[UIAction("#reset-prefix-strings")]
 		public void OnResetPrefixStrings() => RevertToDefault_Strings();
 
+		[UIAction("#cancel")]
+		public void OnCancel()
+		{
+			Plugin.Log.Notice("Reverting changes. Setting local percentage & score modes from settings.");
+			RevertChanges();
+		}
+
+		//[UIAction("#apply")]
+		//public void OnApply()
+		//{
+		//
+		//}
+
 
 
 		[UIValue(nameof(ResultsViewModeList))]
@@ -433,9 +404,9 @@ namespace FCPercentage.Configuration
 
 		private static Dictionary<ResultsViewModes, string> ResultsViewModesToNames = new Dictionary<ResultsViewModes, string>()
 		{
-			{ResultsViewModes.On, "Show Always" },
-			{ResultsViewModes.OffWhenFC, "Hide When FC" },
-			{ResultsViewModes.Off, "Show Never" }
+			{ ResultsViewModes.On, "Show Always" },
+			{ ResultsViewModes.OffWhenFC, "Hide When FC" },
+			{ ResultsViewModes.Off, "Show Never" }
 		};
 
 		[UIValue(nameof(ResultsViewLabelOptionList))]
@@ -446,10 +417,10 @@ namespace FCPercentage.Configuration
 
 		private static Dictionary<ResultsViewLabelOptions, string> ResultsViewLabelOptionsToNames = new Dictionary<ResultsViewLabelOptions, string>()
 		{
-			{ResultsViewLabelOptions.BothOn, "Both Labels" },
-			{ResultsViewLabelOptions.ScoreOn, "Only Score Label" },
-			{ResultsViewLabelOptions.PercentageOn, "Only Percentage Label" },
-			{ResultsViewLabelOptions.BothOff, "No Labels" }
+			{ ResultsViewLabelOptions.BothOn, "Both Labels" },
+			{ ResultsViewLabelOptions.ScoreOn, "Only Score Label" },
+			{ ResultsViewLabelOptions.PercentageOn, "Only Percentage Label" },
+			{ ResultsViewLabelOptions.BothOff, "No Labels" }
 		};
 
 		private Color HexToColor(string hex)
