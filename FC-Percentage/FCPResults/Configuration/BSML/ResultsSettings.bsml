@@ -18,7 +18,7 @@
 												 options='ResultsViewModeList' formatter='ResultsViewModesFormat' bind-value='true'/>
 
 	<dropdown-list-setting text='Enable Label' hover-hint='Enable the label. The label text can be changed in the config file in the UserData folder.'
-												 value='EnableLabel' apply-on-change='true'
+												 value='EnableLabel' apply-on-change='true' interactable='~is-any-on'
 												 options='ResultsViewLabelOptionList' formatter='ResultsViewLabelOptionsFormat' bind-value='true'/>
 
 	<increment-setting text='Decimal Precision' hover-hint='How precise should the percentage be?'

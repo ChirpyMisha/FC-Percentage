@@ -34,11 +34,6 @@ namespace FCPercentage.Configuration
 
 		public ResultsConfigController()
 		{
-			LoadSettingsIntoLocals();
-		}
-
-		private void LoadSettingsIntoLocals()
-		{
 			percentageTotalMode = settings.PercentageTotalMode;
 			percentageSplitMode = settings.PercentageSplitMode;
 			scoreTotalMode = settings.ScoreTotalMode;
@@ -53,7 +48,7 @@ namespace FCPercentage.Configuration
 			percentageTotalPrefixText = settings.Advanced.PercentageTotalPrefixText;
 			percentageSplitSaberAPrefixText = settings.Advanced.PercentageSplitSaberAPrefixText;
 			percentageSplitSaberBPrefixText = settings.Advanced.PercentageSplitSaberBPrefixText;
-	}
+		}
 
 		private void RevertChanges()
 		{
