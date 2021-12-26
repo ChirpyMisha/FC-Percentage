@@ -6,6 +6,7 @@ using IPA.Utilities;
 using System;
 using System.Reflection;
 using TMPro;
+using UnityEngine;
 using Zenject;
 
 namespace FCPercentage
@@ -17,8 +18,8 @@ namespace FCPercentage
 		private static readonly string ResourceNameFCScore = "FCPercentage.FCPResults.UI.Views.ResultsScoreResult.bsml";
 
 		// Color tags of score/percentage difference.
-		private static string colorPositiveTag = "<color=#00B300>+";
-		private static string colorNegativeTag = "<color=#FF0000>";
+		private string colorPositiveTag = "";
+		private string colorNegativeTag = "";
 		// Color tag for default color.
 		//private static string colorDefaultTag = "<color=#FFFFFF>";
 
@@ -49,7 +50,7 @@ namespace FCPercentage
 			this.resultsViewController = resultsViewController;
 
 			config = PluginConfig.Instance.ResultsSettings;
-		}
+	}
 
 		public void Initialize()
 		{
@@ -65,16 +66,11 @@ namespace FCPercentage
 
 		private void RefreshPercentageTextFormatting()
 		{
-			if (config.SplitPercentageUseSaberColorScheme)
-			{
-				percentageColorTagA = $"<color={scoreManager.SaberAColor}>";
-				percentageColorTagB = $"<color={scoreManager.SaberBColor}>";
-			}
-			else
-			{
-				percentageColorTagA = "";
-				percentageColorTagB = "";
-			}
+			percentageColorTagA = config.SplitPercentageUseSaberColorScheme ? $"<color={scoreManager.SaberAColor}>" : "";
+			percentageColorTagB = config.SplitPercentageUseSaberColorScheme ? $"<color={scoreManager.SaberBColor}>" : "";
+
+			colorPositiveTag = config.EnableScorePercentageDifference ? $"<color={config.Advanced.DifferencePositiveColor}>+" : "";
+			colorNegativeTag = config.EnableScorePercentageDifference ? $"<color={config.Advanced.DifferenceNegativeColor}>" : "";
 
 			percentageStringFormat = scoreManager.CreatePercentageStringFormat(config.DecimalPrecision);
 		}

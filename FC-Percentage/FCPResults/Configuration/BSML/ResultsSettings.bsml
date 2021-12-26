@@ -21,12 +21,12 @@
 												 value='EnableLabel' apply-on-change='true'
 												 options='ResultsViewLabelOptionList' formatter='ResultsViewLabelOptionsFormat' bind-value='true'/>
 
-	<increment-setting text='Decimal Precision' hover-hint='How precise should the precentage be?'
+	<increment-setting text='Decimal Precision' hover-hint='How precise should the percentage be?'
 											value='DecimalPrecision' apply-on-change='false' interactable='~is-any-percent-on'
 											integer-only='true' min='0' max='69' increment='1' font-color='~is-any-percent-on-color'/>
 
-	<checkbox-setting text='Enable Score Percentage Difference' hover-hint='Shows the difference between your previous highscore and the FC score and percentage.'
-										value='EnableScorePercentageDifference' apply-on-change='false' interactable='~is-any-percent-on' font-color='~is-any-percent-on-color'/>
+	<checkbox-setting text='Enable Score Percentage Difference' hover-hint='Shows the difference between your previous high score and the FC score and percentage.'
+										value='EnableScorePercentageDifference' apply-on-change='true' interactable='~is-any-percent-on' font-color='~is-any-percent-on-color' bind-value='true'/>
 
 	<checkbox-setting text='Use Saber Color Scheme' hover-hint='Use the saber color scheme when "Split Percentage" is enabled?'
 										value='SplitPercentageUseSaberColorScheme' apply-on-change='false' interactable='~is-percentage-split-on' font-color='~is-percentage-split-on-color'/>
@@ -36,32 +36,58 @@
 																												Example with trailing zeros: 80.00%'
 										value='KeepTrailingZeros' apply-on-change='false' interactable='~is-any-percent-on' font-color='~is-any-percent-on-color'/>
 
-	<checkbox-setting text='Ignore Multiplier Ramp-up' hover-hint='When this is enabled all cuts will be weighed the same. (Also applies to ingame counter)'
+	<checkbox-setting text='Ignore Multiplier Ramp-up' hover-hint='When this is enabled all cuts will be weighed the same. (Also applies to in-game counter)'
 										value='IgnoreMultiplier' apply-on-change='false' interactable='~is-any-on' font-color='~is-any-on-color'/>
 			
 	<!-- Advanced Settings -->
-	<settings-submenu text='> Advanced Settings'>
+	<settings-submenu text='> Score/Percentage Difference Colors'>
 		<settings-container>
 
 			<horizontal pref-width='90'>
-				<clickable-text text='⮌ Back' align='Left' click-event='back' />
-				<text text='Advanced Settings' font-size='5' align='Center'/>
+				<clickable-text text='⮌ Back' align='Left' click-event='back'/>
+				<text text='Difference Colors' font-size='5' align='Center'/>
+				<clickable-text text='⭯ Revert' align='Right' click-event='reset-score-percentage-colors'/>
+			</horizontal>
+
+			<color-setting text='Score/Percentage Difference Positive' hover-hint='Which color should be used for a positive difference value?'
+										 value='ScorePercentageDiffPositiveColor' apply-on-change='true' bind-value='true'
+										 interactable='~is-score-percentage-diff-on' font-color='~is-score-percentage-diff-on-color'/>
+
+			<color-setting text='Score/Percentage Difference Negative' hover-hint='Which color should be used for a negative difference value?'
+										 value='ScorePercentageDiffNegativeColor' apply-on-change='true' bind-value='true'
+										 interactable='~is-score-percentage-diff-on' font-color='~is-score-percentage-diff-on-color'/>
+
+		</settings-container>
+	</settings-submenu>
+
+	<settings-submenu text='> Prefix Strings'>
+		<settings-container>
+
+			<horizontal pref-width='90'>
+				<clickable-text text='⮌ Back' align='Left' click-event='back'/>
+				<text text='Prefix Settings' font-size='5' align='Center'/>
+				<clickable-text text='⭯ Revert' align='Right' click-event='reset-prefix-strings'/>
 			</horizontal>
 
 			<string-setting text='Score Prefix' hover-hint='When Enable Label is on for the score, this is used as a prefix.'
-											value='ScorePrefixText' apply-on-change='false' interactable='~score-prefix-text-active' font-color ='~score-prefix-text-active-color'/>
+											value='ScorePrefixText' apply-on-change='true' bind-value='true'
+											interactable='~is-score-prefix-on' font-color ='~is-score-prefix-on-color'/>
 
 			<string-setting text='Percentage Prefix' hover-hint='When Enable Label is on for the percentage, this is used as a prefix.'
-											value='PercentagePrefixText' apply-on-change='false' interactable='~percentage-prefix-text-active' font-color='~percentage-prefix-text-active-color'/>
+											value='PercentagePrefixText' apply-on-change='true' bind-value='true'
+											interactable='~is-percentage-prefix-on' font-color='~is-percentage-prefix-on-color'/>
 
 			<string-setting text='Total Percentage Prefix' hover-hint='When showing the total percentage (Activate with the "Show FC Percentage" setting), this string is used as a prefix for the total percentage.'
-											value='PercentageTotalPrefixText' apply-on-change='false' interactable='~is-percentage-total-on' font-color='~is-percentage-total-on-color'/>
-					
+											value='PercentageTotalPrefixText' apply-on-change='true' bind-value='true'
+											interactable='~is-percentage-total-on' font-color='~is-percentage-total-on-color'/>
+
 			<string-setting text='Split Percentage Prefix Left' hover-hint='When showing the split percentage (Activate with the "Show Split FC Percentage" setting), this string is used as a prefix for the left saber&#39;s percentage.'
-											value='PercentageSplitSaberAPrefixText' apply-on-change='false' interactable='~is-percentage-split-on' font-color='~is-percentage-split-on-color'/>
+											value='PercentageSplitSaberAPrefixText' apply-on-change='true' bind-value='true'
+											interactable='~is-percentage-split-on' font-color='~is-percentage-split-on-color'/>
 
 			<string-setting text='Split Percentage Prefix Right' hover-hint='When showing the split percentage (Activate with the "Show Split FC Percentage" setting), this string is used as a prefix for the right saber&#39;s percentage.'
-											value='PercentageSplitSaberBPrefixText' apply-on-change='false' interactable='~is-percentage-split-on' font-color='~is-percentage-split-on-color'/>
+											value='PercentageSplitSaberBPrefixText' apply-on-change='true' bind-value='true'
+											interactable='~is-percentage-split-on' font-color='~is-percentage-split-on-color'/>
 					
 		</settings-container>
 		

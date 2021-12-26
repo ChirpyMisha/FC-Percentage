@@ -1,4 +1,5 @@
 ﻿using BeatSaberMarkupLanguage.Attributes;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -20,6 +21,16 @@ namespace FCPercentage.Configuration
 		private ResultsViewModes percentageSplitMode;
 		private ResultsViewModes scoreTotalMode;
 		private ResultsViewLabelOptions enableLabel;
+		private bool enableScorePercentageDifference;
+
+		private Color scorePercentageDiffPositiveColor;
+		private Color scorePercentageDiffNegativeColor;
+
+		private string scorePrefixText;
+		private string percentagePrefixText;
+		private string percentageTotalPrefixText;
+		private string percentageSplitSaberAPrefixText;
+		private string percentageSplitSaberBPrefixText;
 
 		public ResultsConfigController()
 		{
@@ -32,8 +43,17 @@ namespace FCPercentage.Configuration
 			percentageSplitMode = settings.PercentageSplitMode;
 			scoreTotalMode = settings.ScoreTotalMode;
 			enableLabel = settings.EnableLabel;
-			//UpdateInteractability();
-		}
+			enableScorePercentageDifference = settings.EnableScorePercentageDifference;
+
+			scorePercentageDiffPositiveColor = HexToColor(settings.Advanced.DifferencePositiveColor);
+			scorePercentageDiffNegativeColor = HexToColor(settings.Advanced.DifferenceNegativeColor);
+
+			scorePrefixText = settings.Advanced.ScorePrefixText;
+			percentagePrefixText = settings.Advanced.PercentagePrefixText;
+			percentageTotalPrefixText = settings.Advanced.PercentageTotalPrefixText;
+			percentageSplitSaberAPrefixText = settings.Advanced.PercentageSplitSaberAPrefixText;
+			percentageSplitSaberBPrefixText = settings.Advanced.PercentageSplitSaberBPrefixText;
+	}
 
 		private void RevertChanges()
 		{
@@ -41,7 +61,39 @@ namespace FCPercentage.Configuration
             PercentageSplitMode = percentageSplitMode;
             ScoreTotalMode = scoreTotalMode;
 			EnableLabel = enableLabel;
-        }
+			EnableScorePercentageDifference = enableScorePercentageDifference;
+
+			ScorePercentageDiffPositiveColor = scorePercentageDiffPositiveColor;
+			ScorePercentageDiffNegativeColor = scorePercentageDiffNegativeColor;
+
+			ScorePrefixText = scorePrefixText;
+			PercentagePrefixText = percentagePrefixText;
+			PercentageTotalPrefixText = percentageTotalPrefixText;
+			PercentageSplitSaberAPrefixText = percentageSplitSaberAPrefixText;
+			PercentageSplitSaberBPrefixText = percentageSplitSaberBPrefixText;
+		}
+
+		private void RevertToDefault_Color()
+		{
+			ScorePercentageDiffPositiveColor = HexToColor(ResultsAdvancedSettings.DefaultDifferencePositiveColor);
+			RaisePropertyChanged(nameof(ScorePercentageDiffPositiveColor));
+			ScorePercentageDiffNegativeColor = HexToColor(ResultsAdvancedSettings.DefaultDifferenceNegativeColor);
+			RaisePropertyChanged(nameof(ScorePercentageDiffNegativeColor));
+		}
+
+		private void RevertToDefault_Strings()
+		{
+			ScorePrefixText = ResultsAdvancedSettings.DefaultScorePrefixText;
+			RaisePropertyChanged(nameof(ScorePrefixText));
+			PercentagePrefixText = ResultsAdvancedSettings.DefaultPercentagePrefixText;
+			RaisePropertyChanged(nameof(PercentagePrefixText));
+			PercentageTotalPrefixText = ResultsAdvancedSettings.DefaultPercentageTotalPrefixText;
+			RaisePropertyChanged(nameof(PercentageTotalPrefixText));
+			PercentageSplitSaberAPrefixText = ResultsAdvancedSettings.DefaultPercentageSplitSaberAPrefixText;
+			RaisePropertyChanged(nameof(PercentageSplitSaberAPrefixText));
+			PercentageSplitSaberBPrefixText = ResultsAdvancedSettings.DefaultPercentageSplitSaberBPrefixText;
+			RaisePropertyChanged(nameof(PercentageSplitSaberBPrefixText));
+		}
 
 		private void RaisePropertyChanged([CallerMemberName] string propertyName = "")
 		{
@@ -58,57 +110,132 @@ namespace FCPercentage.Configuration
 		private bool IsPercentageSplitOn => settings.PercentageSplitMode != ResultsViewModes.Off;
 		[UIValue("is-score-total-on")]
 		private bool IsScoreTotalOn => settings.ScoreTotalMode != ResultsViewModes.Off;
-		[UIValue("score-prefix-text-active")]
-		private bool ScorePrefixTextActive => IsScoreTotalOn && (EnableLabel == ResultsViewLabelOptions.BothOn || EnableLabel == ResultsViewLabelOptions.ScoreOn);
-		[UIValue("percentage-prefix-text-active")]
-		private bool PercentagePrefixTextActive => IsAnyPercentOn && (EnableLabel == ResultsViewLabelOptions.BothOn || EnableLabel == ResultsViewLabelOptions.PercentageOn);
+		[UIValue("is-score-prefix-on")]
+		private bool IsScorePrefixOn => IsScoreTotalOn && (EnableLabel == ResultsViewLabelOptions.BothOn || EnableLabel == ResultsViewLabelOptions.ScoreOn);
+		[UIValue("is-percentage-prefix-on")]
+		private bool IsPercentagePrefixOn => IsAnyPercentOn && (EnableLabel == ResultsViewLabelOptions.BothOn || EnableLabel == ResultsViewLabelOptions.PercentageOn);
+		[UIValue("is-score-percentage-diff-on")]
+		private bool IsScorePercentageDiffOn => IsAnyPercentOn && EnableScorePercentageDifference;
 
 
 		[UIValue("is-any-on-color")]
-		private string IsAnyOnColor => IsAnyOn ? enabledTextColor : disabledTextColor;
+		private string IsAnyOnColor => GetInteractabilityColor(IsAnyOn);
 		[UIValue("is-any-percent-on-color")]
-		private string IsAnyPercentOnColor => IsAnyPercentOn ? enabledTextColor : disabledTextColor;
+		private string IsAnyPercentOnColor => GetInteractabilityColor(IsAnyPercentOn);
 		[UIValue("is-percentage-total-on-color")]
-		private string IsPercentageTotalOnColor => IsPercentageTotalOn ? enabledTextColor : disabledTextColor;
+		private string IsPercentageTotalOnColor => GetInteractabilityColor(IsPercentageTotalOn);
 		[UIValue("is-percentage-split-on-color")]
-		private string IsPercentageSplitOnColor => IsPercentageSplitOn ? enabledTextColor : disabledTextColor;
+		private string IsPercentageSplitOnColor => GetInteractabilityColor(IsPercentageSplitOn);
 		[UIValue("is-score-total-on-color")]
-		private string IsScoreTotalOnColor => IsScoreTotalOn ? enabledTextColor : disabledTextColor;
-		[UIValue("score-prefix-text-active-color")]
-		private string ScorePrefixTextActiveColor => ScorePrefixTextActive ? enabledTextColor : disabledTextColor;
-		[UIValue("percentage-prefix-text-active-color")]
-		private string PercentagePrefixTextActiveColor => PercentagePrefixTextActive ? enabledTextColor : disabledTextColor;
+		private string IsScoreTotalOnColor => GetInteractabilityColor(IsScoreTotalOn);
+		[UIValue("is-score-prefix-on-color")]
+		private string IsScorePrefixOnColor => GetInteractabilityColor(IsScorePrefixOn);
+		[UIValue("is-percentage-prefix-on-color")]
+		private string IsPercentagePrefixOnColor => GetInteractabilityColor(IsPercentagePrefixOn);
+		[UIValue("is-score-percentage-diff-on-color")]
+		private string IsScorePercentageDiffOnColor => GetInteractabilityColor(IsScorePercentageDiffOn);
 
-		private void UpdateInteractability()
+		private string GetInteractabilityColor(bool isEnabled)
+		{
+			return isEnabled ? enabledTextColor : disabledTextColor;
+		}
+
+		private void UpdateInteractabilityScorePercentage()
 		{
 			RaisePropertyChanged(nameof(IsAnyOn));
-			RaisePropertyChanged(nameof(IsAnyPercentOn));
-			RaisePropertyChanged(nameof(IsPercentageTotalOn));
-			RaisePropertyChanged(nameof(IsPercentageSplitOn));
-			RaisePropertyChanged(nameof(IsScoreTotalOn));
-			RaisePropertyChanged(nameof(ScorePrefixTextActive));
-			RaisePropertyChanged(nameof(PercentagePrefixTextActive));
+			RaisePropertyChanged(nameof(IsScorePercentageDiffOn));
 
-			UpdateTextColors();
-		}
-
-		private void UpdateTextColors()
-		{
 			RaisePropertyChanged(nameof(IsAnyOnColor));
-			RaisePropertyChanged(nameof(IsAnyPercentOnColor));
-			RaisePropertyChanged(nameof(IsPercentageTotalOnColor));
-			RaisePropertyChanged(nameof(IsPercentageSplitOnColor));
-			RaisePropertyChanged(nameof(IsScoreTotalOnColor));
-			RaisePropertyChanged(nameof(ScorePrefixTextActiveColor));
-			RaisePropertyChanged(nameof(PercentagePrefixTextActiveColor));
+			RaisePropertyChanged(nameof(IsScorePercentageDiffOnColor));
 		}
 
+		private void UpdateInteractabilityPercentage()
+		{
+			UpdateInteractabilityScorePercentage();
 
-        //[UIAction("#apply")]
+			RaisePropertyChanged(nameof(IsAnyPercentOn));
+			RaisePropertyChanged(nameof(IsPercentagePrefixOn));
+
+			RaisePropertyChanged(nameof(IsAnyPercentOnColor));
+			RaisePropertyChanged(nameof(IsPercentagePrefixOnColor));
+		}
+
+		private void UpdateInteractabilityPercentageTotal()
+		{
+			UpdateInteractabilityPercentage();
+			
+			RaisePropertyChanged(nameof(IsPercentageTotalOn));
+
+			RaisePropertyChanged(nameof(IsPercentageTotalOnColor));
+		}
+
+		private void UpdateInteractabilityPercentageSplit()
+		{
+			UpdateInteractabilityPercentage();
+
+			RaisePropertyChanged(nameof(IsPercentageSplitOn));
+
+			RaisePropertyChanged(nameof(IsPercentageSplitOnColor));
+		}
+
+		private void UpdateInteractabilityScoreTotal()
+		{
+			UpdateInteractabilityScorePercentage();
+
+			RaisePropertyChanged(nameof(IsScoreTotalOn));
+			RaisePropertyChanged(nameof(IsScorePrefixOn));
+
+			RaisePropertyChanged(nameof(IsScoreTotalOnColor));
+			RaisePropertyChanged(nameof(IsScorePrefixOnColor));
+		}
+
+		private void UpdateInteractabilityLabels()
+		{
+			RaisePropertyChanged(nameof(IsPercentagePrefixOn));
+			RaisePropertyChanged(nameof(IsScorePrefixOn));
+
+			RaisePropertyChanged(nameof(IsPercentagePrefixOnColor));
+			RaisePropertyChanged(nameof(IsScorePrefixOnColor));
+		}
+
+		private void UpdateInteractabilityScorePercentageDiff()
+		{
+			RaisePropertyChanged(nameof(IsScorePercentageDiffOn));
+
+			RaisePropertyChanged(nameof(IsScorePercentageDiffOnColor));
+		}
+
+		//private void UpdateTextColors()
+		//{
+		//	RaisePropertyChanged(nameof(IsAnyOnColor));
+		//	RaisePropertyChanged(nameof(IsAnyPercentOnColor));
+		//	RaisePropertyChanged(nameof(IsPercentageTotalOnColor));
+		//	RaisePropertyChanged(nameof(IsPercentageSplitOnColor));
+		//	RaisePropertyChanged(nameof(IsScoreTotalOnColor));
+		//	RaisePropertyChanged(nameof(IsScorePrefixOnColor));
+		//	RaisePropertyChanged(nameof(IsPercentagePrefixOnColor));
+		//	RaisePropertyChanged(nameof(IsScorePercentageDiffOnColor));
+		//}
+
+		//private void UpdateInteractability()
+		//{
+		//	RaisePropertyChanged(nameof(IsAnyOn));
+		//	RaisePropertyChanged(nameof(IsAnyPercentOn));
+		//	RaisePropertyChanged(nameof(IsPercentageTotalOn));
+		//	RaisePropertyChanged(nameof(IsPercentageSplitOn));
+		//	RaisePropertyChanged(nameof(IsScoreTotalOn));
+		//	RaisePropertyChanged(nameof(IsPercentagePrefixOn));
+		//	RaisePropertyChanged(nameof(IsScorePrefixOn));
+		//	RaisePropertyChanged(nameof(IsScorePercentageDiffOn));
+		//
+		//	UpdateTextColors();
+		//}
+
+
+		//[UIAction("#apply")]
 		//public void OnApply()
 		//{
-		//	Plugin.Log.Notice("Saving percentage & score modes from local values.");
-		//	LoadSettingsIntoLocals();
+		//
 		//}
 
 		[UIAction("#cancel")]
@@ -129,7 +256,7 @@ namespace FCPercentage.Configuration
 			{
 				settings.PercentageTotalMode = value;
 				RaisePropertyChanged();
-				UpdateInteractability();
+				UpdateInteractabilityPercentageTotal();
 			}
 		}
 
@@ -141,7 +268,7 @@ namespace FCPercentage.Configuration
 			{
 				settings.PercentageSplitMode = value;
 				RaisePropertyChanged();
-				UpdateInteractability();
+				UpdateInteractabilityPercentageSplit();
 			}
 		}
 
@@ -153,7 +280,7 @@ namespace FCPercentage.Configuration
 			{
 				settings.ScoreTotalMode = value;
 				RaisePropertyChanged();
-				UpdateInteractability();
+				UpdateInteractabilityScoreTotal();
 			}
 		}
 
@@ -165,7 +292,7 @@ namespace FCPercentage.Configuration
 			{ 
 				settings.EnableLabel = value;
 				RaisePropertyChanged();
-				UpdateInteractability();
+				UpdateInteractabilityLabels();
 			}
 		}
 
@@ -180,7 +307,12 @@ namespace FCPercentage.Configuration
 		public virtual bool EnableScorePercentageDifference
 		{
 			get { return settings.EnableScorePercentageDifference; }
-			set { settings.EnableScorePercentageDifference = value; }
+			set 
+			{ 
+				settings.EnableScorePercentageDifference = value;
+				RaisePropertyChanged();
+				UpdateInteractabilityScorePercentageDiff();
+			}
 		}
 
 		[UIValue("SplitPercentageUseSaberColorScheme")]
@@ -204,42 +336,92 @@ namespace FCPercentage.Configuration
 			set { PluginConfig.Instance.IgnoreMultiplier = value; }
 		}
 
-		// Advanced Settings
+		// Score/Percentage Diff Colors
+		[UIValue("ScorePercentageDiffPositiveColor")]
+		public virtual Color ScorePercentageDiffPositiveColor
+		{
+			get { return HexToColor(settings.Advanced.DifferencePositiveColor); }
+			set 
+			{ 
+				settings.Advanced.DifferencePositiveColor = ColorToHex(value);
+				RaisePropertyChanged();
+			}
+		}
+
+		[UIValue("ScorePercentageDiffNegativeColor")]
+		public virtual Color ScorePercentageDiffNegativeColor
+		{
+			get { return HexToColor(settings.Advanced.DifferenceNegativeColor); }
+			set 
+			{
+				settings.Advanced.DifferenceNegativeColor = ColorToHex(value);
+				RaisePropertyChanged();
+			}
+		}
+
+		// Prefix Strings
 		[UIValue("ScorePrefixText")]
 		public virtual string ScorePrefixText
 		{
 			get { return settings.Advanced.ScorePrefixText; }
-			set { settings.Advanced.ScorePrefixText = value; }
+			set 
+			{ 
+				settings.Advanced.ScorePrefixText = value;
+				RaisePropertyChanged();
+			}
 		}
 
 		[UIValue("PercentagePrefixText")]
 		public virtual string PercentagePrefixText
 		{
 			get { return settings.Advanced.PercentagePrefixText; }
-			set { settings.Advanced.PercentagePrefixText = value; }
+			set 
+			{ 
+				settings.Advanced.PercentagePrefixText = value;
+				RaisePropertyChanged();
+			}
 		}
 
 		[UIValue("PercentageTotalPrefixText")]
 		public virtual string PercentageTotalPrefixText
 		{
 			get { return settings.Advanced.PercentageTotalPrefixText; }
-			set { settings.Advanced.PercentageTotalPrefixText = value; }
+			set 
+			{ 
+				settings.Advanced.PercentageTotalPrefixText = value;
+				RaisePropertyChanged();
+			}
 		}
 
 		[UIValue("PercentageSplitSaberAPrefixText")]
 		public virtual string PercentageSplitSaberAPrefixText
 		{
 			get { return settings.Advanced.PercentageSplitSaberAPrefixText; }
-			set	{ settings.Advanced.PercentageSplitSaberAPrefixText = value; }
+			set	
+			{ 
+				settings.Advanced.PercentageSplitSaberAPrefixText = value;
+				RaisePropertyChanged();
+			}
 		}
 
 		[UIValue("PercentageSplitSaberBPrefixText")]
 		public virtual string PercentageSplitSaberBPrefixText
 		{
 			get { return settings.Advanced.PercentageSplitSaberBPrefixText; }
-			set { settings.Advanced.PercentageSplitSaberBPrefixText = value; }
+			set 
+			{ 
+				settings.Advanced.PercentageSplitSaberBPrefixText = value;
+				RaisePropertyChanged();
+			}
 		}
 
+
+
+		[UIAction("#reset-score-percentage-colors")]
+		public void OnResetScorePercentageColors() => RevertToDefault_Color();
+
+		[UIAction("#reset-prefix-strings")]
+		public void OnResetPrefixStrings() => RevertToDefault_Strings();
 
 
 
@@ -269,5 +451,17 @@ namespace FCPercentage.Configuration
 			{ResultsViewLabelOptions.PercentageOn, "Only Percentage Label" },
 			{ResultsViewLabelOptions.BothOff, "No Labels" }
 		};
+
+		private Color HexToColor(string hex)
+		{
+			Color color = new Color();
+			ColorUtility.TryParseHtmlString(hex, out color);
+			return color;
+		}
+
+		private string ColorToHex(Color value)
+		{
+			return $"#{ColorUtility.ToHtmlStringRGB(value)}";
+		}
 	}
 }
