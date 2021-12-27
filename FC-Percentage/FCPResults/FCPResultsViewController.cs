@@ -77,10 +77,10 @@ namespace FCPercentage
 
 		private void ResultsViewController_OnActivateEvent(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
 		{
-			scoreManager.NotifyOfSongEnded();
-			ParseAllBSML();
-
 			levelCompletionResults = LevelCompletionResults(ref resultsViewController);
+
+			scoreManager.NotifyOfSongEnded(levelCompletionResults.modifiedScore);
+			ParseAllBSML();
 
 			if (levelCompletionResults.levelEndStateType == global::LevelCompletionResults.LevelEndStateType.Cleared)
 				SetResultsViewText();
@@ -144,7 +144,7 @@ namespace FCPercentage
 				fcPercentText.text += GetTotalPercentageText();
 
 				// Add the total percentage difference if enabled.
-				if (config.EnableScorePercentageDifference && scoreManager.HighscoreAtLevelStart > 0)
+				if (config.EnableScorePercentageDifference && scoreManager.Highscore > 0)
 					fcPercentDiffText.text += GetTotalPercentageDiffText();
 			}
 			// Add split percentage if enabled.
@@ -154,7 +154,7 @@ namespace FCPercentage
 				fcPercentText.text += GetSplitPercentageText();
 
 				// Add the split percentage difference if enabled.
-				if (config.EnableScorePercentageDifference && scoreManager.HighscoreAtLevelStart > 0)
+				if (config.EnableScorePercentageDifference && scoreManager.Highscore > 0)
 					fcPercentDiffText.text += GetSplitPercentageDiffText();
 			}
 
@@ -179,7 +179,7 @@ namespace FCPercentage
 				fcScoreText.text += GetScoreText();
 
 				// Add the score difference if it's enabled.
-				if (config.EnableScorePercentageDifference && scoreManager.HighscoreAtLevelStart > 0)
+				if (config.EnableScorePercentageDifference)
 					fcScoreDiffText.text += GetTotalScoreDiffText();
 			}
 
@@ -211,9 +211,9 @@ namespace FCPercentage
 		private string GetTotalPercentageDiffText()
 		{
 			// scoreTotalDiff is used since for instance a score difference of -2 could give a percent difference of 0.00%. Then the score would be red and the percentage would be green.
-			int scoreTotalDiff = scoreManager.ScoreAtCurrentPercentage - scoreManager.HighscoreAtLevelStart;
+			int scoreTotalDiff = scoreManager.ScoreAtCurrentPercentage - scoreManager.Highscore;
 			string percentTotalDiffColorTag = GetColorTagFor(scoreTotalDiff);
-			double percentTotalDiff = Math.Round(scoreManager.PercentageTotal, config.DecimalPrecision) - scoreManager.HighscoreAtLevelStartPercentage;
+			double percentTotalDiff = Math.Round(scoreManager.PercentageTotal, config.DecimalPrecision) - scoreManager.HighscorePercentage;
 
 			// Set total percentage diff text.
 			return $"{percentTotalDiffColorTag}{PercentageToString(percentTotalDiff)}  ";
@@ -222,8 +222,9 @@ namespace FCPercentage
 		private string GetSplitPercentageDiffText()
 		{
 			// Set split percentage diff text.
-			double percentDiffA = Math.Round(scoreManager.PercentageA, config.DecimalPrecision) - scoreManager.HighscoreAtLevelStartPercentage;
-			double percentDiffB = Math.Round(scoreManager.PercentageB, config.DecimalPrecision) - scoreManager.HighscoreAtLevelStartPercentage;
+
+			double percentDiffA = Math.Round(scoreManager.PercentageA, config.DecimalPrecision) - scoreManager.HighscorePercentage;
+			double percentDiffB = Math.Round(scoreManager.PercentageB, config.DecimalPrecision) - scoreManager.HighscorePercentage;
 			string percentDiffColorTagA = GetColorTagFor(percentDiffA);
 			string percentDiffColorTagB = GetColorTagFor(percentDiffB);
 
@@ -234,7 +235,7 @@ namespace FCPercentage
 		private string GetTotalScoreDiffText()
 		{
 			// Set score diff text.
-			int scoreTotalDiff = scoreManager.ScoreAtCurrentPercentage - scoreManager.HighscoreAtLevelStart;
+			int scoreTotalDiff = scoreManager.ScoreAtCurrentPercentage - scoreManager.Highscore;
 			string scoreTotalDiffColorTag = GetColorTagFor(scoreTotalDiff);
 
 			return $"{scoreTotalDiffColorTag}{ScoreToString(scoreTotalDiff)}";

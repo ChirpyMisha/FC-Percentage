@@ -15,7 +15,9 @@ namespace FCPercentage.Configuration
 
 		private ResultsSettings settings => PluginConfig.Instance.ResultsSettings;
 
+#pragma warning disable CS8618
 		public event PropertyChangedEventHandler PropertyChanged;
+#pragma warning restore CS8618
 
 		private ResultsViewModes percentageTotalMode;
 		private ResultsViewModes percentageSplitMode;

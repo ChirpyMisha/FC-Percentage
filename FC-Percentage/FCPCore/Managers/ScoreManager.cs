@@ -37,9 +37,9 @@ namespace FCPercentage
 			return (int)Math.Round(currentRatio * MaxScoreAtLevelStart);
 		}
 
-		public int HighscoreAtLevelStart { get; private set; }
+		public int Highscore { get; private set; }
 		public int MaxScoreAtLevelStart { get; private set; }
-		public double HighscoreAtLevelStartPercentage => CalculatePercentage(HighscoreAtLevelStart, MaxScoreAtLevelStart);
+		public double HighscorePercentage => CalculatePercentage(Highscore, MaxScoreAtLevelStart);
 		
 		public ScoreManager()
 		{
@@ -64,9 +64,16 @@ namespace FCPercentage
 			defaultPercentage = defaultPercentageAtStart;
 		}
 
-		internal void NotifyOfSongEnded()
+		internal void NotifyOfSongEnded(int levelResultScoreModified)
 		{
 			defaultPercentage = defaultPercentageAtEnd;
+			UpdateHighscore(levelResultScoreModified);
+		}
+
+		private void UpdateHighscore(int levelResultScoreModified)
+		{
+			if (levelResultScoreModified > Highscore)
+				Highscore = levelResultScoreModified;
 		}
 
 		internal void ResetScoreManager(IDifficultyBeatmap beatmap, PlayerDataModel playerDataModel, ColorScheme colorScheme)
@@ -74,7 +81,7 @@ namespace FCPercentage
 			ResetScore();
 
 			PlayerLevelStatsData stats = playerDataModel.playerData.GetPlayerLevelStatsData(beatmap);
-			HighscoreAtLevelStart = stats.highScore;
+			Highscore = stats.highScore;
 			MaxScoreAtLevelStart = CalculateMaxScore(beatmap.beatmapData.cuttableNotesCount);
 
 			SaberAColor = "#" + ColorUtility.ToHtmlStringRGB(colorScheme.saberAColor);
