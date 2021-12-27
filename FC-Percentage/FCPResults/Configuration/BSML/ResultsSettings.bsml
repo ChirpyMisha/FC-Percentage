@@ -58,6 +58,9 @@
 			<color-setting text='Score/Percentage Difference Negative' hover-hint='Which color should be used for a negative difference value?'
 										 value='ScorePercentageDiffNegativeColor' apply-on-change='true' bind-value='true'
 										 interactable='~is-score-percentage-diff-on' font-color='~is-score-percentage-diff-on-color'/>
+			
+			<checkbox-setting text='Apply Colors To ScorePercentage Mod' hover-hint='If the ScorePercentage mod is installed, replace its difference colors with the FC-Percentage difference colors.'
+												value='ApplyColorsToScorePercentageModDifference' apply-on-change='false' interactable='~is-any-on' font-color='~is-any-on-color'/>
 
 		</settings-container>
 	</settings-submenu>

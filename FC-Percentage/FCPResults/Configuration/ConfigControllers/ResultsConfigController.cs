@@ -320,6 +320,13 @@ namespace FCPercentage.Configuration
 			}
 		}
 
+		[UIValue("ApplyColorsToScorePercentageModDifference")]
+		public virtual bool ApplyColorsToScorePercentageModDifference
+		{
+			get { return settings.Advanced.ApplyColorsToScorePercentageModDifference; }
+			set { settings.Advanced.ApplyColorsToScorePercentageModDifference = value; }
+		}
+
 		// Prefix Strings
 		[UIValue("ScorePrefixText")]
 		public virtual string ScorePrefixText

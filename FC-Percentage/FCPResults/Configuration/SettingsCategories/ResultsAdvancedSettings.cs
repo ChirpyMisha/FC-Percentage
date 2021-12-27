@@ -10,6 +10,7 @@
 		public virtual string PercentageSplitSaberBPrefixText { get; set; } = DefaultPercentageSplitSaberBPrefixText;
 		public virtual string DifferencePositiveColor { get; set; } = DefaultDifferencePositiveColor;
 		public virtual string DifferenceNegativeColor { get; set; } = DefaultDifferenceNegativeColor;
+		public virtual bool ApplyColorsToScorePercentageModDifference { get; set; } = false;
 
 		public static string DefaultScorePrefixText = "FC : ";
 		public static string DefaultPercentagePrefixText = "FC : ";
