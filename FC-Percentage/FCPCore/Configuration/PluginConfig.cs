@@ -15,6 +15,7 @@ namespace FCPercentage.Configuration
 		public virtual ResultsSettings ResultsSettings { get; set; } = new ResultsSettings();
 
 		// Shared Settings (Custom Counters+ Counter & Results View)
+		public virtual int BadCutThreshold { get; set; } = 0;
 		public virtual bool IgnoreMultiplier { get; set; } = false;
 		
 

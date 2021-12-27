@@ -1,13 +1,10 @@
 ﻿using BeatSaberMarkupLanguage.Attributes;
-using BeatSaberMarkupLanguage.ViewControllers;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using TMPro;
 
 namespace FCPercentage.Configuration
 {
-	class CounterConfigController// : BSMLAutomaticViewController
+	class CounterConfigController
 	{
 		private CounterSettings settings => PluginConfig.Instance.CounterSettings;
 
@@ -36,8 +33,6 @@ namespace FCPercentage.Configuration
 			set { settings.DecimalPrecision = value; }
 		}
 
-		//[UIValue("SaberColorSchemeActive")]
-		//private bool SaberColorSchemeActive => settings.PercentageMode != CounterPercentageModes.Total;
 		[UIValue("SplitPercentageUseSaberColorScheme")]
 		public virtual bool SplitPercentageUseSaberColorScheme
 		{
@@ -58,6 +53,14 @@ namespace FCPercentage.Configuration
 			get { return PluginConfig.Instance.IgnoreMultiplier; }
 			set { PluginConfig.Instance.IgnoreMultiplier = value; }
 		}
+
+		[UIValue("BadCutThreshold")]
+		public virtual int BadCutThreshold
+		{
+			get { return PluginConfig.Instance.BadCutThreshold; }
+			set { PluginConfig.Instance.BadCutThreshold = value; }
+		}
+
 
 		// Advanced Settings
 		[UIValue("CounterOffset")]

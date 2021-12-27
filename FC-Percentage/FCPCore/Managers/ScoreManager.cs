@@ -28,6 +28,12 @@ namespace FCPercentage
 		public string SaberAColor { get; private set; } = "#FFFFFF";
 		public string SaberBColor { get; private set; } = "#FFFFFF";
 
+		public int Highscore { get; private set; }
+		public int MaxScoreAtLevelStart { get; private set; }
+		public double HighscorePercentage => CalculatePercentage(Highscore, MaxScoreAtLevelStart);
+
+		public bool IsBadCutThresholdBroken { get; private set; }
+
 		private int CalculateScoreFromCurrentPercentage()
 		{
 			if (MaxScoreTotal == 0)
@@ -36,10 +42,6 @@ namespace FCPercentage
 			double currentRatio = CalculateRatio(ScoreTotal, MaxScoreTotal);
 			return (int)Math.Round(currentRatio * MaxScoreAtLevelStart);
 		}
-
-		public int Highscore { get; private set; }
-		public int MaxScoreAtLevelStart { get; private set; }
-		public double HighscorePercentage => CalculatePercentage(Highscore, MaxScoreAtLevelStart);
 		
 		public ScoreManager()
 		{
@@ -61,7 +63,10 @@ namespace FCPercentage
 			ScoreB = 0;
 			MaxScoreA = 0;
 			MaxScoreB = 0;
+			Highscore = 0;
+			MaxScoreAtLevelStart = 0;
 			defaultPercentage = defaultPercentageAtStart;
+			IsBadCutThresholdBroken = false;
 		}
 
 		internal void NotifyOfSongEnded(int levelResultScoreModified)
@@ -122,6 +127,11 @@ namespace FCPercentage
 
 			// Inform listeners that the score has updated
 			InvokeScoreUpdate();
+		}
+
+		internal void SetBadCutThresholdBroken()
+		{
+			IsBadCutThresholdBroken = true;
 		}
 
 		private int CalculateMaxScore(int noteCount)

@@ -1,6 +1,4 @@
-﻿using UnityEngine;
-
-namespace FCPercentage.Configuration
+﻿namespace FCPercentage.Configuration
 {
 	class ResultsAdvancedSettings
 	{

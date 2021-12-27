@@ -1,5 +1,4 @@
 ﻿using BeatSaberMarkupLanguage.Attributes;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -289,6 +288,13 @@ namespace FCPercentage.Configuration
 		{
 			get { return PluginConfig.Instance.IgnoreMultiplier; }
 			set { PluginConfig.Instance.IgnoreMultiplier = value; }
+		}
+
+		[UIValue("BadCutThreshold")]
+		public virtual int BadCutThreshold
+		{
+			get { return PluginConfig.Instance.BadCutThreshold; }
+			set { PluginConfig.Instance.BadCutThreshold = value; }
 		}
 
 		// Score/Percentage Diff Colors

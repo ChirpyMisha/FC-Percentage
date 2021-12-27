@@ -20,6 +20,10 @@
 	<checkbox-setting text='Ignore Multiplier Ramp-up' hover-hint='When this is enabled all cuts will be weighed the same. (Also applies to resuls screen)'
 										value='IgnoreMultiplier' apply-on-change='true'/>
 
+	<slider-setting text='Bad Cut Threshold' hover-hint='From what cut score should it be treated as a miss or bad cut?&#xA;Any cut with a score lower or equal to the threshold won&#39;t lower the FC score/percentage. (Also applies to in-game counter)'
+									value='BadCutThreshold' apply-on-change='true' interactable='~is-any-on' font-color='~is-any-on-color'
+									integer-only='true' min='0' max='115' increment='1'/>
+
 	<!-- Advanced Settings -->
 	<!--<settings-submenu text='> Advanced Settings'>
 		<settings-container>-->

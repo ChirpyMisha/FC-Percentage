@@ -13,6 +13,8 @@ namespace FCPercentage
 		private readonly Func<int, int> MultiplierAtMax = noteCount => 8;
 		private Func<int, int> GetMultiplier;
 
+		private readonly int badCutThreshold;
+
 		private readonly NoteRatingTracker noteRatingTracker;
 		private readonly ScoreManager scoreManager;
 
@@ -23,6 +25,7 @@ namespace FCPercentage
 
 			// Set function for multiplier according to setting
 			GetMultiplier = PluginConfig.Instance.IgnoreMultiplier ? MultiplierAtMax : MultiplierAtNoteCount;
+			badCutThreshold = PluginConfig.Instance.BadCutThreshold;
 		}
 
 		public void Initialize()
@@ -76,15 +79,29 @@ namespace FCPercentage
 		{
 			NoteRating rating = e.NoteRating;
 
-			// Calculate difference between previously applied score and actual score
-			int maxAngleCutScore = ScoreModel.kMaxBeforeCutSwingRawScore + ScoreModel.kMaxAfterCutSwingRawScore;
+			// Check if score is below the bad cut threshold
 			int ratingAngleCutScore = rating.beforeCut + rating.afterCut;
-			int diffAngleCutScore = maxAngleCutScore - ratingAngleCutScore;
-
-			// If the previously applied score was NOT correct (aka, it was a full NOT swing) -> Update score
-			if (diffAngleCutScore > 0)
+			int cutScore = ratingAngleCutScore + rating.acc;
+			if (cutScore <= badCutThreshold)
 			{
-				scoreManager.SubtractScore(e.NoteData.colorType, diffAngleCutScore, GetMultiplier(e.NoteRating.noteCount));
+				scoreManager.SetBadCutThresholdBroken();
+
+				int maxScoreIfFinished = e.NoteRating.acc + ScoreModel.kMaxBeforeCutSwingRawScore + ScoreModel.kMaxAfterCutSwingRawScore;
+				scoreManager.SubtractScore(e.NoteData.colorType, maxScoreIfFinished, GetMultiplier(e.NoteRating.noteCount), true);
+
+				Plugin.Log.Notice($"Cut Threshold has been broken. Score = {cutScore}, BlockColor = {e.NoteData.colorType}, Multiplier = {GetMultiplier(e.NoteRating.noteCount)}, NoteCount = {e.NoteRating.noteCount}");
+			}
+			else
+			{
+				// Calculate difference between previously applied score and actual score
+				int maxAngleCutScore = ScoreModel.kMaxBeforeCutSwingRawScore + ScoreModel.kMaxAfterCutSwingRawScore;
+				int diffAngleCutScore = maxAngleCutScore - ratingAngleCutScore;
+
+				// If the previously applied score was NOT correct (aka, it was a full NOT swing) -> Update score
+				if (diffAngleCutScore > 0)
+				{
+					scoreManager.SubtractScore(e.NoteData.colorType, diffAngleCutScore, GetMultiplier(e.NoteRating.noteCount));
+				}
 			}
 		}
 	}

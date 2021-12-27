@@ -44,6 +44,8 @@ namespace FCPercentage
 		private string percentageColorTagB = "";
 		private string percentageStringFormat = "";
 
+		private bool IsFullCombo => levelCompletionResults != null && (levelCompletionResults.fullCombo && !scoreManager.IsBadCutThresholdBroken);
+
 		public FCPResultsViewController(ScoreManager scoreManager, ResultsViewController resultsViewController)
 		{
 			this.scoreManager = scoreManager;
@@ -118,9 +120,8 @@ namespace FCPercentage
 		private bool IsActiveOnResultsView(ResultsViewModes mode)
 		{
 			// Checks if the result should be shown
-			if (mode == ResultsViewModes.On || (mode == ResultsViewModes.OffWhenFC && !levelCompletionResults.fullCombo))
-				return true;
-			return false;
+			return mode == ResultsViewModes.On ||
+				  (mode == ResultsViewModes.OffWhenFC && !IsFullCombo);
 		}
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.

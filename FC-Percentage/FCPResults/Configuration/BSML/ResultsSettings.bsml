@@ -22,8 +22,8 @@
 												 options='ResultsViewLabelOptionList' formatter='ResultsViewLabelOptionsFormat' bind-value='true'/>
 
 	<increment-setting text='Decimal Precision' hover-hint='How precise should the percentage be?'
-											value='DecimalPrecision' apply-on-change='false' interactable='~is-any-percent-on'
-											integer-only='true' min='0' max='69' increment='1' font-color='~is-any-percent-on-color'/>
+										 value='DecimalPrecision' apply-on-change='false' interactable='~is-any-percent-on' font-color='~is-any-percent-on-color'
+										 integer-only='true' min='0' max='69' increment='1'/>
 
 	<checkbox-setting text='Enable Score Percentage Difference' hover-hint='Shows the difference between your previous high score and the FC score and percentage.'
 										value='EnableScorePercentageDifference' apply-on-change='true' interactable='~is-any-percent-on' font-color='~is-any-percent-on-color' bind-value='true'/>
@@ -36,6 +36,10 @@
 
 	<checkbox-setting text='Ignore Multiplier Ramp-up' hover-hint='When this is enabled all cuts will be weighed the same. (Also applies to in-game counter)'
 										value='IgnoreMultiplier' apply-on-change='false' interactable='~is-any-on' font-color='~is-any-on-color'/>
+
+	<slider-setting text='Bad Cut Threshold' hover-hint='From what cut score should it be treated as a miss or bad cut?&#xA;Any cut with a score lower or equal to the threshold won&#39;t lower the FC score/percentage. (Also applies to in-game counter)'
+									value='BadCutThreshold' apply-on-change='false' interactable='~is-any-on' font-color='~is-any-on-color'
+									integer-only='true' min='0' max='115' increment='1'/>
 			
 	<!-- Advanced Settings -->
 	<settings-submenu text='> Score/Percentage Difference Colors'>
