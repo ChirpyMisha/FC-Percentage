@@ -45,7 +45,8 @@ namespace FCPercentage
 		private string percentageColorTagB = "";
 		private string percentageStringFormat = "";
 
-		private bool IsFullCombo => levelCompletionResults != null && (levelCompletionResults.fullCombo && !scoreManager.IsBadCutThresholdBroken);
+		private bool IsFullCombo => levelCompletionResults != null && levelCompletionResults.fullCombo;
+		//private bool IsFullCombo => levelCompletionResults != null && (levelCompletionResults.fullCombo && !scoreManager.IsBadCutThresholdBroken);
 
 		public FCPResultsViewController(ScoreManager scoreManager, ResultsViewController resultsViewController)
 		{

@@ -19,11 +19,7 @@ namespace FCPercentage.Configuration
 		public virtual CounterLabelOptions EnableLabel
 		{
 			get { return settings.EnableLabel; }
-			set 
-			{ 
-				settings.EnableLabel = value;
-				//NotifyPropertyChanged(nameof(SaberColorSchemeActive));
-			}
+			set {  settings.EnableLabel = value; }
 		}
 
 		[UIValue("DecimalPrecision")]
@@ -54,12 +50,12 @@ namespace FCPercentage.Configuration
 			set { PluginConfig.Instance.IgnoreMultiplier = value; }
 		}
 
-		[UIValue("BadCutThreshold")]
-		public virtual int BadCutThreshold
-		{
-			get { return PluginConfig.Instance.BadCutThreshold; }
-			set { PluginConfig.Instance.BadCutThreshold = value; }
-		}
+		//[UIValue("BadCutThreshold")]
+		//public virtual int BadCutThreshold
+		//{
+		//	get { return PluginConfig.Instance.BadCutThreshold; }
+		//	set { PluginConfig.Instance.BadCutThreshold = value; }
+		//}
 
 
 		// Advanced Settings

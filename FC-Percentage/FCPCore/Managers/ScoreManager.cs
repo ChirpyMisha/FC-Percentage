@@ -32,7 +32,7 @@ namespace FCPercentage
 		public int MaxScoreAtLevelStart { get; private set; }
 		public double HighscorePercentage => CalculatePercentage(Highscore, MaxScoreAtLevelStart);
 
-		public bool IsBadCutThresholdBroken { get; private set; }
+		//public bool IsBadCutThresholdBroken { get; private set; }
 
 		private int CalculateScoreFromCurrentPercentage()
 		{
@@ -66,7 +66,7 @@ namespace FCPercentage
 			Highscore = 0;
 			MaxScoreAtLevelStart = 0;
 			defaultPercentage = defaultPercentageAtStart;
-			IsBadCutThresholdBroken = false;
+			//IsBadCutThresholdBroken = false;
 		}
 
 		internal void NotifyOfSongEnded(int levelResultScoreModified)
@@ -129,10 +129,10 @@ namespace FCPercentage
 			InvokeScoreUpdate();
 		}
 
-		internal void SetBadCutThresholdBroken()
-		{
-			IsBadCutThresholdBroken = true;
-		}
+		//internal void SetBadCutThresholdBroken()
+		//{
+		//	IsBadCutThresholdBroken = true;
+		//}
 
 		private int CalculateMaxScore(int noteCount)
 		{

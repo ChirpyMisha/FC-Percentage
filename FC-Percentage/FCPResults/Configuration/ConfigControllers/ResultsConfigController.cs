@@ -290,12 +290,12 @@ namespace FCPercentage.Configuration
 			set { PluginConfig.Instance.IgnoreMultiplier = value; }
 		}
 
-		[UIValue("BadCutThreshold")]
-		public virtual int BadCutThreshold
-		{
-			get { return PluginConfig.Instance.BadCutThreshold; }
-			set { PluginConfig.Instance.BadCutThreshold = value; }
-		}
+		//[UIValue("BadCutThreshold")]
+		//public virtual int BadCutThreshold
+		//{
+		//	get { return PluginConfig.Instance.BadCutThreshold; }
+		//	set { PluginConfig.Instance.BadCutThreshold = value; }
+		//}
 
 		// Score/Percentage Diff Colors
 		[UIValue("ScorePercentageDiffPositiveColor")]
