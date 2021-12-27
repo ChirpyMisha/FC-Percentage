@@ -1,4 +1,4 @@
-# FullComboPercentageCounter
+# (Outdated Readme) FullComboPercentageCounter
  
 Full Combo Percentage Counter is a custom counter which is used with Counters+.
 It shows your percentage without misses, bad cuts, or any other thing that may lower your combo.
