@@ -25,13 +25,13 @@
 										 value='DecimalPrecision' apply-on-change='false' interactable='~is-any-percent-on' font-color='~is-any-percent-on-color'
 										 integer-only='true' min='0' max='69' increment='1'/>
 
-	<checkbox-setting text='Enable Score Percentage Difference' hover-hint='Shows the difference between your previous high score and the FC score and percentage.'
+	<checkbox-setting text='Enable Score Percentage Difference' hover-hint='Shows the difference between your high score and the FC score and percentage.'
 										value='EnableScorePercentageDifference' apply-on-change='true' interactable='~is-any-percent-on' font-color='~is-any-percent-on-color' bind-value='true'/>
 
-	<checkbox-setting text='Use Saber Color Scheme' hover-hint='Use the saber color scheme when "Split Percentage" is enabled?'
+	<checkbox-setting text='Use Saber Color Scheme' hover-hint='Use the saber color scheme when "Show Split FC Percentage" is enabled?'
 										value='SplitPercentageUseSaberColorScheme' apply-on-change='false' interactable='~is-percentage-split-on' font-color='~is-percentage-split-on-color'/>
 
-	<checkbox-setting text='Keep Trailing Zeros' hover-hint='Should the percentage have zeros at the end of the decimals?&#xA;Example without trailing zeros: 80%&#xA;Example with trailing zeros: 80.00%'
+	<checkbox-setting text='Keep Trailing Zeros' hover-hint='Should the percentage have zeros at the end of the decimals?&#xA;Example without trailing zeros: 83%&#xA;Example with trailing zeros: 83.00%'
 										value='KeepTrailingZeros' apply-on-change='false' interactable='~is-any-percent-on' font-color='~is-any-percent-on-color'/>
 
 	<checkbox-setting text='Ignore Multiplier Ramp-up' hover-hint='When this is enabled all cuts will be weighed the same. (Also applies to in-game counter)'
@@ -61,7 +61,7 @@
 										 interactable='~is-score-percentage-diff-on' font-color='~is-score-percentage-diff-on-color'/>
 			
 			<checkbox-setting text='Apply Colors To ScorePercentage Mod' hover-hint='If the ScorePercentage mod is installed, replace its difference colors with the FC-Percentage difference colors.'
-												value='ApplyColorsToScorePercentageModDifference' apply-on-change='false' interactable='~is-any-on' font-color='~is-any-on-color'/>
+												value='ApplyColorsToScorePercentageModDifference' apply-on-change='false'/> <!--interactable='~is-any-on' font-color='~is-any-on-color'-->
 
 		</settings-container>
 	</settings-submenu>

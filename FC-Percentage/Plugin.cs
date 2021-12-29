@@ -29,9 +29,9 @@ namespace FCPercentage
 			Instance = this;
 			Log = logger;
 
-			zenjector.OnApp<AppInstaller>();
-			zenjector.OnMenu<MenuInstaller>();
-			zenjector.OnGame<GameInstaller>(false);
+			zenjector.Install<AppInstaller>(Location.App);
+			zenjector.Install<MenuInstaller>(Location.Menu);
+			zenjector.Install<GameInstaller>(Location.GameCore);
 
 			Log.Info($"{PluginName} initialized.");
 		}

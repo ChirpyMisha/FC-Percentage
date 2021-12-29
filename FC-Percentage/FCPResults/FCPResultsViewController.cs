@@ -101,16 +101,16 @@ namespace FCPercentage
 				if (fcScoreDiffText != null)
 					fcScoreDiffText.fontSize *= 0.85f;
 				else
-					Plugin.Log.Error($"Parsing BSML ({ResourceNameFCScore}) has failed. Please notify ChirpyMisha! Game will crash in 3, 2, 1 . . .");
+					Plugin.Log.Error($"Parsing BSML ({ResourceNameFCScore}) has failed.");
 			}
 			if (fcPercentText == null)
 			{
 				ParseBSML(ResourceNameFCPercentage);
 
-				if (fcPercentDiffText != null)
+				if (fcPercentDiffText != null) 
 					fcPercentDiffText.fontSize *= 0.85f;
-				else
-					Plugin.Log.Error($"Parsing BSML ({ResourceNameFCPercentage}) has failed. Please notify ChirpyMisha! Game will crash in 3, 2, 1 . . .");
+				else 
+					Plugin.Log.Error($"Parsing BSML ({ResourceNameFCPercentage}) has failed.");
 			}
 		}
 
@@ -190,7 +190,7 @@ namespace FCPercentage
 			if (isPercentageAdded && (config.EnableLabel == ResultsViewLabelOptions.BothOn || config.EnableLabel == ResultsViewLabelOptions.PercentageOn))
 			{
 				fcPercentText.text = config.Advanced.PercentagePrefixText + fcPercentText.text;
-				fcPercentDiffText.text = $"<color=#FFFFFF00>{config.Advanced.PercentagePrefixText}{fcPercentDiffText.text}";
+				//fcPercentDiffText.text = $"<color=#FFFFFF00>{config.Advanced.PercentagePrefixText}{fcPercentDiffText.text}";
 			}
 
 			fcPercentText.text = fcPercentText.text.TrimEnd();

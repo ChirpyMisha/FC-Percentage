@@ -6,10 +6,10 @@ namespace FCPercentage
 {
 	public class ScoreTracker : IInitializable, IDisposable
 	{
-		[Inject] private GameplayCoreSceneSetupData sceneSetupData = null!;
+		[InjectOptional] private GameplayCoreSceneSetupData sceneSetupData = null!;
 		[Inject] private PlayerDataModel playerDataModel = null!;
 
-		private readonly Func<int, int> MultiplierAtNoteCount = noteCount => (noteCount > 13 ? 8 : (noteCount > 5 ? 4 : (noteCount > 1 ? 2 : 1)));
+		private readonly Func<int, int> MultiplierAtNoteCount = noteCount => noteCount > 13 ? 8 : (noteCount > 5 ? 4 : (noteCount > 1 ? 2 : 1));
 		private readonly Func<int, int> MultiplierAtMax = noteCount => 8;
 		private Func<int, int> GetMultiplier;
 
@@ -41,6 +41,13 @@ namespace FCPercentage
 			noteRatingTracker.OnRatingFinished += NoteTracker_OnNoteRatingFinished;
 		}
 
+		public void Dispose()
+		{
+			// Unassign events
+			noteRatingTracker.OnRatingAdded -= NoteRatingTracker_OnNoteRatingAdded;
+			noteRatingTracker.OnRatingFinished -= NoteTracker_OnNoteRatingFinished;
+		}
+
 		public bool HasNullReferences()
 		{
 			if (scoreManager == null || noteRatingTracker == null || sceneSetupData == null || playerDataModel == null)
@@ -61,13 +68,7 @@ namespace FCPercentage
 
 			return false;
 		}
-
-		public void Dispose()
-		{
-			// Unassign events
-			noteRatingTracker.OnRatingAdded -= NoteRatingTracker_OnNoteRatingAdded;
-			noteRatingTracker.OnRatingFinished -= NoteTracker_OnNoteRatingFinished;
-		}
+		
 
 		private void NoteRatingTracker_OnNoteRatingAdded(object s, NoteRatingUpdateEventArgs e)
 		{
@@ -86,9 +87,7 @@ namespace FCPercentage
 
 			// If the previously applied score was NOT correct (aka, it was a full NOT swing) -> Update score
 			if (diffAngleCutScore > 0)
-			{
 				scoreManager.SubtractScore(e.NoteData.colorType, diffAngleCutScore, GetMultiplier(e.NoteRating.noteCount));
-			}
 		}
 
 

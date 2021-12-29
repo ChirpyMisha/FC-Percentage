@@ -19,7 +19,7 @@ namespace FCPercentage
 
 		private int noteCount;
 
-		public NoteRatingTracker(ScoreController scoreController)
+		public NoteRatingTracker([InjectOptional]ScoreController scoreController)
 		{
 			this.scoreController = scoreController;
 
@@ -32,14 +32,20 @@ namespace FCPercentage
 
 		public void Initialize()
 		{
-			scoreController.noteWasMissedEvent += ScoreController_noteWasMissedEvent;
-			scoreController.noteWasCutEvent += ScoreController_noteWasCutEvent;
+			if (scoreController != null)
+			{
+				scoreController.noteWasMissedEvent += ScoreController_noteWasMissedEvent;
+				scoreController.noteWasCutEvent += ScoreController_noteWasCutEvent;
+			}
 		}
 
 		public void Dispose()
 		{
-			scoreController.noteWasMissedEvent -= ScoreController_noteWasMissedEvent;
-			scoreController.noteWasCutEvent -= ScoreController_noteWasCutEvent;
+			if (scoreController != null)
+			{
+				scoreController.noteWasMissedEvent -= ScoreController_noteWasMissedEvent;
+				scoreController.noteWasCutEvent -= ScoreController_noteWasCutEvent;
+			}
 		}
 
 		private void ScoreController_noteWasMissedEvent(NoteData noteData, int _)
