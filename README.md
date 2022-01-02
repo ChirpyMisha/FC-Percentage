@@ -80,9 +80,21 @@ To configure the FC Percentage Counter, in the panel on the left click on `Count
 ### Known bugs:
 [No known bugs]
 
-### Ideas for Future Features:
-- Counter: Add setting to show FC Score
+### Ideas for Future Features / Changes:
+- Counter: Add FC Score.
+- Counter: Change color depending if the percentage is higher/lower.
+  - Add 3 color gradient. (The range over which the gradient takes place should get smaller when the percentage gets higher.)
+  - Make colors customisable.
+ 
 - Results screen: Change "Enable Score Percentage Difference" setting to choose between the previous high score (like the ScorePercentage mod does) or the current high score (so if a new high score is set then it'll compare to the new score).
+- Results screen: Button to show FC Score/Percentage when it's currently hidden.
+- Results screen: Make the percentage difference centered with their respective percentage (When Split FC Percentage is enabled).
+
+- Both: Display FC PP.
+  - Option: Change color depending if it's higher or lower. 
+    - Add 3 color gradient. (The range over which the gradient takes place should get smaller when the percentage gets higher.)
+    - Make colors customisable.
+- Both: Improve general look of the mod. (I'm not good at BSML (yet?) so I'm open to any contributions)
 
 ### Want to contribute?
-I'm not the best with UI and BSML. If you want to help make the mod look better, then please contact me or make a pull request.
+If you want to improve on the mod in any way (whether it be implementing one of my ideas or your own idea), please contact me or make a pull request.
