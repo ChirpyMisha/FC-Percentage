@@ -1,4 +1,4 @@
-﻿namespace FCPercentage.Configuration
+﻿namespace FCPercentage.FCPCounter.Configuration
 {
 	class CounterAdvancedSettings
 	{

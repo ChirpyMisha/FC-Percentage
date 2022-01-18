@@ -1,12 +1,14 @@
-﻿using CountersPlus.Counters.Interfaces;
+﻿using System;
+using UnityEngine;
+using TMPro;
+using CountersPlus.Counters.Interfaces;
 using CountersPlus.Custom;
 using CountersPlus.Utils;
-using TMPro;
-using FCPercentage.Configuration;
-using System;
-using UnityEngine;
+using FCPercentage.FCPCounter.Configuration;
+using FCPercentage.FCPCore;
+using FCPercentage.FCPCore.Configuration;
 
-namespace FCPercentage
+namespace FCPercentage.FCPCounter
 {
 	public class FCPCounterController : ICounter
 	{

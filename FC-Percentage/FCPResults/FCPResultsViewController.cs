@@ -1,14 +1,16 @@
 ﻿#nullable enable
-using BeatSaberMarkupLanguage;
-using BeatSaberMarkupLanguage.Attributes;
-using FCPercentage.Configuration;
-using IPA.Utilities;
 using System;
 using System.Reflection;
 using TMPro;
 using Zenject;
+using BeatSaberMarkupLanguage;
+using BeatSaberMarkupLanguage.Attributes;
+using IPA.Utilities;
+using FCPercentage.FCPCore;
+using FCPercentage.FCPCore.Configuration;
+using FCPercentage.FCPResults.Configuration;
 
-namespace FCPercentage
+namespace FCPercentage.FCPResults
 {
 	class FCPResultsViewController : IInitializable, IDisposable
 	{
@@ -54,7 +56,7 @@ namespace FCPercentage
 			this.resultsViewController = resultsViewController;
 
 			config = PluginConfig.Instance.ResultsSettings;
-	}
+		}
 
 		public void Initialize()
 		{

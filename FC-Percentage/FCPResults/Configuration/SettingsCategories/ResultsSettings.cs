@@ -1,4 +1,4 @@
-﻿namespace FCPercentage.Configuration
+﻿namespace FCPercentage.FCPResults.Configuration
 {
 	class ResultsSettings
 	{

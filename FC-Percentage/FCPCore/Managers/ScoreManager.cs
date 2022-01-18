@@ -4,7 +4,7 @@ using System.Globalization;
 using UnityEngine;
 using Zenject;
 
-namespace FCPercentage
+namespace FCPercentage.FCPCore
 {
 	public class ScoreManager : IInitializable, IDisposable
 	{

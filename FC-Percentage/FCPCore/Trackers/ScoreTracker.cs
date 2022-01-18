@@ -1,8 +1,8 @@
-﻿using FCPercentage.Configuration;
-using System;
+﻿using System;
 using Zenject;
+using FCPercentage.FCPCore.Configuration;
 
-namespace FCPercentage
+namespace FCPercentage.FCPCore
 {
 	public class ScoreTracker : IInitializable, IDisposable
 	{

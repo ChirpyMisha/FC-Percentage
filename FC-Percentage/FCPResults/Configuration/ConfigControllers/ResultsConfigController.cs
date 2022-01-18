@@ -1,11 +1,12 @@
-﻿using BeatSaberMarkupLanguage.Attributes;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using BeatSaberMarkupLanguage.Attributes;
+using FCPercentage.FCPCore.Configuration;
 
-namespace FCPercentage.Configuration
+namespace FCPercentage.FCPResults.Configuration
 {
 	class ResultsConfigController : INotifyPropertyChanged
 	{

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Zenject;
 
 // I copied a part of PikminBloom's homework and changed a few things so it isn't obvious.
-namespace FCPercentage
+namespace FCPercentage.FCPCore
 {
 	public class NoteRatingTracker : IInitializable, IDisposable, ISaberSwingRatingCounterDidChangeReceiver, ISaberSwingRatingCounterDidFinishReceiver
 	{
@@ -50,13 +50,19 @@ namespace FCPercentage
 
 		private void ScoreController_noteWasMissedEvent(NoteData noteData, int _)
 		{
+			if (noteData.colorType == ColorType.None) 
+				return;
+
 			noteCount++;
 		}
 
 		private void ScoreController_noteWasCutEvent(NoteData noteData, in NoteCutInfo noteCutInfo, int multiplier)
 		{
+			if (noteData.colorType == ColorType.None) 
+				return;
+
 			noteCount++;
-			if (noteData.colorType != ColorType.None && noteCutInfo.allIsOK)
+			if (noteCutInfo.allIsOK)
 			{
 				swingCounterCutInfo.Add(noteCutInfo.swingRatingCounter, noteCutInfo);
 				noteCutInfoData.Add(noteCutInfo, noteData);
@@ -116,19 +122,12 @@ namespace FCPercentage
 			saberSwingRatingCounter.UnregisterDidFinishReceiver(this);
 		}
 
-		protected virtual void InvokeRatingAdded(NoteData noteData, NoteRating noteRating)
-		{
-			EventHandler<NoteRatingUpdateEventArgs>? handler = OnRatingAdded;
-			if (handler != null)
-			{
-				NoteRatingUpdateEventArgs eventArgs = new NoteRatingUpdateEventArgs(noteData, noteRating);
+		protected virtual void InvokeRatingAdded(NoteData noteData, NoteRating noteRating) => InvokeNoteRatingUpdate(ref OnRatingAdded, noteData, noteRating);
+		protected virtual void InvokeRatingFinished(NoteData noteData, NoteRating noteRating) => InvokeNoteRatingUpdate(ref OnRatingFinished, noteData, noteRating);
 
-				handler(this, eventArgs);
-			}
-		}
-		protected virtual void InvokeRatingFinished(NoteData noteData, NoteRating noteRating)
+		protected virtual void InvokeNoteRatingUpdate(ref EventHandler<NoteRatingUpdateEventArgs>? noteRatingUpdateEvent, NoteData noteData, NoteRating noteRating)
 		{
-			EventHandler<NoteRatingUpdateEventArgs>? handler = OnRatingFinished;
+			EventHandler<NoteRatingUpdateEventArgs>? handler = noteRatingUpdateEvent;
 			if (handler != null)
 			{
 				NoteRatingUpdateEventArgs eventArgs = new NoteRatingUpdateEventArgs(noteData, noteRating);

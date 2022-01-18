@@ -1,8 +1,10 @@
 ﻿using System.Runtime.CompilerServices;
 using IPA.Config.Stores;
+using FCPercentage.FCPCounter.Configuration;
+using FCPercentage.FCPResults.Configuration;
 
 [assembly: InternalsVisibleTo(GeneratedStore.AssemblyVisibilityTarget)]
-namespace FCPercentage.Configuration
+namespace FCPercentage.FCPCore.Configuration
 {
 	internal class PluginConfig
 	{

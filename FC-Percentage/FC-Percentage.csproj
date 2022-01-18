@@ -28,7 +28,7 @@
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
-	<NoWarn>$(NoWarn);MSB3277</NoWarn>
+    <NoWarn>$(NoWarn);MSB3277</NoWarn>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
     <Optimize>true</Optimize>
@@ -147,9 +147,6 @@
     <Compile Include="FCPResults\Configuration\SettingsCategories\ResultsSettings.cs" />
     <Compile Include="FCPCounter\FCPCounterController.cs" />
     <Compile Include="FCPResults\FCPResultsViewController.cs" />
-    <Compile Include="FCPCore\Installers\AppInstaller.cs" />
-    <Compile Include="FCPCore\Installers\GameInstaller.cs" />
-    <Compile Include="FCPCore\Installers\MenuInstaller.cs" />
     <Compile Include="FCPCore\Trackers\ScoreTracker.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="FCPCore\Configuration\PluginConfig.cs" />

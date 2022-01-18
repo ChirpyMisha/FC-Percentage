@@ -1,14 +1,17 @@
 ﻿using IPA;
 using SiraUtil.Zenject;
-using FCPercentage.Installers;
 using IPA.Config;
 using IPA.Config.Stores;
 using IPALogger = IPA.Logging.Logger;
-using FCPercentage.Configuration;
+using Zenject;
+using FCPercentage.FCPCore;
+using FCPercentage.FCPResults.Configuration;
+using FCPercentage.FCPResults;
+using FCPercentage.FCPCore.Configuration;
 
 namespace FCPercentage
 {
-	[Plugin(RuntimeOptions.SingleStartInit)]
+	[Plugin(RuntimeOptions.DynamicInit)]
 	public class Plugin
 	{
 #pragma warning disable CS8618
@@ -29,9 +32,21 @@ namespace FCPercentage
 			Instance = this;
 			Log = logger;
 
-			zenjector.Install<AppInstaller>(Location.App);
-			zenjector.Install<MenuInstaller>(Location.Menu);
-			zenjector.Install<GameInstaller>(Location.GameCore);
+			zenjector.Install(Location.App, (DiContainer Container) =>
+			{
+				Container.BindInterfacesAndSelfTo<ScoreManager>().AsSingle();
+			});
+			zenjector.Install(Location.GameCore, (DiContainer Container) =>
+			{
+				Container.BindInterfacesAndSelfTo<NoteRatingTracker>().AsSingle();
+				Container.BindInterfacesAndSelfTo<ScoreTracker>().AsSingle();
+			});
+			zenjector.Install(Location.Menu, (DiContainer Container) =>
+			{
+				Container.BindInterfacesAndSelfTo<ResultsConfigController>().AsCached();
+				Container.BindInterfacesAndSelfTo<ResultsConfigManager>().AsSingle();
+				Container.BindInterfacesAndSelfTo<FCPResultsViewController>().AsSingle();
+			});
 
 			Log.Info($"{PluginName} initialized.");
 		}
@@ -40,19 +55,12 @@ namespace FCPercentage
 		public void InitWithConfig(Config conf)
 		{
 			PluginConfig.Instance = conf.Generated<PluginConfig>();
-			Log.Debug("Config loaded");
 		}
 
-		[OnStart]
-		public void OnApplicationStart()
+		[OnEnable, OnDisable]
+		public void OnApplicationStateChange()
 		{
-			Log.Debug("OnApplicationStart");
-		}
-
-		[OnExit]
-		public void OnApplicationQuit()
-		{
-			Log.Debug("OnApplicationQuit");
+			// Just here to avoid BSIPA compaining~
 		}
 	}
 }

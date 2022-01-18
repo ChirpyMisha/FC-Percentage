@@ -2,7 +2,7 @@
 using BeatSaberMarkupLanguage.Settings;
 using Zenject;
 
-namespace FCPercentage.Configuration
+namespace FCPercentage.FCPResults.Configuration
 {
 	class ResultsConfigManager : IInitializable, IDisposable
 	{

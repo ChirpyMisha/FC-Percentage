@@ -1,8 +1,9 @@
 ﻿using BeatSaberMarkupLanguage.Attributes;
+using FCPercentage.FCPCore.Configuration;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace FCPercentage.Configuration
+namespace FCPercentage.FCPCounter.Configuration
 {
 	class CounterConfigController
 	{
