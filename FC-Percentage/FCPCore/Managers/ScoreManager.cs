@@ -91,6 +91,8 @@ namespace FCPercentage.FCPCore
 
 			SaberAColor = "#" + ColorUtility.ToHtmlStringRGB(colorScheme.saberAColor);
 			SaberBColor = "#" + ColorUtility.ToHtmlStringRGB(colorScheme.saberBColor);
+
+			InvokeScoreUpdate();
 		}
 
 		internal void AddScore(ColorType colorType, int score, int multiplier)
