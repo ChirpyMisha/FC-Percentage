@@ -151,7 +151,6 @@
     <Compile Include="Plugin.cs" />
     <Compile Include="FCPCore\Configuration\PluginConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FCPCore\Trackers\NoteRatingTracker.cs" />
     <Compile Include="FCPCore\Managers\ScoreManager.cs" />
   </ItemGroup>
   <ItemGroup>

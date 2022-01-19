@@ -38,7 +38,6 @@ namespace FCPercentage
 			});
 			zenjector.Install(Location.GameCore, (DiContainer Container) =>
 			{
-				Container.BindInterfacesAndSelfTo<NoteRatingTracker>().AsSingle();
 				Container.BindInterfacesAndSelfTo<ScoreTracker>().AsSingle();
 			});
 			zenjector.Install(Location.Menu, (DiContainer Container) =>
