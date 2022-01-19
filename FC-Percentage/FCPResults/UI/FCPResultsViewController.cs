@@ -15,8 +15,8 @@ namespace FCPercentage.FCPResults
 	class FCPResultsViewController : IInitializable, IDisposable
 	{
 		// 2 .bsml files are used since the amount of characters in the score would otherwise change the position of the percentage.
-		private static readonly string ResourceNameFCPercentage = "FCPercentage.FCPResults.UI.Views.ResultsPercentageResult.bsml";
-		private static readonly string ResourceNameFCScore = "FCPercentage.FCPResults.UI.Views.ResultsScoreResult.bsml";
+		private static readonly string ResourceNameFCPercentage = "FCPercentage.FCPResults.UI.BSML.ResultsPercentageResult.bsml";
+		private static readonly string ResourceNameFCScore = "FCPercentage.FCPResults.UI.BSML.ResultsScoreResult.bsml";
 
 		// Color tags of score/percentage difference.
 		private string colorPositiveTag = "";

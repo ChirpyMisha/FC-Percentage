@@ -26,7 +26,7 @@
       "BSML": {
         "Resource": "FCPercentage.FCPCounter.Configuration.BSML.CounterSettings.bsml",
         "Host": "FCPercentage.FCPCounter.Configuration.CounterConfigController",
-        "Icon": "FCPercentage.FCPCounter.Resources.Icon.png"
+        "Icon": "FCPercentage.Resources.Icon.png"
       }
     }
   }

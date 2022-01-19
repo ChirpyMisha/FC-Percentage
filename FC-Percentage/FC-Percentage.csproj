@@ -138,20 +138,20 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FCPCounter\Configuration\ConfigControllers\CounterConfigController.cs" />
+    <Compile Include="FCPCounter\Configuration\CounterConfigController.cs" />
     <Compile Include="FCPResults\Configuration\ResultsConfigManager.cs" />
-    <Compile Include="FCPResults\Configuration\ConfigControllers\ResultsConfigController.cs" />
+    <Compile Include="FCPResults\Configuration\ResultsConfigController.cs" />
     <Compile Include="FCPCounter\Configuration\Settings\CounterAdvancedSettings.cs" />
     <Compile Include="FCPResults\Configuration\SettingsCategories\ResultsAdvancedSettings.cs" />
     <Compile Include="FCPCounter\Configuration\Settings\CounterSettings.cs" />
     <Compile Include="FCPResults\Configuration\SettingsCategories\ResultsSettings.cs" />
     <Compile Include="FCPCounter\FCPCounterController.cs" />
-    <Compile Include="FCPResults\FCPResultsViewController.cs" />
-    <Compile Include="FCPCore\Trackers\ScoreTracker.cs" />
+    <Compile Include="FCPResults\UI\FCPResultsViewController.cs" />
+    <Compile Include="FCPCore\ScoreTracker.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="FCPCore\Configuration\PluginConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="FCPCore\Managers\ScoreManager.cs" />
+    <Compile Include="FCPCore\ScoreManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="manifest.json" />
@@ -161,8 +161,8 @@
     <EmbeddedResource Include="FCPResults\Configuration\BSML\ResultsSettings.bsml" />
     <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
     <None Include="Directory.Build.targets" Condition="Exists('Directory.Build.targets')" />
-    <EmbeddedResource Include="FCPResults\UI\Views\ResultsPercentageResult.bsml" />
-    <EmbeddedResource Include="FCPResults\UI\Views\ResultsScoreResult.bsml" />
+    <EmbeddedResource Include="FCPResults\UI\BSML\ResultsPercentageResult.bsml" />
+    <EmbeddedResource Include="FCPResults\UI\BSML\ResultsScoreResult.bsml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BeatSaberModdingTools.Tasks">
@@ -172,7 +172,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="FCPCounter\Resources\Icon.png" />
+    <EmbeddedResource Include="Resources\Icon.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="FC-Percentage.csproj.user" />
