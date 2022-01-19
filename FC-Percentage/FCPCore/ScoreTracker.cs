@@ -32,8 +32,7 @@ namespace FCPercentage.FCPCore
 			swingCounterCutData = new Dictionary<ISaberSwingRatingCounter, CutData>();
 			noteCount = 0;
 
-			// Set function for multiplier according to setting
-			GetMultiplier = PluginConfig.Instance.IgnoreMultiplier ? MultiplierAtMax : MultiplierAtNoteCount;
+			GetMultiplier = x => 1;
 
 			//badCutThreshold = PluginConfig.Instance.BadCutThreshold;
 		}
@@ -46,6 +45,9 @@ namespace FCPercentage.FCPCore
 
 			// Reset ScoreManager at level start
 			scoreManager.ResetScoreManager(sceneSetupData.difficultyBeatmap, playerDataModel, sceneSetupData.colorScheme);
+
+			// Set function for multiplier according to setting
+			GetMultiplier = PluginConfig.Instance.IgnoreMultiplier ? MultiplierAtMax : MultiplierAtNoteCount;
 
 			// Assign events
 			if (scoreController != null)
