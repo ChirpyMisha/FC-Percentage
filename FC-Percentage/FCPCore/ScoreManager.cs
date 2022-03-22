@@ -29,8 +29,10 @@ namespace FCPercentage.FCPCore
 		public string SaberBColor { get; private set; } = "#FFFFFF";
 
 		public int Highscore { get; private set; }
+		public int HighscoreAtSongStart { get; internal set; }
 		public int MaxScoreAtLevelStart { get; private set; }
 		public double HighscorePercentage => CalculatePercentage(Highscore, MaxScoreAtLevelStart);
+		
 
 		//public bool IsBadCutThresholdBroken { get; private set; }
 
@@ -64,6 +66,7 @@ namespace FCPercentage.FCPCore
 			MaxScoreA = 0;
 			MaxScoreB = 0;
 			Highscore = 0;
+			HighscoreAtSongStart = 0;
 			MaxScoreAtLevelStart = 0;
 			defaultPercentage = defaultPercentageAtStart;
 			//IsBadCutThresholdBroken = false;
@@ -87,6 +90,7 @@ namespace FCPercentage.FCPCore
 
 			PlayerLevelStatsData stats = playerDataModel.playerData.GetPlayerLevelStatsData(beatmap);
 			Highscore = stats.highScore;
+			HighscoreAtSongStart = stats.highScore;
 			MaxScoreAtLevelStart = CalculateMaxScore(beatmap.beatmapData.cuttableNotesCount);
 
 			SaberAColor = "#" + ColorUtility.ToHtmlStringRGB(colorScheme.saberAColor);

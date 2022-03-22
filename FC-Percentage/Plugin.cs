@@ -11,7 +11,7 @@ using FCPercentage.FCPCore.Configuration;
 
 namespace FCPercentage
 {
-	[Plugin(RuntimeOptions.DynamicInit)]
+	[Plugin(RuntimeOptions.DynamicInit), NoEnableDisable]
 	public class Plugin
 	{
 #pragma warning disable CS8618
@@ -19,7 +19,7 @@ namespace FCPercentage
 		internal static IPALogger Log { get; private set; }
 #pragma warning restore CS8618
 
-		internal static string PluginName = "FCPercentage";
+		internal const string PluginName = "FCPercentage";
 
 		[Init]
 		/// <summary>
@@ -27,10 +27,11 @@ namespace FCPercentage
 		/// [Init] methods that use a Constructor or called before regular methods like InitWithConfig.
 		/// Only use [Init] with one Constructor.
 		/// </summary>
-		public void Init(IPALogger logger, Zenjector zenjector)
+		public void Init(IPALogger logger, Config conf, Zenjector zenjector)
 		{
 			Instance = this;
 			Log = logger;
+			PluginConfig.Instance = conf.Generated<PluginConfig>();
 
 			zenjector.Install(Location.App, (DiContainer Container) =>
 			{
@@ -48,18 +49,6 @@ namespace FCPercentage
 			});
 
 			Log.Info($"{PluginName} initialized.");
-		}
-
-		[Init]
-		public void InitWithConfig(Config conf)
-		{
-			PluginConfig.Instance = conf.Generated<PluginConfig>();
-		}
-
-		[OnEnable, OnDisable]
-		public void OnApplicationStateChange()
-		{
-			// Just here to avoid BSIPA compaining~
 		}
 	}
 }

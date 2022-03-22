@@ -9,6 +9,7 @@ using IPA.Utilities;
 using FCPercentage.FCPCore;
 using FCPercentage.FCPCore.Configuration;
 using FCPercentage.FCPResults.Configuration;
+using UnityEngine;
 
 namespace FCPercentage.FCPResults
 {
@@ -18,13 +19,16 @@ namespace FCPercentage.FCPResults
 		private static readonly string ResourceNameFCPercentage = "FCPercentage.FCPResults.UI.BSML.ResultsPercentageResult.bsml";
 		private static readonly string ResourceNameFCScore = "FCPercentage.FCPResults.UI.BSML.ResultsScoreResult.bsml";
 
+		private static readonly string ResourceNameMissionFCPercentage = "FCPercentage.FCPResults.UI.BSML.MissionResultsPercentageResult.bsml";
+		private static readonly string ResourceNameMissionFCScore = "FCPercentage.FCPResults.UI.BSML.MissionResultsScoreResult.bsml";
+
 		// Color tags of score/percentage difference.
 		private string colorPositiveTag = "";
 		private string colorNegativeTag = "";
 		// Color tag for default color.
 		//private static string colorDefaultTag = "<color=#FFFFFF>";
 
-		// Text fields in the bsml
+		// ResultsView - Text fields in the bsml
 		[UIComponent("fcScoreText")]
 		private TextMeshProUGUI? fcScoreText = null!;
 		[UIComponent("fcScoreDiffText")]
@@ -34,8 +38,21 @@ namespace FCPercentage.FCPResults
 		[UIComponent("fcPercentDiffText")]
 		private TextMeshProUGUI? fcPercentDiffText = null!;
 
+		// MissionResultsView - Text fields in the bsml
+		[UIComponent("missionFcScoreText")]
+		private TextMeshProUGUI? missionFcScoreText = null!;
+		[UIComponent("missionFcScoreDiffText")]
+		private TextMeshProUGUI? missionFcScoreDiffText = null!;
+		[UIComponent("missionFcPercentText")]
+		private TextMeshProUGUI? missionFcPercentText = null!;
+		[UIComponent("missionFcPercentDiffText")]
+		private TextMeshProUGUI? missionFcPercentDiffText = null!;
+
+
 		private readonly ScoreManager scoreManager;
 		private ResultsViewController resultsViewController;
+		private MissionResultsViewController missionResultsViewController;
+		private static FieldAccessor<MissionResultsViewController, MissionCompletionResults>.Accessor MissionCompletionResults = FieldAccessor<MissionResultsViewController, MissionCompletionResults>.GetAccessor("_missionCompletionResults");
 		private static FieldAccessor<ResultsViewController, LevelCompletionResults>.Accessor LevelCompletionResults = FieldAccessor<ResultsViewController, LevelCompletionResults>.GetAccessor("_levelCompletionResults");
 		private static FieldAccessor<ResultsViewController, TextMeshProUGUI>.Accessor RankText = FieldAccessor<ResultsViewController, TextMeshProUGUI>.GetAccessor("_rankText");
 		private static FieldAccessor<ResultsViewController, TextMeshProUGUI>.Accessor ScoreText = FieldAccessor<ResultsViewController, TextMeshProUGUI>.GetAccessor("_scoreText");
@@ -50,10 +67,11 @@ namespace FCPercentage.FCPResults
 		private bool IsFullCombo => levelCompletionResults != null && levelCompletionResults.fullCombo;
 		//private bool IsFullCombo => levelCompletionResults != null && (levelCompletionResults.fullCombo && !scoreManager.IsBadCutThresholdBroken);
 
-		public FCPResultsViewController(ScoreManager scoreManager, ResultsViewController resultsViewController)
+		public FCPResultsViewController(ScoreManager scoreManager, ResultsViewController resultsViewController, MissionResultsViewController missionResultsViewController)
 		{
 			this.scoreManager = scoreManager;
 			this.resultsViewController = resultsViewController;
+			this.missionResultsViewController = missionResultsViewController;
 
 			config = PluginConfig.Instance.ResultsSettings;
 		}
@@ -61,13 +79,19 @@ namespace FCPercentage.FCPResults
 		public void Initialize()
 		{
 			if (resultsViewController != null)
+			{
 				resultsViewController.didActivateEvent += ResultsViewController_OnActivateEvent;
+				missionResultsViewController.didActivateEvent += MissionResultsViewController_didActivateEvent;
+			}
 		}
 
 		public void Dispose()
 		{
 			if (resultsViewController != null)
+			{
 				resultsViewController.didActivateEvent -= ResultsViewController_OnActivateEvent;
+				missionResultsViewController.didActivateEvent -= MissionResultsViewController_didActivateEvent;
+			}
 		}
 
 		private void RefreshPercentageTextFormatting()
@@ -88,6 +112,26 @@ namespace FCPercentage.FCPResults
 			scoreManager.NotifyOfSongEnded(levelCompletionResults.modifiedScore);
 			ParseAllBSML();
 
+			Plugin.Log.Notice($"levelCompletionResults.levelEndStateType = {levelCompletionResults.levelEndStateType}");
+
+			if (levelCompletionResults.levelEndStateType == global::LevelCompletionResults.LevelEndStateType.Cleared)
+				SetResultsViewText();
+			else
+				EmptyResultsViewText();
+		}
+
+		private void MissionResultsViewController_didActivateEvent(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
+		{
+			MissionCompletionResults missionCompletionResults = MissionCompletionResults(ref missionResultsViewController);
+			if (missionCompletionResults == null)
+				return;
+			levelCompletionResults = missionCompletionResults.levelCompletionResults;
+
+			scoreManager.NotifyOfSongEnded(levelCompletionResults.modifiedScore);
+			ParseAllBSML();
+
+			Plugin.Log.Notice($"levelCompletionResults.levelEndStateType = {levelCompletionResults.levelEndStateType}");
+
 			if (levelCompletionResults.levelEndStateType == global::LevelCompletionResults.LevelEndStateType.Cleared)
 				SetResultsViewText();
 			else
@@ -98,7 +142,7 @@ namespace FCPercentage.FCPResults
 		{
 			if (fcScoreText == null)
 			{
-				ParseBSML(ResourceNameFCScore);
+				ParseBSML(ResourceNameFCScore, resultsViewController);
 
 				if (fcScoreDiffText != null)
 					fcScoreDiffText.fontSize *= 0.85f;
@@ -107,18 +151,37 @@ namespace FCPercentage.FCPResults
 			}
 			if (fcPercentText == null)
 			{
-				ParseBSML(ResourceNameFCPercentage);
+				ParseBSML(ResourceNameFCPercentage, resultsViewController);
 
 				if (fcPercentDiffText != null) 
 					fcPercentDiffText.fontSize *= 0.85f;
 				else 
 					Plugin.Log.Error($"Parsing BSML ({ResourceNameFCPercentage}) has failed.");
 			}
-		}
+			if (missionFcScoreDiffText == null)
+			{
+				ParseBSML(ResourceNameMissionFCScore, missionResultsViewController);
 
-		private void ParseBSML(string bsmlPath)
+				if (missionFcScoreDiffText != null)
+					missionFcScoreDiffText.fontSize *= 0.85f;
+				else
+					Plugin.Log.Error($"Parsing BSML ({ResourceNameMissionFCScore}) has failed.");
+			}
+			if (missionFcPercentText == null)
+			{
+				ParseBSML(ResourceNameMissionFCPercentage, missionResultsViewController);
+
+				if (missionFcPercentDiffText != null)
+					missionFcPercentDiffText.fontSize *= 0.85f;
+				else
+					Plugin.Log.Error($"Parsing BSML ({ResourceNameMissionFCPercentage}) has failed.");
+			}
+		}
+		private void ParseBSML(string bsmlPath, ResultsViewController resultsViewController) => ParseBSML(bsmlPath, resultsViewController.gameObject);
+		private void ParseBSML(string bsmlPath, MissionResultsViewController missionResultsViewController) => ParseBSML(bsmlPath, missionResultsViewController.gameObject);
+		private void ParseBSML(string bsmlPath, GameObject parentGameObject)
 		{
-			BSMLParser.instance.Parse(Utilities.GetResourceContent(Assembly.GetExecutingAssembly(), bsmlPath), resultsViewController.gameObject, this);
+			BSMLParser.instance.Parse(Utilities.GetResourceContent(Assembly.GetExecutingAssembly(), bsmlPath), parentGameObject, this);
 		}
 
 		private bool IsActiveOnResultsView(ResultsViewModes mode)
@@ -152,14 +215,14 @@ namespace FCPercentage.FCPResults
 				if (scoreText.text.Contains(ResultsAdvancedSettings.DefaultDifferencePositiveColor))
 				{
 					scoreText.text = scoreText.text.Replace(ResultsAdvancedSettings.DefaultDifferencePositiveColor, config.Advanced.DifferencePositiveColor);
-					rankText.text = rankText.text.Replace(ResultsAdvancedSettings.DefaultDifferencePositiveColor, config.Advanced.DifferencePositiveColor)
-						.Replace(ResultsAdvancedSettings.DefaultDifferenceNegativeColor, config.Advanced.DifferencePositiveColor);
+					rankText.text = rankText.text.Replace(ResultsAdvancedSettings.DefaultDifferencePositiveColor, config.Advanced.DifferencePositiveColor);
+					rankText.text = rankText.text.Replace(ResultsAdvancedSettings.DefaultDifferenceNegativeColor, config.Advanced.DifferencePositiveColor);
 				}
-				else if (rankText.text.Contains(ResultsAdvancedSettings.DefaultDifferenceNegativeColor))
+				else if (scoreText.text.Contains(ResultsAdvancedSettings.DefaultDifferenceNegativeColor))
 				{
 					scoreText.text = scoreText.text.Replace(ResultsAdvancedSettings.DefaultDifferenceNegativeColor, config.Advanced.DifferenceNegativeColor);
-					rankText.text = rankText.text.Replace(ResultsAdvancedSettings.DefaultDifferenceNegativeColor, config.Advanced.DifferenceNegativeColor)
-						.Replace(ResultsAdvancedSettings.DefaultDifferencePositiveColor, config.Advanced.DifferencePositiveColor);
+					rankText.text = rankText.text.Replace(ResultsAdvancedSettings.DefaultDifferenceNegativeColor, config.Advanced.DifferenceNegativeColor);
+					rankText.text = rankText.text.Replace(ResultsAdvancedSettings.DefaultDifferencePositiveColor, config.Advanced.DifferencePositiveColor);
 				}
 			}
 		}
@@ -171,32 +234,47 @@ namespace FCPercentage.FCPResults
 			if (IsActiveOnResultsView(config.PercentageTotalMode))
 			{
 				isPercentageAdded = true;
-				fcPercentText.text += GetTotalPercentageText();
+				string totalPercentText = GetTotalPercentageText();
+				fcPercentText.text += totalPercentText;
+				missionFcPercentText.text += totalPercentText;
 
 				// Add the total percentage difference if enabled.
 				if (config.EnableScorePercentageDifference && scoreManager.Highscore > 0)
-					fcPercentDiffText.text += GetTotalPercentageDiffText();
+				{
+					string totalPercentDiffText = GetTotalPercentageDiffText();
+					fcPercentDiffText.text += totalPercentDiffText;
+					missionFcPercentDiffText.text += totalPercentDiffText;
+				}
 			}
 			// Add split percentage if enabled.
 			if (IsActiveOnResultsView(config.PercentageSplitMode))
 			{
 				isPercentageAdded = true;
-				fcPercentText.text += GetSplitPercentageText();
+				string splitPercentText = GetSplitPercentageText();
+				fcPercentText.text += splitPercentText;
+				missionFcPercentText.text += splitPercentText;
 
 				// Add the split percentage difference if enabled.
 				if (config.EnableScorePercentageDifference && scoreManager.Highscore > 0)
-					fcPercentDiffText.text += GetSplitPercentageDiffText();
+				{
+					string splitPercentDiffText = GetSplitPercentageDiffText();
+					fcPercentDiffText.text += splitPercentDiffText;
+					missionFcPercentDiffText.text += splitPercentDiffText;
+				}
 			}
 
 			// Set prefix label if enabled.
 			if (isPercentageAdded && (config.EnableLabel == ResultsViewLabelOptions.BothOn || config.EnableLabel == ResultsViewLabelOptions.PercentageOn))
 			{
 				fcPercentText.text = config.Advanced.PercentagePrefixText + fcPercentText.text;
+				missionFcPercentText.text = config.Advanced.PercentagePrefixText + missionFcPercentText.text;
 				//fcPercentDiffText.text = $"<color=#FFFFFF00>{config.Advanced.PercentagePrefixText}{fcPercentDiffText.text}";
 			}
 
 			fcPercentText.text = fcPercentText.text.TrimEnd();
 			fcPercentDiffText.text = fcPercentDiffText.text.TrimEnd();
+			missionFcPercentDiffText.text = missionFcPercentDiffText.text.TrimEnd();
+			missionFcPercentText.text = missionFcPercentText.text.TrimEnd();
 		}
 
 		private void SetScoreText()
@@ -206,11 +284,16 @@ namespace FCPercentage.FCPResults
 			if (IsActiveOnResultsView(config.ScoreTotalMode))
 			{
 				isScoreAdded = true;
-				fcScoreText.text += GetScoreText();
+				string scoreText = GetScoreText();
+				fcScoreText.text += scoreText;
+				missionFcScoreText.text += scoreText;
 
 				// Add the score difference if it's enabled.
 				if (config.EnableScorePercentageDifference)
-					fcScoreDiffText.text += GetTotalScoreDiffText();
+				{
+					fcScoreDiffText.text += GetScoreDiffText();
+					missionFcScoreDiffText.text += GetMissionScoreDiffText();
+				}
 			}
 
 			// Set prefix label if enabled.
@@ -240,19 +323,18 @@ namespace FCPercentage.FCPResults
 
 		private string GetTotalPercentageDiffText()
 		{
+			// Create total percentage diff text.
 			// scoreTotalDiff is used since for instance a score difference of -2 could give a percent difference of 0.00%. Then the score would be red and the percentage would be green.
 			int scoreTotalDiff = scoreManager.ScoreAtCurrentPercentage - scoreManager.Highscore;
 			string percentTotalDiffColorTag = GetColorTagFor(scoreTotalDiff);
 			double percentTotalDiff = Math.Round(scoreManager.PercentageTotal, config.DecimalPrecision) - scoreManager.HighscorePercentage;
 
-			// Set total percentage diff text.
 			return $"{percentTotalDiffColorTag}{PercentageToString(percentTotalDiff)}  ";
 		}
 
 		private string GetSplitPercentageDiffText()
 		{
-			// Set split percentage diff text.
-
+			// Create split percentage diff text.
 			double percentDiffA = Math.Round(scoreManager.PercentageA, config.DecimalPrecision) - scoreManager.HighscorePercentage;
 			double percentDiffB = Math.Round(scoreManager.PercentageB, config.DecimalPrecision) - scoreManager.HighscorePercentage;
 			string percentDiffColorTagA = GetColorTagFor(percentDiffA);
@@ -262,13 +344,22 @@ namespace FCPercentage.FCPResults
 				   $"{percentDiffColorTagB}{config.Advanced.PercentageSplitSaberBPrefixText}{PercentageToString(percentDiffB)}  ";
 		}
 
-		private string GetTotalScoreDiffText()
+		private string GetScoreDiffText()
 		{
-			// Set score diff text.
-			int scoreTotalDiff = scoreManager.ScoreAtCurrentPercentage - scoreManager.Highscore;
-			string scoreTotalDiffColorTag = GetColorTagFor(scoreTotalDiff);
+			// Create score diff text.
+			int scoreDiff = scoreManager.ScoreAtCurrentPercentage - scoreManager.Highscore;
+			string scoreTotalDiffColorTag = GetColorTagFor(scoreDiff);
 
-			return $"{scoreTotalDiffColorTag}{ScoreToString(scoreTotalDiff)}";
+			return $"{scoreTotalDiffColorTag}{ScoreToString(scoreDiff)}";
+		}
+
+		private string GetMissionScoreDiffText()
+		{
+			// Create score diff text.
+			int missionScoreDiff = scoreManager.ScoreAtCurrentPercentage - scoreManager.HighscoreAtSongStart;
+			string missionScoreDiffColorTag = GetColorTagFor(missionScoreDiff);
+
+			return $"{missionScoreDiffColorTag}{ScoreToString(missionScoreDiff)}";
 		}
 
 		private string GetColorTagFor(double val)
@@ -282,6 +373,11 @@ namespace FCPercentage.FCPResults
 			fcScoreDiffText.text = "";
 			fcPercentText.text = "";
 			fcPercentDiffText.text = "";
+
+			missionFcScoreText.text = "";
+			missionFcScoreDiffText.text = "";
+			missionFcPercentText.text = "";
+			missionFcPercentDiffText.text = "";
 		}
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 

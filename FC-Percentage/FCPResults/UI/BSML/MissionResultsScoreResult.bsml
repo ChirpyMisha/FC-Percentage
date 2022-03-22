@@ -1,0 +1,5 @@
+﻿<vertical xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='https://monkeymanboy.github.io/BSML-Docs/ https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'
+	anchor-pos-x='-18' anchor-pos-y='-25.8' child-control-height='false' vertical-fit='PreferredSize' pref-height='1' spacing='-46.5'>
+	<text id='missionFcScoreText' text='Def aul tVa lue' align='Center' italics='true'></text>
+	<text id='missionFcScoreDiffText' text='Def aul tVa lue' align='Center' italics='true'></text>
+</vertical>
