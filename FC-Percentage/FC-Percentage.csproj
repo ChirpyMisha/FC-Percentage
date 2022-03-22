@@ -119,6 +119,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Accessors.cs" />
     <Compile Include="FCPCounter\Configuration\CounterConfigController.cs" />
     <Compile Include="FCPResults\Configuration\ResultsConfigManager.cs" />
     <Compile Include="FCPResults\Configuration\ResultsConfigController.cs" />
@@ -127,10 +128,12 @@
     <Compile Include="FCPCounter\Configuration\Settings\CounterSettings.cs" />
     <Compile Include="FCPResults\Configuration\SettingsCategories\ResultsSettings.cs" />
     <Compile Include="FCPCounter\FCPCounterController.cs" />
-    <Compile Include="FCPResults\UI\FCPMissionResultsViewController.cs" />
-    <Compile Include="FCPResults\UI\FCPResultsViewController.cs" />
+    <Compile Include="FCPResults\HUD\FCPMissionResultsViewController.cs" />
+    <Compile Include="FCPResults\HUD\FCPResultsViewController.cs" />
     <Compile Include="FCPCore\ScoreTracker.cs" />
-    <Compile Include="FCPResults\UI\ResultsController.cs" />
+    <Compile Include="FCPResults\HUD\ResultsController.cs" />
+    <Compile Include="FCPResults\ResultsCalculationModel.cs" />
+    <Compile Include="FCPResults\ResultsTextFormattingModel.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="FCPCore\Configuration\PluginConfig.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -144,10 +147,10 @@
     <EmbeddedResource Include="FCPResults\Configuration\BSML\ResultsSettings.bsml" />
     <None Include="Directory.Build.props" Condition="Exists('Directory.Build.props')" />
     <None Include="Directory.Build.targets" Condition="Exists('Directory.Build.targets')" />
-    <EmbeddedResource Include="FCPResults\UI\BSML\ResultsPercentageResult.bsml" />
-    <EmbeddedResource Include="FCPResults\UI\BSML\ResultsScoreResult.bsml" />
-    <EmbeddedResource Include="FCPResults\UI\BSML\MissionResultsPercentageResult.bsml" />
-    <EmbeddedResource Include="FCPResults\UI\BSML\MissionResultsScoreResult.bsml" />
+    <EmbeddedResource Include="FCPResults\HUD\BSML\ResultsPercentageResult.bsml" />
+    <EmbeddedResource Include="FCPResults\HUD\BSML\ResultsScoreResult.bsml" />
+    <EmbeddedResource Include="FCPResults\HUD\BSML\MissionResultsPercentageResult.bsml" />
+    <EmbeddedResource Include="FCPResults\HUD\BSML\MissionResultsScoreResult.bsml" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="BeatSaberModdingTools.Tasks">

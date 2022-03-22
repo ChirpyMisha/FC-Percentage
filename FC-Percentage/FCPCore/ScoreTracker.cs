@@ -18,7 +18,7 @@ namespace FCPercentage.FCPCore
 
 		private static readonly Func<int, int> MultiplierAtNoteCount = noteCount => noteCount > 13 ? OptimiseGetMultiplier() : (noteCount > 5 ? 4 : (noteCount > 1 ? 2 : 1));
 		private static readonly Func<int, int> MultiplierAtMax = noteCount => 8;
-		private static Func<int, int> GetMultiplier;
+		private static Func<int, int>? GetMultiplier;
 		private static int OptimiseGetMultiplier() { GetMultiplier = MultiplierAtMax; return 8; }
 
 		//private readonly int badCutThreshold;

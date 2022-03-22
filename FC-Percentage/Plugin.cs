@@ -6,8 +6,8 @@ using IPALogger = IPA.Logging.Logger;
 using Zenject;
 using FCPercentage.FCPCore;
 using FCPercentage.FCPResults.Configuration;
-using FCPercentage.FCPResults;
 using FCPercentage.FCPCore.Configuration;
+using FCPercentage.FCPResults.HUD;
 
 namespace FCPercentage
 {
@@ -46,6 +46,7 @@ namespace FCPercentage
 				Container.BindInterfacesAndSelfTo<ResultsConfigController>().AsCached();
 				Container.BindInterfacesAndSelfTo<ResultsConfigManager>().AsSingle();
 				Container.BindInterfacesAndSelfTo<FCPResultsViewController>().AsSingle();
+				Container.BindInterfacesAndSelfTo<FCPMissionResultsViewController>().AsSingle();
 			});
 
 			Log.Info($"{PluginName} initialized.");
