@@ -35,7 +35,7 @@
 
 			<dropdown-list-setting text='Score Percentage Difference Mode' hover-hint='Select how you want the Score Percentage Difference to be calculated.'
 														 value='ScorePercentageDiffModel' apply-on-change='true' interactable='~is-score-percentage-diff-on'
-														 options='ScorePercentageDiffModelList' formatter='ScorePercentageDiffModelsFormat' bind-value='true'/>
+														 options='ResultsViewDiffModelList' formatter='ResultsViewDiffModelsFormat' bind-value='true'/>
 
 			<!-- Explanations of Score Percentage Difference Modes -->
 			<settings-submenu text='> Score/Percentage Difference Colors'>

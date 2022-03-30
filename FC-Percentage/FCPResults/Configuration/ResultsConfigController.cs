@@ -13,75 +13,32 @@ namespace FCPercentage.FCPResults.Configuration
 		private static string enabledTextColor = "#" + ColorUtility.ToHtmlStringRGB(Color.white);
 		private static string disabledTextColor = "#" + ColorUtility.ToHtmlStringRGB(Color.grey);
 
-		private ResultsSettings soloSettings => PluginConfig.Instance.ResultsSettings;
-		private ResultsSettings missionSettings => PluginConfig.Instance.MissionResultsSettings;
-		private ResultsSettings settings { get { return settings; } 
-			set
-			{
-				settings = value;
-				oldSettings = settings;
-			}
-		}
+		private ResultsSettings settings => PluginConfig.Instance.ResultsSettings;
+		//private ResultsSettings soloSettings => PluginConfig.Instance.ResultsSettings;
+		//private ResultsSettings missionSettings => PluginConfig.Instance.MissionResultsSettings;
+		//private ResultsSettings settings { get { return settings; } 
+		//	set
+		//	{
+		//		settings = value;
+		//		oldSettings = settings;
+		//	}
+		//}
 		private ResultsSettings oldSettings;
 
 #pragma warning disable CS8618
 		public event PropertyChangedEventHandler PropertyChanged;
 #pragma warning restore CS8618
 
-		//private ResultsViewModes percentageTotalMode;
-		//private ResultsViewModes percentageSplitMode;
-		//private ResultsViewModes scoreTotalMode;
-		//private ResultsViewLabelOptions enableLabel;
-		//private bool enableScorePercentageDifference;
-
-		//private Color scorePercentageDiffPositiveColor;
-		//private Color scorePercentageDiffNegativeColor;
-
-		//private string scorePrefixText;
-		//private string percentagePrefixText;
-		//private string percentageTotalPrefixText;
-		//private string percentageSplitSaberAPrefixText;
-		//private string percentageSplitSaberBPrefixText;
-
 		public ResultsConfigController()
 		{
+			//settings = PluginConfig.Instance.ResultsSettings;
 			oldSettings = settings;
-
-			//percentageTotalMode = settings.PercentageTotalMode;
-			//percentageSplitMode = settings.PercentageSplitMode;
-			//scoreTotalMode = settings.ScoreTotalMode;
-			//enableLabel = settings.EnableLabel;
-			//enableScorePercentageDifference = settings.EnableScorePercentageDifference;
-
-			//scorePercentageDiffPositiveColor = HexToColor(settings.Advanced.DifferencePositiveColor);
-			//scorePercentageDiffNegativeColor = HexToColor(settings.Advanced.DifferenceNegativeColor);
-
-			//scorePrefixText = settings.Advanced.ScorePrefixText;
-			//percentagePrefixText = settings.Advanced.PercentagePrefixText;
-			//percentageTotalPrefixText = settings.Advanced.PercentageTotalPrefixText;
-			//percentageSplitSaberAPrefixText = settings.Advanced.PercentageSplitSaberAPrefixText;
-			//percentageSplitSaberBPrefixText = settings.Advanced.PercentageSplitSaberBPrefixText;
 		}
 
 		private void RevertChanges()
 		{
 			Plugin.Log.Notice("Reverting changes.");
 			PluginConfig.Instance.ResultsSettings = oldSettings;
-
-   //         PercentageTotalMode = percentageTotalMode;
-   //         PercentageSplitMode = percentageSplitMode;
-   //         ScoreTotalMode = scoreTotalMode;
-			//EnableLabel = enableLabel;
-			//EnableScorePercentageDifference = enableScorePercentageDifference;
-
-			//ScorePercentageDiffPositiveColor = scorePercentageDiffPositiveColor;
-			//ScorePercentageDiffNegativeColor = scorePercentageDiffNegativeColor;
-
-			//ScorePrefixText = scorePrefixText;
-			//PercentagePrefixText = percentagePrefixText;
-			//PercentageTotalPrefixText = percentageTotalPrefixText;
-			//PercentageSplitSaberAPrefixText = percentageSplitSaberAPrefixText;
-			//PercentageSplitSaberBPrefixText = percentageSplitSaberBPrefixText;
 		}
 
 		private void RevertToDefault_Color()
@@ -312,13 +269,6 @@ namespace FCPercentage.FCPResults.Configuration
 			set { PluginConfig.Instance.IgnoreMultiplier = value; }
 		}
 
-		//[UIValue("BadCutThreshold")]
-		//public virtual int BadCutThreshold
-		//{
-		//	get { return PluginConfig.Instance.BadCutThreshold; }
-		//	set { PluginConfig.Instance.BadCutThreshold = value; }
-		//}
-
 		// Score/Percentage Diff Colors
 		[UIValue("ScorePercentageDiffPositiveColor")]
 		public virtual Color ScorePercentageDiffPositiveColor
@@ -406,11 +356,11 @@ namespace FCPercentage.FCPResults.Configuration
 		}
 
 
-		[UIAction("#solo-results-settings-entered")]
-		public void OnSoloResultsSettingsEntered() => settings = soloSettings;
+		//[UIAction("#solo-results-settings-entered")]
+		//public void OnSoloResultsSettingsEntered() => settings = soloSettings;
 		
-		[UIAction("#mission-results-settings-entered")]
-		public void OnMissionResultsSettingsEntered() => settings = missionSettings;
+		//[UIAction("#mission-results-settings-entered")]
+		//public void OnMissionResultsSettingsEntered() => settings = missionSettings;
 
 		[UIAction("#reset-score-percentage-colors")]
 		public void OnResetScorePercentageColors() => RevertToDefault_Color();
@@ -466,8 +416,8 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue(nameof(ResultsViewDiffModelList))]
 		public List<object> ResultsViewDiffModelList => ResultsViewDiffModelsToNames.Keys.Cast<object>().ToList();
 
-		[UIAction(nameof(ResultsViewModesFormat))]
-		public string ResultsViewModesFormat(ResultsViewDiffModels model) => ResultsViewDiffModelsToNames[model];
+		[UIAction(nameof(ResultsViewDiffModelsFormat))]
+		public string ResultsViewDiffModelsFormat(ResultsViewDiffModels model) => ResultsViewDiffModelsToNames[model];
 
 		private static Dictionary<ResultsViewDiffModels, string> ResultsViewDiffModelsToNames = new Dictionary<ResultsViewDiffModels, string>()
 		{
