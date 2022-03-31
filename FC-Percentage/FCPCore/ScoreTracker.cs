@@ -1,4 +1,6 @@
-﻿using System;
+﻿#nullable enable
+
+using System;
 using Zenject;
 using FCPercentage.FCPCore.Configuration;
 using System.Collections.Generic;

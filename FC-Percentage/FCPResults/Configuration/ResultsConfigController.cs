@@ -13,61 +13,75 @@ namespace FCPercentage.FCPResults.Configuration
 		private static string enabledTextColor = "#" + ColorUtility.ToHtmlStringRGB(Color.white);
 		private static string disabledTextColor = "#" + ColorUtility.ToHtmlStringRGB(Color.grey);
 
-		private ResultsSettings settings => PluginConfig.Instance.ResultsSettings;
+		private ResultsSettings soloSettings => PluginConfig.Instance.ResultsSettings;
+		private ResultsSettings missionSettings => PluginConfig.Instance.MissionResultsSettings;
+		private ResultsSettings settings { get { return settings; } 
+			set
+			{
+				settings = value;
+				oldSettings = settings;
+			}
+		}
+		private ResultsSettings oldSettings;
 
 #pragma warning disable CS8618
 		public event PropertyChangedEventHandler PropertyChanged;
 #pragma warning restore CS8618
 
-		private ResultsViewModes percentageTotalMode;
-		private ResultsViewModes percentageSplitMode;
-		private ResultsViewModes scoreTotalMode;
-		private ResultsViewLabelOptions enableLabel;
-		private bool enableScorePercentageDifference;
+		//private ResultsViewModes percentageTotalMode;
+		//private ResultsViewModes percentageSplitMode;
+		//private ResultsViewModes scoreTotalMode;
+		//private ResultsViewLabelOptions enableLabel;
+		//private bool enableScorePercentageDifference;
 
-		private Color scorePercentageDiffPositiveColor;
-		private Color scorePercentageDiffNegativeColor;
+		//private Color scorePercentageDiffPositiveColor;
+		//private Color scorePercentageDiffNegativeColor;
 
-		private string scorePrefixText;
-		private string percentagePrefixText;
-		private string percentageTotalPrefixText;
-		private string percentageSplitSaberAPrefixText;
-		private string percentageSplitSaberBPrefixText;
+		//private string scorePrefixText;
+		//private string percentagePrefixText;
+		//private string percentageTotalPrefixText;
+		//private string percentageSplitSaberAPrefixText;
+		//private string percentageSplitSaberBPrefixText;
 
 		public ResultsConfigController()
 		{
-			percentageTotalMode = settings.PercentageTotalMode;
-			percentageSplitMode = settings.PercentageSplitMode;
-			scoreTotalMode = settings.ScoreTotalMode;
-			enableLabel = settings.EnableLabel;
-			enableScorePercentageDifference = settings.EnableScorePercentageDifference;
+			oldSettings = settings;
 
-			scorePercentageDiffPositiveColor = HexToColor(settings.Advanced.DifferencePositiveColor);
-			scorePercentageDiffNegativeColor = HexToColor(settings.Advanced.DifferenceNegativeColor);
+			//percentageTotalMode = settings.PercentageTotalMode;
+			//percentageSplitMode = settings.PercentageSplitMode;
+			//scoreTotalMode = settings.ScoreTotalMode;
+			//enableLabel = settings.EnableLabel;
+			//enableScorePercentageDifference = settings.EnableScorePercentageDifference;
 
-			scorePrefixText = settings.Advanced.ScorePrefixText;
-			percentagePrefixText = settings.Advanced.PercentagePrefixText;
-			percentageTotalPrefixText = settings.Advanced.PercentageTotalPrefixText;
-			percentageSplitSaberAPrefixText = settings.Advanced.PercentageSplitSaberAPrefixText;
-			percentageSplitSaberBPrefixText = settings.Advanced.PercentageSplitSaberBPrefixText;
+			//scorePercentageDiffPositiveColor = HexToColor(settings.Advanced.DifferencePositiveColor);
+			//scorePercentageDiffNegativeColor = HexToColor(settings.Advanced.DifferenceNegativeColor);
+
+			//scorePrefixText = settings.Advanced.ScorePrefixText;
+			//percentagePrefixText = settings.Advanced.PercentagePrefixText;
+			//percentageTotalPrefixText = settings.Advanced.PercentageTotalPrefixText;
+			//percentageSplitSaberAPrefixText = settings.Advanced.PercentageSplitSaberAPrefixText;
+			//percentageSplitSaberBPrefixText = settings.Advanced.PercentageSplitSaberBPrefixText;
 		}
 
 		private void RevertChanges()
 		{
-            PercentageTotalMode = percentageTotalMode;
-            PercentageSplitMode = percentageSplitMode;
-            ScoreTotalMode = scoreTotalMode;
-			EnableLabel = enableLabel;
-			EnableScorePercentageDifference = enableScorePercentageDifference;
+			Plugin.Log.Notice("Reverting changes.");
+			PluginConfig.Instance.ResultsSettings = oldSettings;
 
-			ScorePercentageDiffPositiveColor = scorePercentageDiffPositiveColor;
-			ScorePercentageDiffNegativeColor = scorePercentageDiffNegativeColor;
+   //         PercentageTotalMode = percentageTotalMode;
+   //         PercentageSplitMode = percentageSplitMode;
+   //         ScoreTotalMode = scoreTotalMode;
+			//EnableLabel = enableLabel;
+			//EnableScorePercentageDifference = enableScorePercentageDifference;
 
-			ScorePrefixText = scorePrefixText;
-			PercentagePrefixText = percentagePrefixText;
-			PercentageTotalPrefixText = percentageTotalPrefixText;
-			PercentageSplitSaberAPrefixText = percentageSplitSaberAPrefixText;
-			PercentageSplitSaberBPrefixText = percentageSplitSaberBPrefixText;
+			//ScorePercentageDiffPositiveColor = scorePercentageDiffPositiveColor;
+			//ScorePercentageDiffNegativeColor = scorePercentageDiffNegativeColor;
+
+			//ScorePrefixText = scorePrefixText;
+			//PercentagePrefixText = percentagePrefixText;
+			//PercentageTotalPrefixText = percentageTotalPrefixText;
+			//PercentageSplitSaberAPrefixText = percentageSplitSaberAPrefixText;
+			//PercentageSplitSaberBPrefixText = percentageSplitSaberBPrefixText;
 		}
 
 		private void RevertToDefault_Color()
@@ -270,6 +284,13 @@ namespace FCPercentage.FCPResults.Configuration
 			}
 		}
 
+		[UIValue("ScorePercentageDiffModel")]
+		public virtual ResultsViewDiffModels ScorePercentageDiffModel
+		{
+			get { return settings.ScorePercentageDiffModel; }
+			set { settings.ScorePercentageDiffModel = value; }
+		}
+
 		[UIValue("SplitPercentageUseSaberColorScheme")]
 		public virtual bool SplitPercentageUseSaberColorScheme
 		{
@@ -385,6 +406,11 @@ namespace FCPercentage.FCPResults.Configuration
 		}
 
 
+		[UIAction("#solo-results-settings-entered")]
+		public void OnSoloResultsSettingsEntered() => settings = soloSettings;
+		
+		[UIAction("#mission-results-settings-entered")]
+		public void OnMissionResultsSettingsEntered() => settings = missionSettings;
 
 		[UIAction("#reset-score-percentage-colors")]
 		public void OnResetScorePercentageColors() => RevertToDefault_Color();
@@ -392,12 +418,11 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIAction("#reset-prefix-strings")]
 		public void OnResetPrefixStrings() => RevertToDefault_Strings();
 
+		[UIAction("#revert-settings")]
+		public void OnRevertSettings() => RevertChanges();
+
 		[UIAction("#cancel")]
-		public void OnCancel()
-		{
-			Plugin.Log.Notice("Reverting changes. Setting local percentage & score modes from settings.");
-			RevertChanges();
-		}
+		public void OnCancel() => RevertChanges();
 
 		//[UIAction("#apply")]
 		//public void OnApply()
@@ -406,7 +431,7 @@ namespace FCPercentage.FCPResults.Configuration
 		//}
 
 
-
+		#region ResultsViewModes Formatting
 		[UIValue(nameof(ResultsViewModeList))]
 		public List<object> ResultsViewModeList => ResultsViewModesToNames.Keys.Cast<object>().ToList();
 
@@ -419,7 +444,9 @@ namespace FCPercentage.FCPResults.Configuration
 			{ ResultsViewModes.OffWhenFC, "Hide When FC" },
 			{ ResultsViewModes.Off, "Show Never" }
 		};
+		#endregion
 
+		#region ResultsViewLabelOptions Formatting
 		[UIValue(nameof(ResultsViewLabelOptionList))]
 		public List<object> ResultsViewLabelOptionList => ResultsViewLabelOptionsToNames.Keys.Cast<object>().ToList();
 
@@ -433,6 +460,22 @@ namespace FCPercentage.FCPResults.Configuration
 			{ ResultsViewLabelOptions.PercentageOn, "Only Percentage Label" },
 			{ ResultsViewLabelOptions.BothOff, "No Labels" }
 		};
+		#endregion
+
+		#region ResultsViewDiffModels Formatting
+		[UIValue(nameof(ResultsViewDiffModelList))]
+		public List<object> ResultsViewDiffModelList => ResultsViewDiffModelsToNames.Keys.Cast<object>().ToList();
+
+		[UIAction(nameof(ResultsViewModesFormat))]
+		public string ResultsViewModesFormat(ResultsViewDiffModels model) => ResultsViewDiffModelsToNames[model];
+
+		private static Dictionary<ResultsViewDiffModels, string> ResultsViewDiffModelsToNames = new Dictionary<ResultsViewDiffModels, string>()
+		{
+			{ ResultsViewDiffModels.CurrentResultDiff, "Mode 1" },
+			{ ResultsViewDiffModels.UpdatedHighscoreDiff, "Mode 2" },
+			{ ResultsViewDiffModels.OldHighscoreDiff, "Mode 3" }
+		};
+		#endregion
 
 		private Color HexToColor(string hex)
 		{

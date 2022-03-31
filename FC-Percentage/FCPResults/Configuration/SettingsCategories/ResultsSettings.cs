@@ -1,6 +1,6 @@
 ﻿namespace FCPercentage.FCPResults.Configuration
 {
-	class ResultsSettings
+	public class ResultsSettings
 	{
 		// Results Settings (Results View)
 		public virtual ResultsViewModes PercentageTotalMode { get; set; } = ResultsViewModes.OffWhenFC;
@@ -9,6 +9,7 @@
 		public virtual ResultsViewLabelOptions EnableLabel { get; set; } = ResultsViewLabelOptions.BothOn;
 		public virtual int DecimalPrecision { get; set; } = 2;
 		public virtual bool EnableScorePercentageDifference { get; set; } = true;
+		public virtual ResultsViewDiffModels ScorePercentageDiffModel { get; set; } = ResultsViewDiffModels.UpdatedHighscoreDiff;
 		public virtual bool SplitPercentageUseSaberColorScheme { get; set; } = true;
 		public virtual bool KeepTrailingZeros { get; set; } = false;
 
@@ -17,4 +18,5 @@
 
 	public enum ResultsViewModes { On, OffWhenFC, Off }
 	public enum ResultsViewLabelOptions { BothOn, ScoreOn, PercentageOn, BothOff }
+	public enum ResultsViewDiffModels { CurrentResultDiff, UpdatedHighscoreDiff, OldHighscoreDiff }
 }

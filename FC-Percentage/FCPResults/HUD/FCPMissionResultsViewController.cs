@@ -1,4 +1,6 @@
 ﻿using FCPercentage.FCPCore;
+using FCPercentage.FCPCore.Configuration;
+using FCPercentage.FCPResults.Configuration;
 using HMUI;
 using System;
 using System.Collections.Generic;
@@ -14,9 +16,13 @@ namespace FCPercentage.FCPResults.HUD
 		internal override string ResourceNameFCPercentage => "FCPercentage.FCPResults.HUD.BSML.MissionResultsPercentageResult.bsml";
 		internal override string ResourceNameFCScore => "FCPercentage.FCPResults.HUD.BSML.MissionResultsScoreResult.bsml";
 
-		public FCPMissionResultsViewController(ScoreManager scoreManager, MissionResultsViewController resultsViewController) : base(scoreManager)
+		internal override ResultsSettings config { get; set; }
+		internal override ResultsTextFormattingModel textModel { get; set; }
+
+		public FCPMissionResultsViewController(ScoreManager scoreManager, MissionResultsViewController resultsViewController) : base(scoreManager, resultsViewController)
 		{
-			this.resultsViewController = resultsViewController;
+			config = PluginConfig.Instance.MissionResultsSettings;
+			textModel = new ResultsTextFormattingModel(scoreManager, config, GetDiffCalculationModel());
 		}
 
 		internal override LevelCompletionResults GetLevelCompletionResults()

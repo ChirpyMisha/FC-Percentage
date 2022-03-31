@@ -20,29 +20,13 @@ namespace FCPercentage.FCPResults.HUD
 		internal override string ResourceNameFCPercentage => "FCPercentage.FCPResults.HUD.BSML.ResultsPercentageResult.bsml";
 		internal override string ResourceNameFCScore => "FCPercentage.FCPResults.HUD.BSML.ResultsScoreResult.bsml";
 
-		//// ResultsView - Text fields in the bsml
-		//[UIComponent("fcScoreText")]
-		//private TextMeshProUGUI? fcScoreText = null!;
-		//[UIComponent("fcScoreDiffText")]
-		//private TextMeshProUGUI? fcScoreDiffText = null!;
-		//[UIComponent("fcPercentText")]
-		//private TextMeshProUGUI? fcPercentText = null!;
-		//[UIComponent("fcPercentDiffText")]
-		//private TextMeshProUGUI? fcPercentDiffText = null!;
+		internal override ResultsSettings config { get; set; }
+		internal override ResultsTextFormattingModel textModel { get; set; }
 
-		//// MissionResultsView - Text fields in the bsml
-		//[UIComponent("missionFcScoreText")]
-		//private TextMeshProUGUI? missionFcScoreText = null!;
-		//[UIComponent("missionFcScoreDiffText")]
-		//private TextMeshProUGUI? missionFcScoreDiffText = null!;
-		//[UIComponent("missionFcPercentText")]
-		//private TextMeshProUGUI? missionFcPercentText = null!;
-		//[UIComponent("missionFcPercentDiffText")]
-		//private TextMeshProUGUI? missionFcPercentDiffText = null!;
-
-		public FCPResultsViewController(ScoreManager scoreManager, ResultsViewController resultsViewController) : base(scoreManager)
+		public FCPResultsViewController(ScoreManager scoreManager, ResultsViewController resultsViewController) : base(scoreManager, resultsViewController) 
 		{
-			this.resultsViewController = resultsViewController;
+			config = PluginConfig.Instance.ResultsSettings;
+			textModel = new ResultsTextFormattingModel(scoreManager, config, GetDiffCalculationModel());
 		}
 
 		internal override LevelCompletionResults GetLevelCompletionResults()

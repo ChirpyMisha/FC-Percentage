@@ -29,9 +29,11 @@ namespace FCPercentage
 		/// </summary>
 		public void Init(IPALogger logger, Config conf, Zenjector zenjector)
 		{
+			logger.Notice("Starting FCPercentage");
 			Instance = this;
 			Log = logger;
 			PluginConfig.Instance = conf.Generated<PluginConfig>();
+			logger.Notice("PluginConfig Generated");
 
 			zenjector.Install(Location.App, (DiContainer Container) =>
 			{

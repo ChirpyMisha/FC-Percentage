@@ -1,6 +1,6 @@
 ﻿namespace FCPercentage.FCPResults.Configuration
 {
-	class ResultsAdvancedSettings
+	public class ResultsAdvancedSettings
 	{
 		// Advanced settings available from config file
 		public virtual string ScorePrefixText { get; set; } = DefaultScorePrefixText;

@@ -15,6 +15,8 @@ namespace FCPercentage.FCPCore.Configuration
 		// Settings Category Objects
 		public virtual CounterSettings CounterSettings { get; set; } = new CounterSettings();
 		public virtual ResultsSettings ResultsSettings { get; set; } = new ResultsSettings();
+		public virtual ResultsSettings MissionResultsSettings { get; set; } = new ResultsSettings();
+
 
 		// Shared Settings (Custom Counters+ Counter & Results View)
 		//public virtual int BadCutThreshold { get; set; } = 0;

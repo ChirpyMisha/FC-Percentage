@@ -2,6 +2,7 @@
 using BeatSaberMarkupLanguage.Attributes;
 using FCPercentage.FCPCore;
 using FCPercentage.FCPCore.Configuration;
+using FCPercentage.FCPResults.CalculationModels;
 using FCPercentage.FCPResults.Configuration;
 using HMUI;
 using System;
@@ -31,9 +32,9 @@ namespace FCPercentage.FCPResults.HUD
 		[UIComponent("fcPercentDiffText")]
 		public TextMeshProUGUI? fcPercentDiffText = null!;
 
-		internal ResultsSettings config;
+		internal abstract ResultsSettings config { get; set; }
 		internal readonly ScoreManager scoreManager;
-		internal readonly ResultsTextFormattingModel textModel;
+		internal abstract ResultsTextFormattingModel textModel { get; set; }
 		internal LevelCompletionResults levelCompletionResults = null!;
 		internal ViewController resultsViewController;
 
@@ -43,11 +44,10 @@ namespace FCPercentage.FCPResults.HUD
 		private bool IsLabelEnabled(ResultsViewLabelOptions labelOption) => (labelOption == ResultsViewLabelOptions.BothOn || labelOption == ResultsViewLabelOptions.PercentageOn);
 		private bool IsFullCombo => levelCompletionResults != null && levelCompletionResults.fullCombo;
 
-		public ResultsController(ScoreManager scoreManager)
+		public ResultsController(ScoreManager scoreManager, ViewController resultsViewController)
 		{
 			this.scoreManager = scoreManager;
-			config = PluginConfig.Instance.ResultsSettings;
-			textModel = new ResultsTextFormattingModel(scoreManager, config, new ResultsCalculationModel(scoreManager, config));
+			this.resultsViewController = resultsViewController;
 		}
 
 		internal abstract LevelCompletionResults GetLevelCompletionResults();
@@ -82,11 +82,9 @@ namespace FCPercentage.FCPResults.HUD
 
 		private void ParseAllBSML()
 		{
-			GameObject viewControllerGameObj = GetViewControllerGameObject();
-
 			if (fcScoreText == null)
 			{
-				ParseBSML(ResourceNameFCScore, viewControllerGameObj);
+				ParseBSML(ResourceNameFCScore, GetViewControllerGameObject());
 
 				if (fcScoreDiffText != null)
 					fcScoreDiffText.fontSize *= 0.85f;
@@ -95,7 +93,7 @@ namespace FCPercentage.FCPResults.HUD
 			}
 			if (fcPercentText == null)
 			{
-				ParseBSML(ResourceNameFCPercentage, viewControllerGameObj);
+				ParseBSML(ResourceNameFCPercentage, GetViewControllerGameObject());
 
 				if (fcPercentDiffText != null)
 					fcPercentDiffText.fontSize *= 0.85f;
@@ -184,7 +182,23 @@ namespace FCPercentage.FCPResults.HUD
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
 
-
+		internal DiffCalculationModel GetDiffCalculationModel()
+		{
+			switch (config.ScorePercentageDiffModel)
+			{
+				case ResultsViewDiffModels.CurrentResultDiff:
+					new CurrentResultDiffCalculationModel(scoreManager, config);
+					break;
+				case ResultsViewDiffModels.OldHighscoreDiff:
+					new OldHighscoreDiffCalculationModel(scoreManager, config);
+					break;
+				case ResultsViewDiffModels.UpdatedHighscoreDiff:
+					new UpdatedHighscoreDiffCalculationModel(scoreManager, config);
+					break;
+			}
+			Plugin.Log.Error("ResultsController, GetDiffcalculationModel: Unable to get DiffCalculationModel");
+			return null;
+		}
 
 	}
 }

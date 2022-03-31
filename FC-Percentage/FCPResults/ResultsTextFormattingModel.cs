@@ -1,4 +1,5 @@
 ﻿using FCPercentage.FCPCore;
+using FCPercentage.FCPResults.CalculationModels;
 using FCPercentage.FCPResults.Configuration;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace FCPercentage.FCPResults
 	{
 		private ScoreManager scoreManager;
 		private ResultsSettings config;
-		private ResultsCalculationModel calcModel;
+		private DiffCalculationModel calcModel;
 
 		// Color tags of score/percentage difference.
 		private string colorPositiveTag = "";
@@ -26,7 +27,7 @@ namespace FCPercentage.FCPResults
 
 		private string GetColorTagFor(double val) => val >= 0 ? colorPositiveTag : colorNegativeTag;
 
-		public ResultsTextFormattingModel(ScoreManager scoreManager, ResultsSettings resultsSettings, ResultsCalculationModel calcModel)
+		public ResultsTextFormattingModel(ScoreManager scoreManager, ResultsSettings resultsSettings, DiffCalculationModel calcModel)
 		{
 			this.scoreManager = scoreManager;
 			this.config = resultsSettings;
