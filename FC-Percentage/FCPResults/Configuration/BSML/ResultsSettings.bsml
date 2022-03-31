@@ -1,6 +1,11 @@
 ﻿<!-- Inspiration for this BSML file was taken from Shadnix's Saber Tailor mod -->
 <settings-container xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:noNamespaceSchemaLocation='https://raw.githubusercontent.com/monkeymanboy/BSML-Docs/gh-pages/BSMLSchema.xsd'>
-	<settings-submenu text='> Solo Results Settings' click-event='solo-results-settings-entered'>
+	
+	<horizontal pref-width='90'>
+		<text text='FC Percentage Results Settings' font-size='5' align='Left'/>
+	</horizontal>
+	
+	<settings-submenu text='> Solo Results Settings' align='Left' click-event='solo-results-settings-entered'>
 		<settings-container>
 		
 			<horizontal pref-width='90'>
@@ -38,21 +43,33 @@
 														 options='ResultsViewDiffModelList' formatter='ResultsViewDiffModelsFormat' bind-value='true'/>
 
 			<!-- Explanations of Score Percentage Difference Modes -->
-			<settings-submenu text='> Score/Percentage Difference Colors'>
-				<settings-container>
+			<settings-submenu text='> Difference Modes Explanation'>
+				<vertical spacing='-5'>
 
 					<horizontal pref-width='90'>
 						<clickable-text text='⮌ Back' align='Left' click-event='back'/>
-						<text text='Difference Modes Explanation' font-size='5' align='Center'/>
+						<text text='Difference Modes Explanation' font-size='5' align='Left'/>
 					</horizontal>
 
-					<vertical>
-						<text text='Mode 1: Current Result Difference - The difference between your actual score/percentage and the FC score/percentage.'/>
-						<text text='Mode 2: Updated Highscore Difference - The difference between your highscore and the FC score/percentage.'/>
-						<text text='Mode 3: Old Highscore Difference - The difference between your previous highscore and the FC score/percentage (Same behaviour as in the ScorePercentage mod).'/>
+					<vertical spacing='-8'>
+						<vertical pref-width='90' horizontal-fit='PreferredSize' spacing='-11'>
+							<text font-size='4.5' text='Mode 1 : Current Result Difference'/>
+							<text font-size='4' word-wrapping='true' text='The difference between your actual score/percentage and the FC score/percentage.'/>
+						</vertical>
+						<vertical pref-width='90' horizontal-fit='PreferredSize' spacing='-11'>
+							<text font-size='4.5' text='Mode 2 : Updated Highscore Difference'/>
+							<text font-size='4' word-wrapping='true' text='The difference between your highscore and the FC score/percentage.'/>
+						</vertical>
+						<vertical pref-width='90' horizontal-fit='PreferredSize' spacing='-11'>
+							<text font-size='4.5' text='Mode 3 : Old Highscore Difference'/>
+							<text font-size='4' word-wrapping='true' text='The difference between your previous highscore and the FC score/percentage (Same behaviour as in the ScorePercentage mod).'/>
+						</vertical>
 					</vertical>
+					<!--<horizontal>
+						<text font-size='3.4' text='The difference between your previous highscore and the FC score/percentage (Same behaviour as in the ScorePercentage mod).'/>
+					</horizontal>-->
 
-				</settings-container>
+				</vertical>
 			</settings-submenu>
 
 			<checkbox-setting text='Use Saber Color Scheme' hover-hint='Use the saber color scheme when "Show Split FC Percentage" is enabled?'

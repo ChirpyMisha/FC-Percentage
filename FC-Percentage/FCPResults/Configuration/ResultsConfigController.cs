@@ -13,16 +13,19 @@ namespace FCPercentage.FCPResults.Configuration
 		private static string enabledTextColor = "#" + ColorUtility.ToHtmlStringRGB(Color.white);
 		private static string disabledTextColor = "#" + ColorUtility.ToHtmlStringRGB(Color.grey);
 
-		private ResultsSettings settings => PluginConfig.Instance.ResultsSettings;
-		//private ResultsSettings soloSettings => PluginConfig.Instance.ResultsSettings;
-		//private ResultsSettings missionSettings => PluginConfig.Instance.MissionResultsSettings;
-		//private ResultsSettings settings { get { return settings; } 
-		//	set
-		//	{
-		//		settings = value;
-		//		oldSettings = settings;
-		//	}
-		//}
+		//private ResultsSettings settings => PluginConfig.Instance.ResultsSettings;
+		private ResultsSettings settings;
+		private ResultsSettings soloSettings => PluginConfig.Instance.ResultsSettings;
+		private ResultsSettings missionSettings => PluginConfig.Instance.MissionResultsSettings;
+		private ResultsSettings Settings
+		{
+			get { return settings; }
+			set
+			{
+				settings = value;
+				oldSettings = settings;
+			}
+		}
 		private ResultsSettings oldSettings;
 
 #pragma warning disable CS8618
@@ -31,8 +34,8 @@ namespace FCPercentage.FCPResults.Configuration
 
 		public ResultsConfigController()
 		{
-			//settings = PluginConfig.Instance.ResultsSettings;
-			oldSettings = settings;
+			Settings = PluginConfig.Instance.ResultsSettings;
+			oldSettings = Settings;
 		}
 
 		private void RevertChanges()
@@ -73,11 +76,11 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("is-any-percent-on")]
 		private bool IsAnyPercentOn => (IsPercentageTotalOn || IsPercentageSplitOn);
 		[UIValue("is-percentage-total-on")]
-		private bool IsPercentageTotalOn => settings.PercentageTotalMode != ResultsViewModes.Off;
+		private bool IsPercentageTotalOn => Settings.PercentageTotalMode != ResultsViewModes.Off;
 		[UIValue("is-percentage-split-on")]
-		private bool IsPercentageSplitOn => settings.PercentageSplitMode != ResultsViewModes.Off;
+		private bool IsPercentageSplitOn => Settings.PercentageSplitMode != ResultsViewModes.Off;
 		[UIValue("is-score-total-on")]
-		private bool IsScoreTotalOn => settings.ScoreTotalMode != ResultsViewModes.Off;
+		private bool IsScoreTotalOn => Settings.ScoreTotalMode != ResultsViewModes.Off;
 		[UIValue("is-score-prefix-on")]
 		private bool IsScorePrefixOn => IsScoreTotalOn && (EnableLabel == ResultsViewLabelOptions.BothOn || EnableLabel == ResultsViewLabelOptions.ScoreOn);
 		[UIValue("is-percentage-prefix-on")]
@@ -177,10 +180,10 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("PercentageTotalMode")]
 		public virtual ResultsViewModes PercentageTotalMode
 		{
-			get { return settings.PercentageTotalMode; }
+			get { return Settings.PercentageTotalMode; }
 			set 
 			{
-				settings.PercentageTotalMode = value;
+				Settings.PercentageTotalMode = value;
 				RaisePropertyChanged();
 				UpdateInteractabilityPercentageTotal();
 			}
@@ -189,10 +192,10 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("PercentageSplitMode")]
 		public virtual ResultsViewModes PercentageSplitMode
 		{
-			get { return settings.PercentageSplitMode; }
+			get { return Settings.PercentageSplitMode; }
 			set 
 			{
-				settings.PercentageSplitMode = value;
+				Settings.PercentageSplitMode = value;
 				RaisePropertyChanged();
 				UpdateInteractabilityPercentageSplit();
 			}
@@ -201,10 +204,10 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("ScoreTotalMode")]
 		public virtual ResultsViewModes ScoreTotalMode
 		{
-			get { return settings.ScoreTotalMode; }
+			get { return Settings.ScoreTotalMode; }
 			set 
 			{
-				settings.ScoreTotalMode = value;
+				Settings.ScoreTotalMode = value;
 				RaisePropertyChanged();
 				UpdateInteractabilityScoreTotal();
 			}
@@ -213,10 +216,10 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("EnableLabel")]
 		public virtual ResultsViewLabelOptions EnableLabel
 		{
-			get { return settings.EnableLabel; }
+			get { return Settings.EnableLabel; }
 			set
 			{ 
-				settings.EnableLabel = value;
+				Settings.EnableLabel = value;
 				RaisePropertyChanged();
 				UpdateInteractabilityLabels();
 			}
@@ -225,17 +228,17 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("DecimalPrecision")]
 		public virtual int DecimalPrecision
 		{
-			get { return settings.DecimalPrecision; }
-			set { settings.DecimalPrecision = value; }
+			get { return Settings.DecimalPrecision; }
+			set { Settings.DecimalPrecision = value; }
 		}
 
 		[UIValue("EnableScorePercentageDifference")]
 		public virtual bool EnableScorePercentageDifference
 		{
-			get { return settings.EnableScorePercentageDifference; }
+			get { return Settings.EnableScorePercentageDifference; }
 			set 
 			{ 
-				settings.EnableScorePercentageDifference = value;
+				Settings.EnableScorePercentageDifference = value;
 				RaisePropertyChanged();
 				UpdateInteractabilityScorePercentageDiff();
 			}
@@ -244,22 +247,22 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("ScorePercentageDiffModel")]
 		public virtual ResultsViewDiffModels ScorePercentageDiffModel
 		{
-			get { return settings.ScorePercentageDiffModel; }
-			set { settings.ScorePercentageDiffModel = value; }
+			get { return Settings.ScorePercentageDiffModel; }
+			set { Settings.ScorePercentageDiffModel = value; }
 		}
 
 		[UIValue("SplitPercentageUseSaberColorScheme")]
 		public virtual bool SplitPercentageUseSaberColorScheme
 		{
-			get { return settings.SplitPercentageUseSaberColorScheme; }
-			set { settings.SplitPercentageUseSaberColorScheme = value; }
+			get { return Settings.SplitPercentageUseSaberColorScheme; }
+			set { Settings.SplitPercentageUseSaberColorScheme = value; }
 		}
 
 		[UIValue("KeepTrailingZeros")]
 		public virtual bool KeepTrailingZeros
 		{
-			get { return settings.KeepTrailingZeros; }
-			set { settings.KeepTrailingZeros = value; }
+			get { return Settings.KeepTrailingZeros; }
+			set { Settings.KeepTrailingZeros = value; }
 		}
 
 		[UIValue("IgnoreMultiplier")]
@@ -273,10 +276,10 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("ScorePercentageDiffPositiveColor")]
 		public virtual Color ScorePercentageDiffPositiveColor
 		{
-			get { return HexToColor(settings.Advanced.DifferencePositiveColor); }
+			get { return HexToColor(Settings.Advanced.DifferencePositiveColor); }
 			set 
 			{ 
-				settings.Advanced.DifferencePositiveColor = ColorToHex(value);
+				Settings.Advanced.DifferencePositiveColor = ColorToHex(value);
 				RaisePropertyChanged();
 			}
 		}
@@ -284,10 +287,10 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("ScorePercentageDiffNegativeColor")]
 		public virtual Color ScorePercentageDiffNegativeColor
 		{
-			get { return HexToColor(settings.Advanced.DifferenceNegativeColor); }
+			get { return HexToColor(Settings.Advanced.DifferenceNegativeColor); }
 			set 
 			{
-				settings.Advanced.DifferenceNegativeColor = ColorToHex(value);
+				Settings.Advanced.DifferenceNegativeColor = ColorToHex(value);
 				RaisePropertyChanged();
 			}
 		}
@@ -295,18 +298,18 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("ApplyColorsToScorePercentageModDifference")]
 		public virtual bool ApplyColorsToScorePercentageModDifference
 		{
-			get { return settings.Advanced.ApplyColorsToScorePercentageModDifference; }
-			set { settings.Advanced.ApplyColorsToScorePercentageModDifference = value; }
+			get { return Settings.Advanced.ApplyColorsToScorePercentageModDifference; }
+			set { Settings.Advanced.ApplyColorsToScorePercentageModDifference = value; }
 		}
 
 		// Prefix Strings
 		[UIValue("ScorePrefixText")]
 		public virtual string ScorePrefixText
 		{
-			get { return settings.Advanced.ScorePrefixText; }
+			get { return Settings.Advanced.ScorePrefixText; }
 			set 
 			{ 
-				settings.Advanced.ScorePrefixText = value;
+				Settings.Advanced.ScorePrefixText = value;
 				RaisePropertyChanged();
 			}
 		}
@@ -314,10 +317,10 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("PercentagePrefixText")]
 		public virtual string PercentagePrefixText
 		{
-			get { return settings.Advanced.PercentagePrefixText; }
+			get { return Settings.Advanced.PercentagePrefixText; }
 			set 
 			{ 
-				settings.Advanced.PercentagePrefixText = value;
+				Settings.Advanced.PercentagePrefixText = value;
 				RaisePropertyChanged();
 			}
 		}
@@ -325,10 +328,10 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("PercentageTotalPrefixText")]
 		public virtual string PercentageTotalPrefixText
 		{
-			get { return settings.Advanced.PercentageTotalPrefixText; }
+			get { return Settings.Advanced.PercentageTotalPrefixText; }
 			set 
 			{ 
-				settings.Advanced.PercentageTotalPrefixText = value;
+				Settings.Advanced.PercentageTotalPrefixText = value;
 				RaisePropertyChanged();
 			}
 		}
@@ -336,10 +339,10 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("PercentageSplitSaberAPrefixText")]
 		public virtual string PercentageSplitSaberAPrefixText
 		{
-			get { return settings.Advanced.PercentageSplitSaberAPrefixText; }
+			get { return Settings.Advanced.PercentageSplitSaberAPrefixText; }
 			set	
 			{ 
-				settings.Advanced.PercentageSplitSaberAPrefixText = value;
+				Settings.Advanced.PercentageSplitSaberAPrefixText = value;
 				RaisePropertyChanged();
 			}
 		}
@@ -347,20 +350,20 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("PercentageSplitSaberBPrefixText")]
 		public virtual string PercentageSplitSaberBPrefixText
 		{
-			get { return settings.Advanced.PercentageSplitSaberBPrefixText; }
+			get { return Settings.Advanced.PercentageSplitSaberBPrefixText; }
 			set 
 			{ 
-				settings.Advanced.PercentageSplitSaberBPrefixText = value;
+				Settings.Advanced.PercentageSplitSaberBPrefixText = value;
 				RaisePropertyChanged();
 			}
 		}
 
 
-		//[UIAction("#solo-results-settings-entered")]
-		//public void OnSoloResultsSettingsEntered() => settings = soloSettings;
-		
-		//[UIAction("#mission-results-settings-entered")]
-		//public void OnMissionResultsSettingsEntered() => settings = missionSettings;
+		[UIAction("#solo-results-settings-entered")]
+		public void OnSoloResultsSettingsEntered() => Settings = soloSettings;
+
+		[UIAction("#mission-results-settings-entered")]
+		public void OnMissionResultsSettingsEntered() => Settings = missionSettings;
 
 		[UIAction("#reset-score-percentage-colors")]
 		public void OnResetScorePercentageColors() => RevertToDefault_Color();
