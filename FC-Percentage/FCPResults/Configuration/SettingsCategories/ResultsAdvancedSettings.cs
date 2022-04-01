@@ -1,5 +1,8 @@
-﻿namespace FCPercentage.FCPResults.Configuration
+﻿using System;
+
+namespace FCPercentage.FCPResults.Configuration
 {
+	//[Serializable]
 	public class ResultsAdvancedSettings
 	{
 		// Advanced settings available from config file

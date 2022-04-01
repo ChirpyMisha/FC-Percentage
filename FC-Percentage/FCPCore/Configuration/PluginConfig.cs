@@ -48,6 +48,4 @@ namespace FCPercentage.FCPCore.Configuration
 			// This instance's members populated from other
 		}
 	}
-
-	
 }

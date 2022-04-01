@@ -23,7 +23,7 @@ namespace FCPercentage.FCPResults.Configuration
 			set
 			{
 				settings = value;
-				oldSettings = settings;
+				oldSettings = settings.Clone();
 			}
 		}
 		private ResultsSettings oldSettings;
@@ -35,13 +35,51 @@ namespace FCPercentage.FCPResults.Configuration
 		public ResultsConfigController()
 		{
 			Settings = PluginConfig.Instance.ResultsSettings;
-			oldSettings = Settings;
+			//oldSettings = Settings;
 		}
 
 		private void RevertChanges()
 		{
 			Plugin.Log.Notice("Reverting changes.");
-			PluginConfig.Instance.ResultsSettings = oldSettings;
+			Settings = oldSettings;
+
+			RaisePropertyChanged(nameof(PercentageTotalMode));
+			RaisePropertyChanged(nameof(PercentageSplitMode));
+			RaisePropertyChanged(nameof(ScoreTotalMode));
+			RaisePropertyChanged(nameof(EnableLabel));
+			RaisePropertyChanged(nameof(DecimalPrecision));
+			RaisePropertyChanged(nameof(EnableScorePercentageDifference));
+			RaisePropertyChanged(nameof(ScorePercentageDiffModel));
+			RaisePropertyChanged(nameof(SplitPercentageUseSaberColorScheme));
+			RaisePropertyChanged(nameof(KeepTrailingZeros));
+			RaisePropertyChanged(nameof(IgnoreMultiplier));
+
+			RaisePropertyChanged(nameof(ScorePercentageDiffPositiveColor));
+			RaisePropertyChanged(nameof(ScorePercentageDiffNegativeColor));
+
+			RaisePropertyChanged(nameof(ScorePrefixText));
+			RaisePropertyChanged(nameof(PercentagePrefixText));
+			RaisePropertyChanged(nameof(PercentageTotalPrefixText));
+			RaisePropertyChanged(nameof(PercentageSplitSaberAPrefixText));
+			RaisePropertyChanged(nameof(PercentageSplitSaberBPrefixText));
+
+			RaisePropertyChanged(nameof(IsAnyOn));
+			RaisePropertyChanged(nameof(IsAnyPercentOn));
+			RaisePropertyChanged(nameof(IsPercentageTotalOn));
+			RaisePropertyChanged(nameof(IsPercentageSplitOn));
+			RaisePropertyChanged(nameof(IsScoreTotalOn));
+			RaisePropertyChanged(nameof(IsScorePrefixOn));
+			RaisePropertyChanged(nameof(IsPercentagePrefixOn));
+			RaisePropertyChanged(nameof(IsScorePercentageDiffOn));
+
+			RaisePropertyChanged(nameof(IsAnyOnColor));
+			RaisePropertyChanged(nameof(IsAnyPercentOnColor));
+			RaisePropertyChanged(nameof(IsPercentageTotalOnColor));
+			RaisePropertyChanged(nameof(IsPercentageSplitOnColor));
+			RaisePropertyChanged(nameof(IsScoreTotalOnColor));
+			RaisePropertyChanged(nameof(IsScorePrefixOnColor));
+			RaisePropertyChanged(nameof(IsPercentagePrefixOnColor));
+			RaisePropertyChanged(nameof(IsScorePercentageDiffOnColor));
 		}
 
 		private void RevertToDefault_Color()
@@ -70,7 +108,7 @@ namespace FCPercentage.FCPResults.Configuration
 		{
             this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		}
-
+		
 		[UIValue("is-any-on")]
 		private bool IsAnyOn => (IsAnyPercentOn || IsScoreTotalOn);
 		[UIValue("is-any-percent-on")]
@@ -88,7 +126,7 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("is-score-percentage-diff-on")]
 		private bool IsScorePercentageDiffOn => IsAnyPercentOn && EnableScorePercentageDifference;
 
-
+		
 		[UIValue("is-any-on-color")]
 		private string IsAnyOnColor => GetInteractabilityColor(IsAnyOn);
 		[UIValue("is-any-percent-on-color")]
