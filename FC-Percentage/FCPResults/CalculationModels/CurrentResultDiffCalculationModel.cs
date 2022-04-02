@@ -10,17 +10,17 @@ namespace FCPercentage.FCPResults.CalculationModels
 {
 	public class CurrentResultDiffCalculationModel : DiffCalculationModel
 	{
-		public CurrentResultDiffCalculationModel(ScoreManager scoreManager, ResultsSettings resultsSettings) : base(scoreManager, resultsSettings) { }
-		//{
-		//	this.scoreManager = scoreManager;
-		//	this.config = resultsSettings;
-		//}
+		LevelCompletionResults levelCompletionResults;
+		public CurrentResultDiffCalculationModel(ScoreManager scoreManager, ResultsSettings resultsSettings, LevelCompletionResults levelCompletionResults) : base(scoreManager, resultsSettings) 
+		{
+			this.levelCompletionResults = levelCompletionResults;
+		}
 
-		public override double TotalPercentageDiff => Math.Round(scoreManager.PercentageTotal, config.DecimalPrecision) - scoreManager.HighscorePercentage;
-		public override double PercentDiffA => Math.Round(scoreManager.PercentageA, config.DecimalPrecision) - scoreManager.HighscorePercentage;
-		public override double PercentDiffB => Math.Round(scoreManager.PercentageB, config.DecimalPrecision) - scoreManager.HighscorePercentage;
-		public override int TotalScoreDiff => scoreManager.ScoreAtCurrentPercentage - scoreManager.Highscore;
+		public override double TotalPercentageDiff => TotalPercentage - ActualPercentage;
+		public override double PercentDiffA => PercentA - ActualPercentage;
+		public override double PercentDiffB => PercentB - ActualPercentage;
+		public override int TotalScoreDiff => TotalScore - levelCompletionResults.modifiedScore;
 
-		
+		private double ActualPercentage => CalculatePercentage(levelCompletionResults.modifiedScore, scoreManager.MaxScoreTotal);
 	}
 }

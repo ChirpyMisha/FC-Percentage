@@ -29,12 +29,11 @@ namespace FCPercentage.FCPCore
 		public string SaberBColor { get; private set; } = "#FFFFFF";
 
 		public int Highscore { get; private set; }
-		public int HighscoreAtSongStart { get; internal set; }
+		public int HighscoreAtLevelStart { get; internal set; }
 		public int MaxScoreAtLevelStart { get; private set; }
 		public double HighscorePercentage => CalculatePercentage(Highscore, MaxScoreAtLevelStart);
+		public double HighscorePercentageAtLevelStart => CalculatePercentage(HighscoreAtLevelStart, MaxScoreAtLevelStart);
 		
-
-		//public bool IsBadCutThresholdBroken { get; private set; }
 
 		private int CalculateScoreFromCurrentPercentage()
 		{
@@ -66,7 +65,7 @@ namespace FCPercentage.FCPCore
 			MaxScoreA = 0;
 			MaxScoreB = 0;
 			Highscore = 0;
-			HighscoreAtSongStart = 0;
+			HighscoreAtLevelStart = 0;
 			MaxScoreAtLevelStart = 0;
 			defaultPercentage = defaultPercentageAtStart;
 			//IsBadCutThresholdBroken = false;
@@ -90,7 +89,7 @@ namespace FCPercentage.FCPCore
 
 			PlayerLevelStatsData stats = playerDataModel.playerData.GetPlayerLevelStatsData(beatmap);
 			Highscore = stats.highScore;
-			HighscoreAtSongStart = stats.highScore;
+			HighscoreAtLevelStart = stats.highScore;
 			MaxScoreAtLevelStart = CalculateMaxScore(beatmap.beatmapData.cuttableNotesCount);
 
 			SaberAColor = "#" + ColorUtility.ToHtmlStringRGB(colorScheme.saberAColor);
@@ -155,17 +154,8 @@ namespace FCPercentage.FCPCore
 				return (noteCount - 13) * 920 + 4715;
 		}
 
-		private double CalculatePercentage(int val, int maxVal)
-		{
-			return CalculateRatio(val, maxVal) * 100;
-		}
-
-		private double CalculateRatio(int val, int maxVal)
-		{
-			if (maxVal == 0)
-				return defaultPercentage / 100;
-			return (double)val / (double)maxVal;
-		}
+		private double CalculatePercentage(int val, int maxVal) =>  CalculateRatio(val, maxVal) * 100;
+		private double CalculateRatio(int val, int maxVal) => maxVal != 0 ? ((double)val / (double)maxVal) : (defaultPercentage / 100);
 
 		public string PercentageToString(double percentage, string decimalFormat, bool keepTrailingZeros)
 		{

@@ -11,17 +11,10 @@ namespace FCPercentage.FCPResults.CalculationModels
 	public class OldHighscoreDiffCalculationModel : DiffCalculationModel
 	{
 		public OldHighscoreDiffCalculationModel(ScoreManager scoreManager, ResultsSettings resultsSettings) : base(scoreManager, resultsSettings) { }
-		//{
-		//	this.scoreManager = scoreManager;
-		//	this.config = resultsSettings;
-		//}
 
-		public override double TotalPercentageDiff => throw new NotImplementedException();
-
-		public override double PercentDiffA => throw new NotImplementedException();
-
-		public override double PercentDiffB => throw new NotImplementedException();
-
-		public override int TotalScoreDiff => throw new NotImplementedException();
+		public override double TotalPercentageDiff => TotalPercentage - scoreManager.HighscorePercentageAtLevelStart;
+		public override double PercentDiffA => PercentA - scoreManager.HighscorePercentageAtLevelStart;
+		public override double PercentDiffB => PercentB - scoreManager.HighscorePercentageAtLevelStart;
+		public override int TotalScoreDiff => TotalScore - scoreManager.HighscoreAtLevelStart;
 	}
 }
