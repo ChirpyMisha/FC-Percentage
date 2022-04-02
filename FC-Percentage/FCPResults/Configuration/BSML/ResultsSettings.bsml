@@ -5,6 +5,7 @@
 		<text text='FC Percentage Results Settings' font-size='5' align='Left'/>
 	</horizontal>
 	
+	<!-- Solo Results Settings -->
 	<settings-submenu text='> Solo Results Settings' align='Left' click-event='solo-results-settings-entered'>
 		<settings-container>
 		
@@ -14,7 +15,7 @@
 				<clickable-text text='⭯ Revert' align='Right' click-event='revert-settings'/>
 			</horizontal>
 
-			<!-- Results Settings -->
+			<!-- Main Settings -->
 			<dropdown-list-setting text='Show FC Percentage' hover-hint='Select if or when the FC percentage should be shown on the results screen.'
 														 value='PercentageTotalMode' apply-on-change='true' bind-value='true'
 														 options='ResultsViewModeList' formatter='ResultsViewModesFormat'/>
@@ -65,9 +66,6 @@
 							<text font-size='4' word-wrapping='true' text='The difference between your previous highscore and the FC score/percentage (Same behaviour as in the ScorePercentage mod).'/>
 						</vertical>
 					</vertical>
-					<!--<horizontal>
-						<text font-size='3.4' text='The difference between your previous highscore and the FC score/percentage (Same behaviour as in the ScorePercentage mod).'/>
-					</horizontal>-->
 
 				</vertical>
 			</settings-submenu>
@@ -140,6 +138,140 @@
 			
 		</settings-container>
 		
+	</settings-submenu>
+
+
+
+	<!-- Mission Results Settings -->
+	<settings-submenu text='> Mission Results Settings' align='Left' click-event='mission-results-settings-entered'>
+		<settings-container>
+
+			<horizontal pref-width='90'>
+				<clickable-text text='⮌ Save/Back' align='Left' click-event='back'/>
+				<text text='FCP Results Settings' font-size='5' align='Center'/>
+				<clickable-text text='⭯ Revert' align='Right' click-event='revert-settings'/>
+			</horizontal>
+
+			<!-- Main Settings -->
+			<dropdown-list-setting text='Show FC Percentage' hover-hint='Select if or when the FC percentage should be shown on the results screen.'
+														 value='PercentageTotalMode' apply-on-change='true' bind-value='true'
+														 options='ResultsViewModeList' formatter='ResultsViewModesFormat'/>
+
+			<dropdown-list-setting text='Show Split FC Percentage' hover-hint='Select if or when the split FC percentage should be shown on the results screen.'
+														 value='PercentageSplitMode' apply-on-change='true' bind-value='true'
+														 options='ResultsViewModeList' formatter='ResultsViewModesFormat'/>
+
+			<dropdown-list-setting text='Show FC Score' hover-hint='Select if or when the FC score should be shown on the results screen.'
+														 value='ScoreTotalMode' apply-on-change='true' bind-value='true'
+														 options='ResultsViewModeList' formatter='ResultsViewModesFormat'/>
+
+			<dropdown-list-setting text='Enable Label' hover-hint='Enable the label. The label text can be changed in the config file in the UserData folder.'
+														 value='EnableLabel' apply-on-change='true' bind-value='true' interactable='~is-any-on'
+														 options='ResultsViewLabelOptionList' formatter='ResultsViewLabelOptionsFormat'/>
+
+			<increment-setting text='Decimal Precision' hover-hint='How precise should the percentage be?' font-color='~is-any-percent-on-color'
+												 value='DecimalPrecision' apply-on-change='true' bind-value='true' interactable='~is-any-percent-on'
+												 integer-only='true' min='0' max='69' increment='1'/>
+
+			<checkbox-setting text='Enable Score Percentage Difference' hover-hint='Shows the difference between your high score and the FC score and percentage.' font-color='~is-any-percent-on-color'
+												value='EnableScorePercentageDifference' apply-on-change='true' bind-value='true' interactable='~is-any-percent-on'/>
+
+			<dropdown-list-setting text='Score Percentage Difference Mode' hover-hint='Select how you want the Score Percentage Difference to be calculated.'
+														 value='ScorePercentageDiffModel' apply-on-change='true' bind-value='true' interactable='~is-score-percentage-diff-on'
+														 options='ResultsViewDiffModelList' formatter='ResultsViewDiffModelsFormat'/>
+
+			<!-- Explanations of Score Percentage Difference Modes -->
+			<settings-submenu text='> Difference Modes Explanation'>
+				<vertical spacing='-5'>
+
+					<horizontal pref-width='90'>
+						<clickable-text text='⮌ Back' align='Left' click-event='back'/>
+						<text text='Difference Modes Explanation' font-size='5' align='Left'/>
+					</horizontal>
+
+					<vertical spacing='-8'>
+						<vertical pref-width='90' horizontal-fit='PreferredSize' spacing='-11'>
+							<text font-size='4.5' text='Mode 1 : Current Result Difference'/>
+							<text font-size='4' word-wrapping='true' text='The difference between your actual score/percentage and the FC score/percentage.'/>
+						</vertical>
+						<vertical pref-width='90' horizontal-fit='PreferredSize' spacing='-11'>
+							<text font-size='4.5' text='Mode 2 : Updated Highscore Difference'/>
+							<text font-size='4' word-wrapping='true' text='The difference between your highscore and the FC score/percentage.'/>
+						</vertical>
+						<vertical pref-width='90' horizontal-fit='PreferredSize' spacing='-11'>
+							<text font-size='4.5' text='Mode 3 : Old Highscore Difference'/>
+							<text font-size='4' word-wrapping='true' text='The difference between your previous highscore and the FC score/percentage (Same behaviour as in the ScorePercentage mod).'/>
+						</vertical>
+					</vertical>
+
+				</vertical>
+			</settings-submenu>
+
+			<checkbox-setting text='Use Saber Color Scheme' hover-hint='Use the saber color scheme when "Show Split FC Percentage" is enabled?'
+												value='SplitPercentageUseSaberColorScheme' apply-on-change='true' bind-value='true' interactable='~is-percentage-split-on' font-color='~is-percentage-split-on-color'/>
+
+			<checkbox-setting text='Keep Trailing Zeros' hover-hint='Should the percentage have zeros at the end of the decimals?&#xA;Example without trailing zeros: 83%&#xA;Example with trailing zeros: 83.00%'
+												value='KeepTrailingZeros' apply-on-change='true' bind-value='true' interactable='~is-any-percent-on' font-color='~is-any-percent-on-color'/>
+
+			<checkbox-setting text='Ignore Multiplier Ramp-up' hover-hint='When this is enabled all cuts will be weighed the same. (Also applies to in-game counter)'
+												value='IgnoreMultiplier' apply-on-change='true' bind-value='true' interactable='~is-any-on' font-color='~is-any-on-color'/>
+
+			<!-- Advanced Settings -->
+			<settings-submenu text='> Score/Percentage Difference Colors'>
+				<settings-container>
+
+					<horizontal pref-width='90'>
+						<clickable-text text='⮌ Back' align='Left' click-event='back'/>
+						<text text='Difference Colors' font-size='5' align='Center'/>
+						<clickable-text text='⭯ Default' align='Right' click-event='reset-score-percentage-colors'/>
+					</horizontal>
+
+					<color-setting text='Score/Percentage Difference Positive' hover-hint='Which color should be used for a positive difference value?'
+												 value='ScorePercentageDiffPositiveColor' apply-on-change='true' bind-value='true'
+												 interactable='~is-score-percentage-diff-on' font-color='~is-score-percentage-diff-on-color'/>
+
+					<color-setting text='Score/Percentage Difference Negative' hover-hint='Which color should be used for a negative difference value?'
+												 value='ScorePercentageDiffNegativeColor' apply-on-change='true' bind-value='true'
+												 interactable='~is-score-percentage-diff-on' font-color='~is-score-percentage-diff-on-color'/>
+
+				</settings-container>
+			</settings-submenu>
+
+			<settings-submenu text='> Prefix Strings'>
+				<settings-container>
+
+					<horizontal pref-width='90'>
+						<clickable-text text='⮌ Back' align='Left' click-event='back'/>
+						<text text='Prefix Settings' font-size='5' align='Center'/>
+						<clickable-text text='⭯ Default' align='Right' click-event='reset-prefix-strings'/>
+					</horizontal>
+
+					<string-setting text='Score Prefix' hover-hint='When Enable Label is on for the score, this is used as a prefix.'
+													value='ScorePrefixText' apply-on-change='true' bind-value='true'
+													interactable='~is-score-prefix-on' font-color ='~is-score-prefix-on-color'/>
+
+					<string-setting text='Percentage Prefix' hover-hint='When Enable Label is on for the percentage, this is used as a prefix.'
+													value='PercentagePrefixText' apply-on-change='true' bind-value='true'
+													interactable='~is-percentage-prefix-on' font-color='~is-percentage-prefix-on-color'/>
+
+					<string-setting text='Total Percentage Prefix' hover-hint='When showing the total percentage (Activate with the "Show FC Percentage" setting), this string is used as a prefix for the total percentage.'
+													value='PercentageTotalPrefixText' apply-on-change='true' bind-value='true'
+													interactable='~is-percentage-total-on' font-color='~is-percentage-total-on-color'/>
+
+					<string-setting text='Split Percentage Prefix Left' hover-hint='When showing the split percentage (Activate with the "Show Split FC Percentage" setting), this string is used as a prefix for the left saber&#39;s percentage.'
+													value='PercentageSplitSaberAPrefixText' apply-on-change='true' bind-value='true'
+													interactable='~is-percentage-split-on' font-color='~is-percentage-split-on-color'/>
+
+					<string-setting text='Split Percentage Prefix Right' hover-hint='When showing the split percentage (Activate with the "Show Split FC Percentage" setting), this string is used as a prefix for the right saber&#39;s percentage.'
+													value='PercentageSplitSaberBPrefixText' apply-on-change='true' bind-value='true'
+													interactable='~is-percentage-split-on' font-color='~is-percentage-split-on-color'/>
+
+				</settings-container>
+
+			</settings-submenu>
+
+		</settings-container>
+
 	</settings-submenu>
 	
 </settings-container>
