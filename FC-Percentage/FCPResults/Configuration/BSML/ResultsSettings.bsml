@@ -11,7 +11,7 @@
 		
 			<horizontal pref-width='90'>
 				<clickable-text text='⮌ Save/Back' align='Left' click-event='back'/>
-				<text text='FCP Results Settings' font-size='5' align='Center'/>
+				<text text='Solo Results Settings' font-size='5' align='Center'/>
 				<clickable-text text='⭯ Revert' align='Right' click-event='revert-settings'/>
 			</horizontal>
 
@@ -148,7 +148,7 @@
 
 			<horizontal pref-width='90'>
 				<clickable-text text='⮌ Save/Back' align='Left' click-event='back'/>
-				<text text='FCP Results Settings' font-size='5' align='Center'/>
+				<text text='Mission Results Settings' font-size='5' align='Center'/>
 				<clickable-text text='⭯ Revert' align='Right' click-event='revert-settings'/>
 			</horizontal>
 

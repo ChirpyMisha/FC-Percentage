@@ -32,6 +32,30 @@ namespace FCPercentage.FCPResults.Configuration
 		//		return (ResultsSettings)formatter.Deserialize(stream);
 		//	}
 		//}
+
+		public static void RevertChanges(ResultsSettings settings, ResultsSettings oldSettings)
+		{
+			settings.PercentageTotalMode = oldSettings.PercentageTotalMode;
+			settings.PercentageSplitMode = oldSettings.PercentageSplitMode;
+			settings.ScoreTotalMode = oldSettings.ScoreTotalMode;
+			settings.EnableLabel = oldSettings.EnableLabel;
+			settings.DecimalPrecision = oldSettings.DecimalPrecision;
+			settings.EnableScorePercentageDifference = oldSettings.EnableScorePercentageDifference;
+			settings.ScorePercentageDiffModel = oldSettings.ScorePercentageDiffModel;
+			settings.SplitPercentageUseSaberColorScheme = oldSettings.SplitPercentageUseSaberColorScheme;
+			settings.KeepTrailingZeros = oldSettings.KeepTrailingZeros;
+			//settings.IgnoreMultiplier = oldIgnoreMultiplier;
+
+			settings.Advanced.DifferencePositiveColor = oldSettings.Advanced.DifferencePositiveColor;
+			settings.Advanced.DifferenceNegativeColor = oldSettings.Advanced.DifferenceNegativeColor;
+			settings.Advanced.ApplyColorsToScorePercentageModDifference = oldSettings.Advanced.ApplyColorsToScorePercentageModDifference;
+
+			settings.Advanced.ScorePrefixText = oldSettings.Advanced.ScorePrefixText;
+			settings.Advanced.PercentagePrefixText = oldSettings.Advanced.PercentagePrefixText;
+			settings.Advanced.PercentageTotalPrefixText = oldSettings.Advanced.PercentageTotalPrefixText;
+			settings.Advanced.PercentageSplitSaberAPrefixText = oldSettings.Advanced.PercentageSplitSaberAPrefixText;
+			settings.Advanced.PercentageSplitSaberBPrefixText = oldSettings.Advanced.PercentageSplitSaberBPrefixText;
+		}
 	}
 
 	public static class CloningService

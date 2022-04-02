@@ -24,6 +24,7 @@ namespace FCPercentage.FCPResults.Configuration
 				settings = value;
 				oldSettings = settings.Clone();
 				oldIgnoreMultiplier = PluginConfig.Instance.IgnoreMultiplier;
+				RaisePropertyChangedAllProperties();
 			}
 		}
 
@@ -43,64 +44,51 @@ namespace FCPercentage.FCPResults.Configuration
 		{
 			Plugin.Log.Info("ResultsConfigController, RevertChanges: Reverting changes.");
 
-			PercentageTotalMode = oldSettings.PercentageTotalMode;
-			PercentageSplitMode = oldSettings.PercentageSplitMode;
-			ScoreTotalMode = oldSettings.ScoreTotalMode;
-			EnableLabel = oldSettings.EnableLabel;
-			DecimalPrecision = oldSettings.DecimalPrecision;
-			EnableScorePercentageDifference = oldSettings.EnableScorePercentageDifference;
-			ScorePercentageDiffModel = oldSettings.ScorePercentageDiffModel;
-			SplitPercentageUseSaberColorScheme = oldSettings.SplitPercentageUseSaberColorScheme;
-			KeepTrailingZeros = oldSettings.KeepTrailingZeros;
-			IgnoreMultiplier = oldIgnoreMultiplier;
+			ResultsSettings.RevertChanges(settings, oldSettings);
+			PluginConfig.Instance.IgnoreMultiplier = oldIgnoreMultiplier;
 
-			ScorePercentageDiffPositiveColor = HexToColor(oldSettings.Advanced.DifferencePositiveColor);
-			ScorePercentageDiffNegativeColor = HexToColor(oldSettings.Advanced.DifferenceNegativeColor);
-			ApplyColorsToScorePercentageModDifference = oldSettings.Advanced.ApplyColorsToScorePercentageModDifference;
+			RaisePropertyChangedAllProperties();
+		}
 
-			ScorePrefixText = oldSettings.Advanced.ScorePrefixText;
-			PercentagePrefixText = oldSettings.Advanced.PercentagePrefixText;
-			PercentageTotalPrefixText = oldSettings.Advanced.PercentageTotalPrefixText;
-			PercentageSplitSaberAPrefixText = oldSettings.Advanced.PercentageSplitSaberAPrefixText;
-			PercentageSplitSaberBPrefixText = oldSettings.Advanced.PercentageSplitSaberBPrefixText;
+		private void RaisePropertyChangedAllProperties()
+		{
+			RaisePropertyChanged(nameof(PercentageTotalMode));
+			RaisePropertyChanged(nameof(PercentageSplitMode));
+			RaisePropertyChanged(nameof(ScoreTotalMode));
+			RaisePropertyChanged(nameof(EnableLabel));
+			RaisePropertyChanged(nameof(DecimalPrecision));
+			RaisePropertyChanged(nameof(EnableScorePercentageDifference));
+			RaisePropertyChanged(nameof(ScorePercentageDiffModel));
+			RaisePropertyChanged(nameof(SplitPercentageUseSaberColorScheme));
+			RaisePropertyChanged(nameof(KeepTrailingZeros));
+			RaisePropertyChanged(nameof(IgnoreMultiplier));
 
-			//RaisePropertyChanged(nameof(PercentageTotalMode));
-			//RaisePropertyChanged(nameof(PercentageSplitMode));
-			//RaisePropertyChanged(nameof(ScoreTotalMode));
-			//RaisePropertyChanged(nameof(EnableLabel));
-			//RaisePropertyChanged(nameof(DecimalPrecision));
-			//RaisePropertyChanged(nameof(EnableScorePercentageDifference));
-			//RaisePropertyChanged(nameof(ScorePercentageDiffModel));
-			//RaisePropertyChanged(nameof(SplitPercentageUseSaberColorScheme));
-			//RaisePropertyChanged(nameof(KeepTrailingZeros));
-			//RaisePropertyChanged(nameof(IgnoreMultiplier));
+			RaisePropertyChanged(nameof(ScorePercentageDiffPositiveColor));
+			RaisePropertyChanged(nameof(ScorePercentageDiffNegativeColor));
 
-			//RaisePropertyChanged(nameof(ScorePercentageDiffPositiveColor));
-			//RaisePropertyChanged(nameof(ScorePercentageDiffNegativeColor));
+			RaisePropertyChanged(nameof(ScorePrefixText));
+			RaisePropertyChanged(nameof(PercentagePrefixText));
+			RaisePropertyChanged(nameof(PercentageTotalPrefixText));
+			RaisePropertyChanged(nameof(PercentageSplitSaberAPrefixText));
+			RaisePropertyChanged(nameof(PercentageSplitSaberBPrefixText));
 
-			//RaisePropertyChanged(nameof(ScorePrefixText));
-			//RaisePropertyChanged(nameof(PercentagePrefixText));
-			//RaisePropertyChanged(nameof(PercentageTotalPrefixText));
-			//RaisePropertyChanged(nameof(PercentageSplitSaberAPrefixText));
-			//RaisePropertyChanged(nameof(PercentageSplitSaberBPrefixText));
+			RaisePropertyChanged(nameof(IsAnyOn));
+			RaisePropertyChanged(nameof(IsAnyPercentOn));
+			RaisePropertyChanged(nameof(IsPercentageTotalOn));
+			RaisePropertyChanged(nameof(IsPercentageSplitOn));
+			RaisePropertyChanged(nameof(IsScoreTotalOn));
+			RaisePropertyChanged(nameof(IsScorePrefixOn));
+			RaisePropertyChanged(nameof(IsPercentagePrefixOn));
+			RaisePropertyChanged(nameof(IsScorePercentageDiffOn));
 
-			//RaisePropertyChanged(nameof(IsAnyOn));
-			//RaisePropertyChanged(nameof(IsAnyPercentOn));
-			//RaisePropertyChanged(nameof(IsPercentageTotalOn));
-			//RaisePropertyChanged(nameof(IsPercentageSplitOn));
-			//RaisePropertyChanged(nameof(IsScoreTotalOn));
-			//RaisePropertyChanged(nameof(IsScorePrefixOn));
-			//RaisePropertyChanged(nameof(IsPercentagePrefixOn));
-			//RaisePropertyChanged(nameof(IsScorePercentageDiffOn));
-
-			//RaisePropertyChanged(nameof(IsAnyOnColor));
-			//RaisePropertyChanged(nameof(IsAnyPercentOnColor));
-			//RaisePropertyChanged(nameof(IsPercentageTotalOnColor));
-			//RaisePropertyChanged(nameof(IsPercentageSplitOnColor));
-			//RaisePropertyChanged(nameof(IsScoreTotalOnColor));
-			//RaisePropertyChanged(nameof(IsScorePrefixOnColor));
-			//RaisePropertyChanged(nameof(IsPercentagePrefixOnColor));
-			//RaisePropertyChanged(nameof(IsScorePercentageDiffOnColor));
+			RaisePropertyChanged(nameof(IsAnyOnColor));
+			RaisePropertyChanged(nameof(IsAnyPercentOnColor));
+			RaisePropertyChanged(nameof(IsPercentageTotalOnColor));
+			RaisePropertyChanged(nameof(IsPercentageSplitOnColor));
+			RaisePropertyChanged(nameof(IsScoreTotalOnColor));
+			RaisePropertyChanged(nameof(IsScorePrefixOnColor));
+			RaisePropertyChanged(nameof(IsPercentagePrefixOnColor));
+			RaisePropertyChanged(nameof(IsScorePercentageDiffOnColor));
 		}
 
 		private void RevertToDefault_Color()
