@@ -68,7 +68,6 @@ namespace FCPercentage.FCPCore
 			HighscoreAtLevelStart = 0;
 			MaxScoreAtLevelStart = 0;
 			defaultPercentage = defaultPercentageAtStart;
-			//IsBadCutThresholdBroken = false;
 		}
 
 		internal void NotifyOfSongEnded(int levelResultScoreModified)
@@ -133,11 +132,6 @@ namespace FCPercentage.FCPCore
 			// Inform listeners that the score has updated
 			InvokeScoreUpdate();
 		}
-
-		//internal void SetBadCutThresholdBroken()
-		//{
-		//	IsBadCutThresholdBroken = true;
-		//}
 
 		private int CalculateMaxScore(int noteCount)
 		{

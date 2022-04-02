@@ -443,9 +443,9 @@ namespace FCPercentage.FCPResults.Configuration
 
 		private static Dictionary<ResultsViewDiffModels, string> ResultsViewDiffModelsToNames = new Dictionary<ResultsViewDiffModels, string>()
 		{
-			{ ResultsViewDiffModels.CurrentResultDiff, "Mode 1" },
+			{ ResultsViewDiffModels.OldHighscoreDiff, "Mode 1" },
 			{ ResultsViewDiffModels.UpdatedHighscoreDiff, "Mode 2" },
-			{ ResultsViewDiffModels.OldHighscoreDiff, "Mode 3" }
+			{ ResultsViewDiffModels.CurrentResultDiff, "Mode 3" }
 		};
 		#endregion
 

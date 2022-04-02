@@ -35,8 +35,6 @@ namespace FCPercentage.FCPCore
 			noteCount = 0;
 
 			GetMultiplier = x => 1;
-
-			//badCutThreshold = PluginConfig.Instance.BadCutThreshold;
 		}
 
 		public void Initialize()

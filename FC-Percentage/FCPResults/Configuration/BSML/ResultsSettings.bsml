@@ -10,7 +10,7 @@
 		<settings-container>
 		
 			<horizontal pref-width='90'>
-				<clickable-text text='⮌ Save/Back' align='Left' click-event='back'/>
+				<clickable-text text='⮌ Back' align='Left' click-event='back'/>
 				<text text='Solo Results Settings' font-size='5' align='Center'/>
 				<clickable-text text='⭯ Revert' align='Right' click-event='revert-settings'/>
 			</horizontal>
@@ -44,26 +44,26 @@
 														 options='ResultsViewDiffModelList' formatter='ResultsViewDiffModelsFormat'/>
 
 			<!-- Explanations of Score Percentage Difference Modes -->
-			<settings-submenu text='> Difference Modes Explanation'>
+			<settings-submenu text='> Explanation Difference Modes'>
 				<vertical spacing='-5'>
 
 					<horizontal pref-width='90'>
 						<clickable-text text='⮌ Back' align='Left' click-event='back'/>
-						<text text='Difference Modes Explanation' font-size='5' align='Left'/>
+						<text text='Explanation Score Percentage Difference Modes' font-size='5' align='Left'/>
 					</horizontal>
 
 					<vertical spacing='-8'>
 						<vertical pref-width='90' horizontal-fit='PreferredSize' spacing='-11'>
-							<text font-size='4.5' text='Mode 1 : Current Result Difference'/>
-							<text font-size='4' word-wrapping='true' text='The difference between your actual score/percentage and the FC score/percentage.'/>
+							<text font-size='4.5' text='Mode 1 : Old Highscore Difference'/>
+							<text font-size='4' word-wrapping='true' text='The difference between your previous highscore and the FC score/percentage (Same behaviour as in the ScorePercentage mod).'/>
 						</vertical>
 						<vertical pref-width='90' horizontal-fit='PreferredSize' spacing='-11'>
 							<text font-size='4.5' text='Mode 2 : Updated Highscore Difference'/>
-							<text font-size='4' word-wrapping='true' text='The difference between your highscore and the FC score/percentage.'/>
+							<text font-size='4' word-wrapping='true' text='The difference between your highscore and the FC score/percentage. If you beat your highscore, it will compare against this score.'/>
 						</vertical>
 						<vertical pref-width='90' horizontal-fit='PreferredSize' spacing='-11'>
-							<text font-size='4.5' text='Mode 3 : Old Highscore Difference'/>
-							<text font-size='4' word-wrapping='true' text='The difference between your previous highscore and the FC score/percentage (Same behaviour as in the ScorePercentage mod).'/>
+							<text font-size='4.5' text='Mode 3 : Current Result Difference'/>
+							<text font-size='4' word-wrapping='true' text='The difference between your actual score/percentage and the FC score/percentage.'/>
 						</vertical>
 					</vertical>
 
@@ -75,9 +75,6 @@
 
 			<checkbox-setting text='Keep Trailing Zeros' hover-hint='Should the percentage have zeros at the end of the decimals?&#xA;Example without trailing zeros: 83%&#xA;Example with trailing zeros: 83.00%'
 												value='KeepTrailingZeros' apply-on-change='true' bind-value='true' interactable='~is-any-percent-on' font-color='~is-any-percent-on-color'/>
-
-			<checkbox-setting text='Ignore Multiplier Ramp-up' hover-hint='When this is enabled all cuts will be weighed the same. (Also applies to in-game counter)'
-												value='IgnoreMultiplier' apply-on-change='true' bind-value='true' interactable='~is-any-on' font-color='~is-any-on-color'/>
 			
 			<!-- Advanced Settings -->
 			<settings-submenu text='> Score/Percentage Difference Colors'>
@@ -147,7 +144,7 @@
 		<settings-container>
 
 			<horizontal pref-width='90'>
-				<clickable-text text='⮌ Save/Back' align='Left' click-event='back'/>
+				<clickable-text text='⮌ Back' align='Left' click-event='back'/>
 				<text text='Mission Results Settings' font-size='5' align='Center'/>
 				<clickable-text text='⭯ Revert' align='Right' click-event='revert-settings'/>
 			</horizontal>
@@ -181,26 +178,26 @@
 														 options='ResultsViewDiffModelList' formatter='ResultsViewDiffModelsFormat'/>
 
 			<!-- Explanations of Score Percentage Difference Modes -->
-			<settings-submenu text='> Difference Modes Explanation'>
+			<settings-submenu text='> Explanation Difference Modes'>
 				<vertical spacing='-5'>
 
 					<horizontal pref-width='90'>
 						<clickable-text text='⮌ Back' align='Left' click-event='back'/>
-						<text text='Difference Modes Explanation' font-size='5' align='Left'/>
+						<text text='Explanation Score Percentage Difference Modes' font-size='5' align='Left'/>
 					</horizontal>
 
 					<vertical spacing='-8'>
 						<vertical pref-width='90' horizontal-fit='PreferredSize' spacing='-11'>
-							<text font-size='4.5' text='Mode 1 : Current Result Difference'/>
-							<text font-size='4' word-wrapping='true' text='The difference between your actual score/percentage and the FC score/percentage.'/>
+							<text font-size='4.5' text='Mode 1 : Old Highscore Difference'/>
+							<text font-size='4' word-wrapping='true' text='The difference between your previous highscore and the FC score/percentage (Same behaviour as in the ScorePercentage mod).'/>
 						</vertical>
 						<vertical pref-width='90' horizontal-fit='PreferredSize' spacing='-11'>
 							<text font-size='4.5' text='Mode 2 : Updated Highscore Difference'/>
-							<text font-size='4' word-wrapping='true' text='The difference between your highscore and the FC score/percentage.'/>
+							<text font-size='4' word-wrapping='true' text='The difference between your highscore and the FC score/percentage. If you beat your highscore, it will compare against this score.'/>
 						</vertical>
 						<vertical pref-width='90' horizontal-fit='PreferredSize' spacing='-11'>
-							<text font-size='4.5' text='Mode 3 : Old Highscore Difference'/>
-							<text font-size='4' word-wrapping='true' text='The difference between your previous highscore and the FC score/percentage (Same behaviour as in the ScorePercentage mod).'/>
+							<text font-size='4.5' text='Mode 3 : Current Result Difference'/>
+							<text font-size='4' word-wrapping='true' text='The difference between your actual score/percentage and the FC score/percentage.'/>
 						</vertical>
 					</vertical>
 
@@ -212,9 +209,6 @@
 
 			<checkbox-setting text='Keep Trailing Zeros' hover-hint='Should the percentage have zeros at the end of the decimals?&#xA;Example without trailing zeros: 83%&#xA;Example with trailing zeros: 83.00%'
 												value='KeepTrailingZeros' apply-on-change='true' bind-value='true' interactable='~is-any-percent-on' font-color='~is-any-percent-on-color'/>
-
-			<checkbox-setting text='Ignore Multiplier Ramp-up' hover-hint='When this is enabled all cuts will be weighed the same. (Also applies to in-game counter)'
-												value='IgnoreMultiplier' apply-on-change='true' bind-value='true' interactable='~is-any-on' font-color='~is-any-on-color'/>
 
 			<!-- Advanced Settings -->
 			<settings-submenu text='> Score/Percentage Difference Colors'>
@@ -273,5 +267,8 @@
 		</settings-container>
 
 	</settings-submenu>
+
+	<checkbox-setting text='Ignore Multiplier Ramp-up' hover-hint='When this is enabled all cuts will be weighed the same. (Also applies to in-game counter)'
+												value='IgnoreMultiplier' apply-on-change='true' bind-value='true' interactable='~is-any-on' font-color='~is-any-on-color'/>
 	
 </settings-container>

@@ -16,7 +16,7 @@ namespace FCPercentage.FCPResults.Configuration
 		public virtual ResultsViewLabelOptions EnableLabel { get; set; } = ResultsViewLabelOptions.BothOn;
 		public virtual int DecimalPrecision { get; set; } = 2;
 		public virtual bool EnableScorePercentageDifference { get; set; } = true;
-		public virtual ResultsViewDiffModels ScorePercentageDiffModel { get; set; } = ResultsViewDiffModels.UpdatedHighscoreDiff;
+		public virtual ResultsViewDiffModels ScorePercentageDiffModel { get; set; } = ResultsViewDiffModels.OldHighscoreDiff;
 		public virtual bool SplitPercentageUseSaberColorScheme { get; set; } = true;
 		public virtual bool KeepTrailingZeros { get; set; } = false;
 
@@ -44,16 +44,15 @@ namespace FCPercentage.FCPResults.Configuration
 		{
 			// Don't serialize a null object, simply return the default for that object
 			if (Object.ReferenceEquals(source, null))
-			{
 				return default(T);
-			}
-			var deserializeSettings = new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace };
-			var serializeSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+
+			JsonSerializerSettings deserializeSettings = new JsonSerializerSettings { ObjectCreationHandling = ObjectCreationHandling.Replace };
+			JsonSerializerSettings serializeSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
 			return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(source, serializeSettings), deserializeSettings);
 		}
 	}
 
 	public enum ResultsViewModes { On, OffWhenFC, Off }
 	public enum ResultsViewLabelOptions { BothOn, ScoreOn, PercentageOn, BothOff }
-	public enum ResultsViewDiffModels { CurrentResultDiff, UpdatedHighscoreDiff, OldHighscoreDiff }
+	public enum ResultsViewDiffModels { OldHighscoreDiff, UpdatedHighscoreDiff, CurrentResultDiff  }
 }
