@@ -16,31 +16,31 @@
 
 			<!-- Results Settings -->
 			<dropdown-list-setting text='Show FC Percentage' hover-hint='Select if or when the FC percentage should be shown on the results screen.'
-														 value='PercentageTotalMode' apply-on-change='true'
-														 options='ResultsViewModeList' formatter='ResultsViewModesFormat' bind-value='true'/>
+														 value='PercentageTotalMode' apply-on-change='true' bind-value='true'
+														 options='ResultsViewModeList' formatter='ResultsViewModesFormat'/>
 
 			<dropdown-list-setting text='Show Split FC Percentage' hover-hint='Select if or when the split FC percentage should be shown on the results screen.'
-														 value='PercentageSplitMode' apply-on-change='true'
-														 options='ResultsViewModeList' formatter='ResultsViewModesFormat' bind-value='true'/>
+														 value='PercentageSplitMode' apply-on-change='true' bind-value='true'
+														 options='ResultsViewModeList' formatter='ResultsViewModesFormat'/>
 
 			<dropdown-list-setting text='Show FC Score' hover-hint='Select if or when the FC score should be shown on the results screen.'
-														 value='ScoreTotalMode' apply-on-change='true'
-														 options='ResultsViewModeList' formatter='ResultsViewModesFormat' bind-value='true'/>
+														 value='ScoreTotalMode' apply-on-change='true' bind-value='true'
+														 options='ResultsViewModeList' formatter='ResultsViewModesFormat'/>
 
 			<dropdown-list-setting text='Enable Label' hover-hint='Enable the label. The label text can be changed in the config file in the UserData folder.'
-														 value='EnableLabel' apply-on-change='true' interactable='~is-any-on'
-														 options='ResultsViewLabelOptionList' formatter='ResultsViewLabelOptionsFormat' bind-value='true'/>
+														 value='EnableLabel' apply-on-change='true' bind-value='true' interactable='~is-any-on'
+														 options='ResultsViewLabelOptionList' formatter='ResultsViewLabelOptionsFormat'/>
 
-			<increment-setting text='Decimal Precision' hover-hint='How precise should the percentage be?'
-												 value='DecimalPrecision' apply-on-change='false' interactable='~is-any-percent-on' font-color='~is-any-percent-on-color'
+			<increment-setting text='Decimal Precision' hover-hint='How precise should the percentage be?' font-color='~is-any-percent-on-color'
+												 value='DecimalPrecision' apply-on-change='true' bind-value='true' interactable='~is-any-percent-on'
 												 integer-only='true' min='0' max='69' increment='1'/>
 
-			<checkbox-setting text='Enable Score Percentage Difference' hover-hint='Shows the difference between your high score and the FC score and percentage.'
-												value='EnableScorePercentageDifference' apply-on-change='true' interactable='~is-any-percent-on' font-color='~is-any-percent-on-color' bind-value='true'/>
+			<checkbox-setting text='Enable Score Percentage Difference' hover-hint='Shows the difference between your high score and the FC score and percentage.' font-color='~is-any-percent-on-color'
+												value='EnableScorePercentageDifference' apply-on-change='true' bind-value='true' interactable='~is-any-percent-on'/>
 
 			<dropdown-list-setting text='Score Percentage Difference Mode' hover-hint='Select how you want the Score Percentage Difference to be calculated.'
-														 value='ScorePercentageDiffModel' apply-on-change='true' interactable='~is-score-percentage-diff-on'
-														 options='ResultsViewDiffModelList' formatter='ResultsViewDiffModelsFormat' bind-value='true'/>
+														 value='ScorePercentageDiffModel' apply-on-change='true' bind-value='true' interactable='~is-score-percentage-diff-on'
+														 options='ResultsViewDiffModelList' formatter='ResultsViewDiffModelsFormat'/>
 
 			<!-- Explanations of Score Percentage Difference Modes -->
 			<settings-submenu text='> Difference Modes Explanation'>
@@ -73,13 +73,13 @@
 			</settings-submenu>
 
 			<checkbox-setting text='Use Saber Color Scheme' hover-hint='Use the saber color scheme when "Show Split FC Percentage" is enabled?'
-												value='SplitPercentageUseSaberColorScheme' apply-on-change='false' interactable='~is-percentage-split-on' font-color='~is-percentage-split-on-color'/>
+												value='SplitPercentageUseSaberColorScheme' apply-on-change='true' bind-value='true' interactable='~is-percentage-split-on' font-color='~is-percentage-split-on-color'/>
 
 			<checkbox-setting text='Keep Trailing Zeros' hover-hint='Should the percentage have zeros at the end of the decimals?&#xA;Example without trailing zeros: 83%&#xA;Example with trailing zeros: 83.00%'
-												value='KeepTrailingZeros' apply-on-change='false' interactable='~is-any-percent-on' font-color='~is-any-percent-on-color'/>
+												value='KeepTrailingZeros' apply-on-change='true' bind-value='true' interactable='~is-any-percent-on' font-color='~is-any-percent-on-color'/>
 
 			<checkbox-setting text='Ignore Multiplier Ramp-up' hover-hint='When this is enabled all cuts will be weighed the same. (Also applies to in-game counter)'
-												value='IgnoreMultiplier' apply-on-change='false' interactable='~is-any-on' font-color='~is-any-on-color'/>
+												value='IgnoreMultiplier' apply-on-change='true' bind-value='true' interactable='~is-any-on' font-color='~is-any-on-color'/>
 			
 			<!-- Advanced Settings -->
 			<settings-submenu text='> Score/Percentage Difference Colors'>
@@ -100,7 +100,7 @@
 												 interactable='~is-score-percentage-diff-on' font-color='~is-score-percentage-diff-on-color'/>
 			
 					<checkbox-setting text='Apply Colors To ScorePercentage Mod' hover-hint='If the ScorePercentage mod is installed, replace its difference colors with the FC-Percentage difference colors.'
-														value='ApplyColorsToScorePercentageModDifference' apply-on-change='false'/> <!--interactable='~is-any-on' font-color='~is-any-on-color'-->
+														value='ApplyColorsToScorePercentageModDifference' apply-on-change='true' bind-value='true'/> <!--interactable='~is-any-on' font-color='~is-any-on-color'-->
 
 				</settings-container>
 			</settings-submenu>
