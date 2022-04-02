@@ -22,5 +22,18 @@ namespace FCPercentage.FCPResults.Configuration
 		public static string DefaultPercentageSplitSaberBPrefixText = "";
 		public static string DefaultDifferencePositiveColor = "#00B300";
 		public static string DefaultDifferenceNegativeColor = "#FF0000";
+
+		public static void RevertChanges(ResultsAdvancedSettings advancedSettings, ResultsAdvancedSettings oldAdvancedSettings)
+		{
+			advancedSettings.DifferencePositiveColor = oldAdvancedSettings.DifferencePositiveColor;
+			advancedSettings.DifferenceNegativeColor = oldAdvancedSettings.DifferenceNegativeColor;
+			advancedSettings.ApplyColorsToScorePercentageModDifference = oldAdvancedSettings.ApplyColorsToScorePercentageModDifference;
+
+			advancedSettings.ScorePrefixText = oldAdvancedSettings.ScorePrefixText;
+			advancedSettings.PercentagePrefixText = oldAdvancedSettings.PercentagePrefixText;
+			advancedSettings.PercentageTotalPrefixText = oldAdvancedSettings.PercentageTotalPrefixText;
+			advancedSettings.PercentageSplitSaberAPrefixText = oldAdvancedSettings.PercentageSplitSaberAPrefixText;
+			advancedSettings.PercentageSplitSaberBPrefixText = oldAdvancedSettings.PercentageSplitSaberBPrefixText;
+		}
 	}
 }

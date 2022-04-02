@@ -22,17 +22,6 @@ namespace FCPercentage.FCPResults.Configuration
 
 		public virtual ResultsAdvancedSettings Advanced { get; set; } = new ResultsAdvancedSettings();
 
-		//public ResultsSettings Clone()
-		//{
-		//	IFormatter formatter = new BinaryFormatter();
-		//	using (var stream = new MemoryStream())
-		//	{
-		//		formatter.Serialize(stream, this);
-		//		stream.Seek(0, SeekOrigin.Begin);
-		//		return (ResultsSettings)formatter.Deserialize(stream);
-		//	}
-		//}
-
 		public static void RevertChanges(ResultsSettings settings, ResultsSettings oldSettings)
 		{
 			settings.PercentageTotalMode = oldSettings.PercentageTotalMode;
@@ -44,17 +33,8 @@ namespace FCPercentage.FCPResults.Configuration
 			settings.ScorePercentageDiffModel = oldSettings.ScorePercentageDiffModel;
 			settings.SplitPercentageUseSaberColorScheme = oldSettings.SplitPercentageUseSaberColorScheme;
 			settings.KeepTrailingZeros = oldSettings.KeepTrailingZeros;
-			//settings.IgnoreMultiplier = oldIgnoreMultiplier;
 
-			settings.Advanced.DifferencePositiveColor = oldSettings.Advanced.DifferencePositiveColor;
-			settings.Advanced.DifferenceNegativeColor = oldSettings.Advanced.DifferenceNegativeColor;
-			settings.Advanced.ApplyColorsToScorePercentageModDifference = oldSettings.Advanced.ApplyColorsToScorePercentageModDifference;
-
-			settings.Advanced.ScorePrefixText = oldSettings.Advanced.ScorePrefixText;
-			settings.Advanced.PercentagePrefixText = oldSettings.Advanced.PercentagePrefixText;
-			settings.Advanced.PercentageTotalPrefixText = oldSettings.Advanced.PercentageTotalPrefixText;
-			settings.Advanced.PercentageSplitSaberAPrefixText = oldSettings.Advanced.PercentageSplitSaberAPrefixText;
-			settings.Advanced.PercentageSplitSaberBPrefixText = oldSettings.Advanced.PercentageSplitSaberBPrefixText;
+			ResultsAdvancedSettings.RevertChanges(settings.Advanced, oldSettings.Advanced);
 		}
 	}
 
