@@ -187,16 +187,13 @@ namespace FCPercentage.FCPResults.HUD
 			switch (config.ScorePercentageDiffModel)
 			{
 				case ResultsViewDiffModels.CurrentResultDiff:
-					new CurrentResultDiffCalculationModel(scoreManager, config);
-					break;
+					return new CurrentResultDiffCalculationModel(scoreManager, config);
 				case ResultsViewDiffModels.OldHighscoreDiff:
-					new OldHighscoreDiffCalculationModel(scoreManager, config);
-					break;
+					return new OldHighscoreDiffCalculationModel(scoreManager, config);
 				case ResultsViewDiffModels.UpdatedHighscoreDiff:
-					new UpdatedHighscoreDiffCalculationModel(scoreManager, config);
-					break;
+					return new  UpdatedHighscoreDiffCalculationModel(scoreManager, config);
 			}
-			Plugin.Log.Error("ResultsController, GetDiffcalculationModel: Unable to get DiffCalculationModel");
+			Plugin.Log.Error("ResultsController, GetDiffcalculationModel: Unable to get DiffCalculationModel. Value: " + config.ScorePercentageDiffModel);
 			return null;
 		}
 
