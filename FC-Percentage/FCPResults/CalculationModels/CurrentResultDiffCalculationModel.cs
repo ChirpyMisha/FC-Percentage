@@ -19,8 +19,9 @@ namespace FCPercentage.FCPResults.CalculationModels
 		public override double TotalPercentageDiff => TotalPercentage - ActualPercentage;
 		public override double PercentDiffA => PercentA - ActualPercentage;
 		public override double PercentDiffB => PercentB - ActualPercentage;
-		public override int TotalScoreDiff => TotalScore - levelCompletionResults.modifiedScore;
+		public override int TotalScoreDiff => TotalScore - ActualScore;
 
-		private double ActualPercentage => CalculatePercentage(levelCompletionResults.modifiedScore, scoreManager.MaxScoreTotal);
+		private double ActualPercentage => CalculatePercentage(ActualScore, scoreManager.MaxScoreTotal);
+		private int ActualScore => levelCompletionResults != null ? levelCompletionResults.modifiedScore : 0;
 	}
 }
