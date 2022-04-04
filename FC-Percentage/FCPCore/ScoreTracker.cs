@@ -24,6 +24,8 @@ namespace FCPercentage.FCPCore
 
 		private int noteCount;
 
+		private PlayerLevelStatsData GetPlayerLevelStatsData(PlayerDataModel playerDataModel, IDifficultyBeatmap beatmap) => playerDataModel.playerData.GetPlayerLevelStatsData(beatmap);
+
 		public ScoreTracker([InjectOptional] ScoreController scoreController, BeatmapObjectManager beatmapObjectManager, ScoreManager scoreManager)
 		{
 			this.scoreManager = scoreManager;
@@ -43,7 +45,8 @@ namespace FCPercentage.FCPCore
 				return;
 
 			// Reset ScoreManager at level start
-			scoreManager.ResetScoreManager(sceneSetupData.difficultyBeatmap, playerDataModel, sceneSetupData.colorScheme);
+			PlayerLevelStatsData stats = GetPlayerLevelStatsData(playerDataModel, sceneSetupData.difficultyBeatmap);
+			scoreManager.ResetScoreManager(stats, sceneSetupData.transformedBeatmapData, sceneSetupData.colorScheme);
 
 			// Set function for multiplier according to setting
 			GetMultiplier = PluginConfig.Instance.IgnoreMultiplier ? MultiplierAtMax : MultiplierAtNoteCount;

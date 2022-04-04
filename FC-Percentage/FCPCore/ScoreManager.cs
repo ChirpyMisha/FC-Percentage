@@ -83,16 +83,13 @@ namespace FCPercentage.FCPCore
 				Highscore = levelResultScoreModified;
 		}
 
-		internal void ResetScoreManager(IDifficultyBeatmap beatmap, PlayerDataModel playerDataModel, ColorScheme colorScheme)
+		internal void ResetScoreManager(PlayerLevelStatsData stats, IReadonlyBeatmapData transformedBeatmapData, ColorScheme colorScheme)
 		{
 			ResetScore();
 
-			PlayerLevelStatsData stats = playerDataModel.playerData.GetPlayerLevelStatsData(beatmap);
 			Highscore = stats.highScore;
 			HighscoreAtLevelStart = stats.highScore;
-			Task<IBeatmapDataBasicInfo> beatmapdataTask = beatmap.GetBeatmapDataBasicInfoAsync();
-			IBeatmapDataBasicInfo beatmapData = beatmapdataTask.Result;
-			MaxScoreAtLevelStart = CalculateMaxScore(beatmapData.cuttableNotesCount);
+			MaxScoreAtLevelStart = ScoreModel.ComputeMaxMultipliedScoreForBeatmap(transformedBeatmapData);
 
 			SaberAColor = "#" + ColorUtility.ToHtmlStringRGB(colorScheme.saberAColor);
 			SaberBColor = "#" + ColorUtility.ToHtmlStringRGB(colorScheme.saberBColor);
@@ -138,21 +135,6 @@ namespace FCPercentage.FCPCore
 
 			// Inform listeners that the score has updated
 			InvokeScoreUpdate();
-		}
-
-		private int CalculateMaxScore(int noteCount)
-		{
-			if (noteCount < 14)
-			{
-				if (noteCount == 1)
-					return 115;
-				else if (noteCount < 5)
-					return (noteCount - 1) * 230 + 115;
-				else
-					return (noteCount - 5) * 460 + 1035;
-			}
-			else
-				return (noteCount - 13) * 920 + 4715;
 		}
 
 		private double CalculatePercentage(int val, int maxVal) =>  CalculateRatio(val, maxVal) * 100;
