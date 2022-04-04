@@ -129,7 +129,7 @@ namespace FCPercentage.FCPResults.HUD
 				fcPercentText.text += textModel.GetTotalPercentageText();
 
 				// Add the total percentage difference if enabled.
-				if (config.EnableScorePercentageDifference && scoreManager.Highscore > 0)
+				if (config.EnableScorePercentageDifference && textModel.HasValidDifferenceResult())
 					fcPercentDiffText.text += textModel.GetTotalPercentageDiffText();
 			}
 			// Add split percentage if enabled.
@@ -139,7 +139,7 @@ namespace FCPercentage.FCPResults.HUD
 				fcPercentText.text += textModel.GetSplitPercentageText();
 
 				// Add the split percentage difference if enabled.
-				if (config.EnableScorePercentageDifference && scoreManager.Highscore > 0)
+				if (config.EnableScorePercentageDifference && textModel.HasValidDifferenceResult())
 					fcPercentDiffText.text += textModel.GetSplitPercentageDiffText();
 			}
 
@@ -161,7 +161,7 @@ namespace FCPercentage.FCPResults.HUD
 				fcScoreText.text += textModel.GetScoreText();
 
 				// Add the score difference if it's enabled.
-				if (config.EnableScorePercentageDifference)
+				if (config.EnableScorePercentageDifference && textModel.HasValidDifferenceResult())
 					fcScoreDiffText.text += textModel.GetScoreDiffText();
 			}
 
@@ -189,9 +189,9 @@ namespace FCPercentage.FCPResults.HUD
 				case ResultsViewDiffModels.CurrentResultDiff:
 					return new CurrentResultDiffCalculationModel(scoreManager, config, levelCompletionResults);
 				case ResultsViewDiffModels.OldHighscoreDiff:
-					return new OldHighscoreDiffCalculationModel(scoreManager, config);
+					return new OldHighscoreDiffCalculationModel(scoreManager, config, levelCompletionResults);
 				case ResultsViewDiffModels.UpdatedHighscoreDiff:
-					return new UpdatedHighscoreDiffCalculationModel(scoreManager, config);
+					return new UpdatedHighscoreDiffCalculationModel(scoreManager, config, levelCompletionResults);
 			}
 			Plugin.Log.Error("ResultsController, GetDiffcalculationModel: Unable to get DiffCalculationModel. Value: " + config.ScorePercentageDiffModel);
 			return null;

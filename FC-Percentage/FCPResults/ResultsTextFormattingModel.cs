@@ -13,7 +13,7 @@ namespace FCPercentage.FCPResults
 	{
 		private ScoreManager scoreManager;
 		private ResultsSettings config;
-		private DiffCalculationModel calcModel;
+		private DiffCalculationModel diffCalcModel;
 
 		// Color tags of score/percentage difference.
 		private string colorPositiveTag = "";
@@ -27,11 +27,11 @@ namespace FCPercentage.FCPResults
 
 		private string GetColorTagFor(double val) => val >= 0 ? colorPositiveTag : colorNegativeTag;
 
-		public ResultsTextFormattingModel(ScoreManager scoreManager, ResultsSettings resultsSettings, DiffCalculationModel calcModel)
+		public ResultsTextFormattingModel(ScoreManager scoreManager, ResultsSettings resultsSettings, DiffCalculationModel diffCalcModel)
 		{
 			this.scoreManager = scoreManager;
 			this.config = resultsSettings;
-			this.calcModel = calcModel;
+			this.diffCalcModel = diffCalcModel;
 		}
 
 		public void RefreshPercentageTextFormatting()
@@ -45,6 +45,7 @@ namespace FCPercentage.FCPResults
 			percentageStringFormat = scoreManager.CreatePercentageStringFormat(config.DecimalPrecision);
 		}
 
+		public bool HasValidDifferenceResult() => diffCalcModel.HasValidResult();
 
 		public string GetTotalPercentageText() => $"{config.Advanced.PercentageTotalPrefixText}{PercentageToString(scoreManager.PercentageTotal)} ";
 		public string GetSplitPercentageText() => $"{percentageColorTagA}{config.Advanced.PercentageSplitSaberAPrefixText}{PercentageToString(scoreManager.PercentageA)} " +
@@ -52,27 +53,21 @@ namespace FCPercentage.FCPResults
 		public string GetScoreText() => ScoreToString(scoreManager.ScoreAtCurrentPercentage);
 
 
-		public string GetTotalPercentageDiffText() => $"{TotalPercentDiffColorTag}{PercentageToString(calcModel.TotalPercentageDiff)}  ";
-		public string GetSplitPercentageDiffText() => $"{SplitPercentDiffColorTagA}{config.Advanced.PercentageSplitSaberAPrefixText}{PercentageToString(calcModel.PercentDiffA)}  " +
-													  $"{SplitPercentDiffColorTagB}{config.Advanced.PercentageSplitSaberBPrefixText}{PercentageToString(calcModel.PercentDiffB)}  ";
-		public string GetScoreDiffText() => $"{TotalScoreDiffColorTag}{ScoreToString(calcModel.TotalScoreDiff)}";
+		public string GetTotalPercentageDiffText() => $"{TotalPercentDiffColorTag}{PercentageToString(diffCalcModel.TotalPercentageDiff)}  ";
+		public string GetSplitPercentageDiffText() => $"{SplitPercentDiffColorTagA}{config.Advanced.PercentageSplitSaberAPrefixText}{PercentageToString(diffCalcModel.PercentDiffA)}  " +
+													  $"{SplitPercentDiffColorTagB}{config.Advanced.PercentageSplitSaberBPrefixText}{PercentageToString(diffCalcModel.PercentDiffB)}  ";
+		public string GetScoreDiffText() => $"{TotalScoreDiffColorTag}{ScoreToString(diffCalcModel.TotalScoreDiff)}";
 
 
 		// TotalScoreDiff is used because (for instance) a score difference of -2 could give a percent difference of 0.00%. Then the score would be negative (red) and the percentage would be positive (green).
-		private string TotalPercentDiffColorTag => GetColorTagFor(calcModel.TotalScoreDiff);
-		public string SplitPercentDiffColorTagA => GetColorTagFor(calcModel.PercentDiffA);
-		public string SplitPercentDiffColorTagB => GetColorTagFor(calcModel.PercentDiffB);
-		public string TotalScoreDiffColorTag => GetColorTagFor(calcModel.TotalScoreDiff);
+		private string TotalPercentDiffColorTag => GetColorTagFor(diffCalcModel.TotalScoreDiff);
+		public string SplitPercentDiffColorTagA => GetColorTagFor(diffCalcModel.PercentDiffA);
+		public string SplitPercentDiffColorTagB => GetColorTagFor(diffCalcModel.PercentDiffB);
+		public string TotalScoreDiffColorTag => GetColorTagFor(diffCalcModel.TotalScoreDiff);
 
 
 
-		private string PercentageToString(double percent)
-		{
-			return scoreManager.PercentageToString(percent, percentageStringFormat, config.KeepTrailingZeros);
-		}
-		private string ScoreToString(int score)
-		{
-			return scoreManager.ScoreToString(score);
-		}
+		private string PercentageToString(double percent) => scoreManager.PercentageToString(percent, percentageStringFormat, config.KeepTrailingZeros);
+		private string ScoreToString(int score) => scoreManager.ScoreToString(score);
 	}
 }

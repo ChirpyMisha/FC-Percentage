@@ -10,11 +10,8 @@ namespace FCPercentage.FCPResults.CalculationModels
 {
 	public class CurrentResultDiffCalculationModel : DiffCalculationModel
 	{
-		LevelCompletionResults levelCompletionResults;
-		public CurrentResultDiffCalculationModel(ScoreManager scoreManager, ResultsSettings resultsSettings, LevelCompletionResults levelCompletionResults) : base(scoreManager, resultsSettings) 
-		{
-			this.levelCompletionResults = levelCompletionResults;
-		}
+		public CurrentResultDiffCalculationModel(ScoreManager scoreManager, ResultsSettings resultsSettings, LevelCompletionResults levelCompletionResults) : 
+			base(scoreManager, resultsSettings, levelCompletionResults) { }
 
 		public override double TotalPercentageDiff => TotalPercentage - ActualPercentage;
 		public override double PercentDiffA => PercentA - ActualPercentage;
@@ -23,5 +20,7 @@ namespace FCPercentage.FCPResults.CalculationModels
 
 		private double ActualPercentage => CalculatePercentage(ActualScore, scoreManager.MaxScoreTotal);
 		private int ActualScore => levelCompletionResults != null ? levelCompletionResults.modifiedScore : 0;
+
+		public override bool HasValidResult() => ActualScore > 0;
 	}
 }

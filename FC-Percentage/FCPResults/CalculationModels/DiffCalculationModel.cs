@@ -10,14 +10,18 @@ namespace FCPercentage.FCPResults.CalculationModels
 {
 	public abstract class DiffCalculationModel
 	{
-		public ScoreManager scoreManager;
-		public ResultsSettings config;
+		internal ScoreManager scoreManager;
+		internal ResultsSettings config;
+		internal LevelCompletionResults levelCompletionResults;
 
-		public DiffCalculationModel(ScoreManager scoreManager, ResultsSettings resultsSettings)
+		public DiffCalculationModel(ScoreManager scoreManager, ResultsSettings resultsSettings, LevelCompletionResults levelCompletionResults)
 		{
 			this.scoreManager = scoreManager;
 			this.config = resultsSettings;
+			this.levelCompletionResults = levelCompletionResults;
 		}
+
+		public abstract bool HasValidResult();
 
 		public abstract double TotalPercentageDiff { get; }
 		public abstract double PercentDiffA { get; }
