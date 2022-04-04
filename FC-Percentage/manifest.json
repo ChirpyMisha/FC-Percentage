@@ -3,9 +3,9 @@
   "id": "FCPercentage",
   "name": "FCPercentage",
   "author": "ChirpyMisha",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "",
-  "gameVersion": "1.19.0",
+  "gameVersion": "1.21.0",
   "dependsOn": {
     "BSIPA": "^4.2.1",
     "BeatSaberMarkupLanguage": "^1.6.0",

@@ -1,6 +1,7 @@
 ﻿#nullable enable
 using System;
 using System.Globalization;
+using System.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 
@@ -89,7 +90,9 @@ namespace FCPercentage.FCPCore
 			PlayerLevelStatsData stats = playerDataModel.playerData.GetPlayerLevelStatsData(beatmap);
 			Highscore = stats.highScore;
 			HighscoreAtLevelStart = stats.highScore;
-			MaxScoreAtLevelStart = CalculateMaxScore(beatmap.beatmapData.cuttableNotesCount);
+			Task<IBeatmapDataBasicInfo> beatmapdataTask = beatmap.GetBeatmapDataBasicInfoAsync();
+			IBeatmapDataBasicInfo beatmapData = beatmapdataTask.Result;
+			MaxScoreAtLevelStart = CalculateMaxScore(beatmapData.cuttableNotesCount);
 
 			SaberAColor = "#" + ColorUtility.ToHtmlStringRGB(colorScheme.saberAColor);
 			SaberBColor = "#" + ColorUtility.ToHtmlStringRGB(colorScheme.saberBColor);
@@ -97,36 +100,40 @@ namespace FCPercentage.FCPCore
 			InvokeScoreUpdate();
 		}
 
-		internal void AddScore(ColorType colorType, int score, int multiplier)
+		internal void AddScore(ColorType colorType, int score, int maxScore, int multiplier)
 		{
 			// Update score for left or right saber
 			if (colorType == ColorType.ColorA)
 			{
 				ScoreA += score * multiplier;
-				MaxScoreA += ScoreModel.kMaxCutRawScore * multiplier;
+				MaxScoreA += maxScore * multiplier;
 			}
 			else if (colorType == ColorType.ColorB)
 			{
 				ScoreB += score * multiplier;
-				MaxScoreB += ScoreModel.kMaxCutRawScore * multiplier;
+				MaxScoreB += maxScore * multiplier;
 			}
 
 			// Inform listeners that the score has updated
 			InvokeScoreUpdate();
 		}
 
-		internal void SubtractScore(ColorType colorType, int score, int multiplier, bool subtractFromMaxScore = false)
+		internal void SubtractScore(ColorType colorType, int score, int multiplier)
+		{
+			SubtractScore(colorType, score, 0, multiplier);
+		}
+		internal void SubtractScore(ColorType colorType, int score, int maxScore, int multiplier, bool subtractFromMaxScore = false)
 		{
 			// Update score for left or right saber
 			if (colorType == ColorType.ColorA)
 			{
 				ScoreA -= score * multiplier;
-				if (subtractFromMaxScore) MaxScoreA -= ScoreModel.kMaxCutRawScore * multiplier;
+				if (subtractFromMaxScore) MaxScoreA -= maxScore * multiplier;
 			}
 			else if (colorType == ColorType.ColorB)
 			{
 				ScoreB -= score * multiplier;
-				if (subtractFromMaxScore) MaxScoreB -= ScoreModel.kMaxCutRawScore * multiplier;
+				if (subtractFromMaxScore) MaxScoreB -= maxScore * multiplier;
 			}
 
 			// Inform listeners that the score has updated

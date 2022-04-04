@@ -49,7 +49,7 @@
 
 					<horizontal pref-width='90'>
 						<clickable-text text='⮌ Back' align='Left' click-event='back'/>
-						<text text='Explanation Score Percentage Difference Modes' font-size='5' align='Left'/>
+						<text text='Explanation Difference Modes' font-size='5' align='Left'/>
 					</horizontal>
 
 					<vertical spacing='-8'>
@@ -183,7 +183,7 @@
 
 					<horizontal pref-width='90'>
 						<clickable-text text='⮌ Back' align='Left' click-event='back'/>
-						<text text='Explanation Score Percentage Difference Modes' font-size='5' align='Left'/>
+						<text text='Explanation Difference Modes' font-size='5' align='Left'/>
 					</horizontal>
 
 					<vertical spacing='-8'>

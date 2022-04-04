@@ -23,13 +23,11 @@ namespace FCPercentage.FCPResults.Configuration
 			{
 				settings = value;
 				oldSettings = settings.Clone();
-				oldIgnoreMultiplier = PluginConfig.Instance.IgnoreMultiplier;
 				RaisePropertyChangedAllProperties();
 			}
 		}
 
 		private ResultsSettings oldSettings;
-		private bool oldIgnoreMultiplier;
 
 #pragma warning disable CS8618
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -45,7 +43,6 @@ namespace FCPercentage.FCPResults.Configuration
 			Plugin.Log.Info("ResultsConfigController, RevertChanges: Reverting changes.");
 
 			ResultsSettings.RevertChanges(settings, oldSettings);
-			PluginConfig.Instance.IgnoreMultiplier = oldIgnoreMultiplier;
 
 			RaisePropertyChangedAllProperties();
 		}
