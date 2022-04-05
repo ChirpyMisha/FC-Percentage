@@ -4,10 +4,11 @@ using System;
 using Zenject;
 using FCPercentage.FCPCore.Configuration;
 using System.Collections.Generic;
+using static NoteData;
 
 namespace FCPercentage.FCPCore
 {
-	public class ScoreTracker : IInitializable, IDisposable
+	public class ScoreTracker : IInitializable, IDisposable, ICutScoreBufferDidChangeReceiver, ICutScoreBufferDidFinishReceiver
 	{
 		[InjectOptional] private GameplayCoreSceneSetupData sceneSetupData = null!;
 		[Inject] private PlayerDataModel playerDataModel = null!;
@@ -15,7 +16,7 @@ namespace FCPercentage.FCPCore
 		private readonly BeatmapObjectManager beatmapObjectManager;
 		private readonly ScoreManager scoreManager;
 
-		private Dictionary<GoodCutScoringElement, CutData> GoodCutCutData;
+		private Dictionary<CutScoreBuffer, int> CutScoreBufferNoteCount;
 
 		private static readonly Func<int, int> MultiplierAtNoteCount = noteCount => noteCount > 13 ? OptimiseGetMultiplier() : (noteCount > 5 ? 4 : (noteCount > 1 ? 2 : 1));
 		private static readonly Func<int, int> MultiplierAtMax = noteCount => 8;
@@ -32,7 +33,7 @@ namespace FCPercentage.FCPCore
 			this.scoreController = scoreController;
 			this.beatmapObjectManager = beatmapObjectManager;
 
-			GoodCutCutData = new Dictionary<GoodCutScoringElement, CutData>();
+			CutScoreBufferNoteCount = new Dictionary<CutScoreBuffer, int>();
 			noteCount = 0;
 
 			GetMultiplier = x => 1;
@@ -53,34 +54,24 @@ namespace FCPercentage.FCPCore
 
 			// Assign events
 			if (scoreController != null)
-			{
 				scoreController.scoringForNoteStartedEvent += ScoreController_scoringForNoteStartedEvent;
-				scoreController.scoringForNoteFinishedEvent += ScoreController_scoringForNoteFinishedEvent;
-			}
 			if (beatmapObjectManager != null)
-			{
 				beatmapObjectManager.noteWasMissedEvent += BeatmapObjectManager_noteWasMissedEvent;
-			}
 		}
 
 		public void Dispose()
 		{
 			// Unassign events
 			if (scoreController != null)
-			{
 				scoreController.scoringForNoteStartedEvent -= ScoreController_scoringForNoteStartedEvent;
-				scoreController.scoringForNoteFinishedEvent -= ScoreController_scoringForNoteFinishedEvent;
-			}
 			if (beatmapObjectManager != null)
-			{
 				beatmapObjectManager.noteWasMissedEvent -= BeatmapObjectManager_noteWasMissedEvent;
-			}
 		}
 
 		private void BeatmapObjectManager_noteWasMissedEvent(NoteController noteController)
 		{
 			// Ignore bombs
-			if (noteController.noteData.colorType == ColorType.None)
+			if (IsBomb(noteController.noteData))
 				return;
 
 			// But do count the missed blocks for proper application of the multiplier
@@ -90,70 +81,72 @@ namespace FCPercentage.FCPCore
 		private void ScoreController_scoringForNoteStartedEvent(ScoringElement scoringElement)
 		{
 			// Ignore bombs
-			if (scoringElement.noteData.colorType == ColorType.None)
+			if (IsBomb(scoringElement))
 				return;
 
 			// And ignore bad cuts. But do count them for proper application of the multiplier
 			noteCount++;
 			if (scoringElement is GoodCutScoringElement goodCutScoringElement)
 			{
-				int acc = goodCutScoringElement.cutScoreBuffer.centerDistanceCutScore;
-
 				// Track cut data
-				GoodCutCutData.Add(goodCutScoringElement, new CutData(goodCutScoringElement.noteData.colorType, acc, noteCount));
+				CutScoreBuffer cutScoreBuffer = (CutScoreBuffer)goodCutScoringElement.cutScoreBuffer;
 
 				// Add provisional score assuming it'll be a full swing to make it feel more responsive even though it may be temporarily incorrect
-				//ScoreModel.RawScoreWithoutMultiplier(noteCutInfo.swingRatingCounter, noteCutInfo.centerDistanceCutScore, out _, out _, out int acc);
-				scoreManager.AddScore(goodCutScoringElement.noteData.colorType, MaxPotentialScore(goodCutScoringElement), goodCutScoringElement.maxPossibleCutScore, GetMultiplier(noteCount));
+				scoreManager.AddScore(goodCutScoringElement.noteData.colorType, MaxPotentialScore(cutScoreBuffer), goodCutScoringElement.maxPossibleCutScore, GetMultiplier(noteCount));
+
+				if (!cutScoreBuffer.isFinished) 
+				{
+					CutScoreBufferNoteCount.Add(cutScoreBuffer, noteCount);
+					goodCutScoringElement.cutScoreBuffer.RegisterDidChangeReceiver(this);
+					goodCutScoringElement.cutScoreBuffer.RegisterDidFinishReceiver(this);
+				}
 			}
 		}
 
-		private void ScoreController_scoringForNoteFinishedEvent(ScoringElement scoringElement)
+		public void HandleCutScoreBufferDidChange(CutScoreBuffer cutScoreBuffer)
 		{
-			if (scoringElement is GoodCutScoringElement goodCutScoringElement)
-			if (GoodCutCutData.TryGetValue(goodCutScoringElement, out CutData cutData))
+			if (!IsCutMaxPotentialScore(cutScoreBuffer))
+				return;
+
+			//Score has already been added during the scoringForNoteStartedEvent. So no further action is required for this note.
+			cutScoreBuffer.UnregisterDidChangeReceiver(this);
+			cutScoreBuffer.UnregisterDidFinishReceiver(this);
+
+			if (CutScoreBufferNoteCount.ContainsKey(cutScoreBuffer))
+				CutScoreBufferNoteCount.Remove(cutScoreBuffer);
+		}
+
+		public void HandleCutScoreBufferDidFinish(CutScoreBuffer cutScoreBuffer)
+		{
+			if (CutScoreBufferNoteCount.TryGetValue(cutScoreBuffer, out int noteCount))
 			{
-				// Calculate difference between previously applied score and actual score
-				int diffAngleCutScore = DifferenceFromProvisionalScore(goodCutScoringElement);
+				int diffAngleCutScore;
+				if ((diffAngleCutScore = DifferenceFromProvisionalScore(cutScoreBuffer)) > 0)
+					scoreManager.SubtractScore(GetColorType(cutScoreBuffer), diffAngleCutScore, GetMultiplier(noteCount));
 
-				// If the previously applied score was NOT correct (aka, it was a full NOT swing) -> Update score
-				if (diffAngleCutScore > 0)
-					scoreManager.SubtractScore(cutData.colorType, diffAngleCutScore, GetMultiplier(cutData.noteCount));
-
-				// Remove cut data since it won't be needed again.
-				GoodCutCutData.Remove(goodCutScoringElement);
+				CutScoreBufferNoteCount.Remove(cutScoreBuffer);
 			}
 			else
-				Plugin.Log.Error("ScoreTracker, ScoreController_scoringForNoteFinishedEvent : Failed to get cutData from GoodCutCutData!");
+				Plugin.Log.Error("ScoreTracker, HandleCutScoreBufferDidChange: Unable to get noteCount from CutScoreBufferNoteCount!");
+			cutScoreBuffer.UnregisterDidChangeReceiver(this);
+			cutScoreBuffer.UnregisterDidFinishReceiver(this);
 		}
 
-		private int DifferenceFromProvisionalScore(GoodCutScoringElement goodCutScoringElement)
+		private int DifferenceFromProvisionalScore(CutScoreBuffer cutScoreBuffer)
 		{
-			int maxAngleCutScore = goodCutScoringElement.cutScoreBuffer.noteScoreDefinition.maxBeforeCutScore + goodCutScoringElement.cutScoreBuffer.noteScoreDefinition.maxAfterCutScore;
-			int ratingAngleCutScore = goodCutScoringElement.cutScoreBuffer.beforeCutScore + goodCutScoringElement.cutScoreBuffer.afterCutScore;
+			int maxAngleCutScore = cutScoreBuffer.noteScoreDefinition.maxBeforeCutScore + cutScoreBuffer.noteScoreDefinition.maxAfterCutScore;
+			int ratingAngleCutScore = cutScoreBuffer.beforeCutScore + cutScoreBuffer.afterCutScore;
 
 			return maxAngleCutScore - ratingAngleCutScore;
 		}
 
+		private ColorType GetColorType(CutScoreBuffer cutScoreBuffer) => cutScoreBuffer.noteCutInfo.noteData.colorType;
 
-		private struct CutData
-		{
-			public ColorType colorType { get; private set; }
-			public float centerDistanceCutScore { get; private set; }
-			public int noteCount { get; private set; }
+		private bool IsCutMaxPotentialScore(CutScoreBuffer cutScoreBuffer) => cutScoreBuffer.cutScore == MaxPotentialScore(cutScoreBuffer);
+		private int MaxPotentialScore(CutScoreBuffer cutScoreBuffer) => cutScoreBuffer.maxPossibleCutScore - MissedCenterDistanceCutScore(cutScoreBuffer);
+		private int MissedCenterDistanceCutScore(CutScoreBuffer cutScoreBuffer) => cutScoreBuffer.noteScoreDefinition.maxCenterDistanceCutScore - cutScoreBuffer.centerDistanceCutScore;
 
-			public CutData(ColorType colorType, float centerDistanceCutScore, int noteCount)
-			{
-				this.colorType = colorType;
-				this.centerDistanceCutScore = centerDistanceCutScore;
-				this.noteCount = noteCount;
-			}
-		}
-
-
-
-		// This method assumes that the ScoringType has been checked so it only checks for cuts that have a variable centerDistanceCutScore.
-		private int MaxPotentialScore(GoodCutScoringElement scoringElement) => scoringElement.maxPossibleCutScore - MissedCenterDistanceCutScore(scoringElement);
-		private int MissedCenterDistanceCutScore(GoodCutScoringElement scoringElement) => scoringElement.cutScoreBuffer.noteScoreDefinition.maxCenterDistanceCutScore - scoringElement.cutScoreBuffer.centerDistanceCutScore;
+		private bool IsBomb(ScoringElement scoringElement) => IsBomb(scoringElement.noteData);
+		private bool IsBomb(NoteData noteData) => noteData.gameplayType == GameplayType.Bomb;
 	}
 }

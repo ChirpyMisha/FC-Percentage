@@ -72,8 +72,6 @@ namespace FCPercentage.FCPResults.HUD
 			scoreManager.NotifyOfSongEnded(levelCompletionResults.modifiedScore);
 			ParseAllBSML();
 
-			Plugin.Log.Notice($"levelCompletionResults.levelEndStateType = {levelCompletionResults.levelEndStateType}");
-
 			if (levelCompletionResults.levelEndStateType == global::LevelCompletionResults.LevelEndStateType.Cleared)
 				SetResultsViewText();
 			else
