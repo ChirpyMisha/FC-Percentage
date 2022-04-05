@@ -13,7 +13,6 @@ namespace FCPercentage.FCPCore
 		[InjectOptional] private GameplayCoreSceneSetupData sceneSetupData = null!;
 		[Inject] private PlayerDataModel playerDataModel = null!;
 		private readonly ScoreController scoreController;
-		private readonly BeatmapObjectManager beatmapObjectManager;
 		private readonly ScoreManager scoreManager;
 
 		private Dictionary<CutScoreBuffer, int> CutScoreBufferNoteCount;
@@ -27,11 +26,10 @@ namespace FCPercentage.FCPCore
 
 		private PlayerLevelStatsData GetPlayerLevelStatsData(PlayerDataModel playerDataModel, IDifficultyBeatmap beatmap) => playerDataModel.playerData.GetPlayerLevelStatsData(beatmap);
 
-		public ScoreTracker([InjectOptional] ScoreController scoreController, BeatmapObjectManager beatmapObjectManager, ScoreManager scoreManager)
+		public ScoreTracker([InjectOptional] ScoreController scoreController, ScoreManager scoreManager)
 		{
 			this.scoreManager = scoreManager;
 			this.scoreController = scoreController;
-			this.beatmapObjectManager = beatmapObjectManager;
 
 			CutScoreBufferNoteCount = new Dictionary<CutScoreBuffer, int>();
 			noteCount = 0;
@@ -55,8 +53,6 @@ namespace FCPercentage.FCPCore
 			// Assign events
 			if (scoreController != null)
 				scoreController.scoringForNoteStartedEvent += ScoreController_scoringForNoteStartedEvent;
-			if (beatmapObjectManager != null)
-				beatmapObjectManager.noteWasMissedEvent += BeatmapObjectManager_noteWasMissedEvent;
 		}
 
 		public void Dispose()
@@ -64,18 +60,6 @@ namespace FCPercentage.FCPCore
 			// Unassign events
 			if (scoreController != null)
 				scoreController.scoringForNoteStartedEvent -= ScoreController_scoringForNoteStartedEvent;
-			if (beatmapObjectManager != null)
-				beatmapObjectManager.noteWasMissedEvent -= BeatmapObjectManager_noteWasMissedEvent;
-		}
-
-		private void BeatmapObjectManager_noteWasMissedEvent(NoteController noteController)
-		{
-			// Ignore bombs
-			if (IsBomb(noteController.noteData))
-				return;
-
-			// But do count the missed blocks for proper application of the multiplier
-			noteCount++;
 		}
 
 		private void ScoreController_scoringForNoteStartedEvent(ScoringElement scoringElement)
