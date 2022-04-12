@@ -1,7 +1,7 @@
 ﻿#nullable enable
+
 using System;
 using System.Globalization;
-using System.Threading.Tasks;
 using UnityEngine;
 using Zenject;
 

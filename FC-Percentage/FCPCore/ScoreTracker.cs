@@ -90,7 +90,7 @@ namespace FCPercentage.FCPCore
 			if (!IsCutMaxPotentialScore(cutScoreBuffer))
 				return;
 
-			//Score has already been added during the scoringForNoteStartedEvent. So no further action is required for this note.
+			// Score has already been added during the scoringForNoteStartedEvent. So no further action is required for this note.
 			cutScoreBuffer.UnregisterDidChangeReceiver(this);
 			cutScoreBuffer.UnregisterDidFinishReceiver(this);
 

@@ -105,13 +105,11 @@ namespace FCPercentage.FCPResults.HUD
 			}
 		}
 
-		private void ParseBSML(string bsmlPath, ViewController viewController) => ParseBSML(bsmlPath, viewController.gameObject);
 		private void ParseBSML(string bsmlPath, GameObject parentGameObject)
 		{
 			BSMLParser.instance.Parse(Utilities.GetResourceContent(Assembly.GetExecutingAssembly(), bsmlPath), parentGameObject, this);
 		}
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
 		internal void SetResultsViewText()
 		{
 			// Empty the text fields so they can be filled with new information
@@ -122,6 +120,7 @@ namespace FCPercentage.FCPResults.HUD
 			SetScoreText();
 		}
 
+#pragma warning disable CS8602 // Null references will be fixed in ParseAllBSML() before this method is called.
 		internal void SetPercentageText()
 		{
 			bool isPercentageAdded = false;
@@ -182,7 +181,7 @@ namespace FCPercentage.FCPResults.HUD
 			fcPercentText.text = "";
 			fcPercentDiffText.text = "";
 		}
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
+#pragma warning restore CS8602 // Restore Dereference of a possibly null reference.
 
 
 		internal DiffCalculationModel GetDiffCalculationModel()

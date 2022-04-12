@@ -20,53 +20,41 @@
 	<checkbox-setting text='Ignore Multiplier Ramp-up' hover-hint='When this is enabled all cuts will be weighed the same. (Also applies to resuls screen)'
 										value='IgnoreMultiplier' apply-on-change='true'/>
 
-	<!--<slider-setting text='Bad Cut Threshold' hover-hint='From what cut score should it be treated as a miss or bad cut?&#xA;Any cut with a score lower or equal to the threshold won&#39;t lower the FC score/percentage. (Also applies to in-game counter)'
-									value='BadCutThreshold' apply-on-change='true' interactable='~is-any-on' font-color='~is-any-on-color'
-									integer-only='true' min='0' max='115' increment='1'/>
-	-->
-
 	<!-- Advanced Settings -->
-	<!--<settings-submenu text='> Advanced Settings'>
-		<settings-container>-->
+	<horizontal pref-width='90'>
+		<text text='Advanced Settings' font-size='5' align='Center'/>
+	</horizontal>
 
-			<horizontal pref-width='90'>
-				<!--<clickable-text text='⮌ Back' align='Left' click-event='back' />-->
-				<text text='Advanced Settings' font-size='5' align='Center'/>
-			</horizontal>
+	<increment-setting text='Counter Offset' hover-hint='Apply an offset to the counter to fine-tune its vertical position.'
+									value='CounterOffset' apply-on-change='true'
+									min='-2' max='2' increment='0.05'/>
 
-			<increment-setting text='Counter Offset' hover-hint='Apply an offset to the counter to fine-tune its vertical position.'
-										 value='CounterOffset' apply-on-change='true'
-										 min='-2' max='2' increment='0.05'/>
+	<increment-setting text='Label Above Counter Offset' hover-hint='Change the offset of the label above the counter when the "Enable Label" setting is set to "Label Above Counter"'
+									value='LabelAboveCounterTextOffset' apply-on-change='true'
+									min='-2' max='2' increment='0.01'/>
 
-			<increment-setting text='Label Above Counter Offset' hover-hint='Change the offset of the label above the counter when the "Enable Label" setting is set to "Label Above Counter"'
-										 value='LabelAboveCounterTextOffset' apply-on-change='true'
-										 min='-2' max='2' increment='0.01'/>
+	<increment-setting text='Label Above Counter Size' hover-hint='Change the size of the label above the counter when the "Enable Label" setting is set to "Label Above Counter"'
+									value='LabelAboveCounterTextSize' apply-on-change='true'
+									min='0.5' max='1.5' increment='0.05'/>
 
-			<increment-setting text='Label Above Counter Size' hover-hint='Change the size of the label above the counter when the "Enable Label" setting is set to "Label Above Counter"'
-										 value='LabelAboveCounterTextSize' apply-on-change='true'
-										 min='0.5' max='1.5' increment='0.05'/>
+	<increment-setting text='Percentage Size' hover-hint='What size should the percentage text be?'
+									value='PercentageSize' apply-on-change='true'
+									min='0.5' max='1.5' increment='0.05'/>
 
-			<increment-setting text='Percentage Size' hover-hint='What size should the percentage text be?'
-										 value='PercentageSize' apply-on-change='true'
-										 min='0.5' max='1.5' increment='0.05'/>
+	<increment-setting text='Line Height' hover-hint='Change the line height between the 2 lines when the "Percentage Mode" setting is set to "Both"'
+									value='PercentageTotalAndSplitLineHeight' apply-on-change='true'
+									min='-1.5' max='1.5' increment='0.05'/>
 
-			<increment-setting text='Line Height' hover-hint='Change the line height between the 2 lines when the "Percentage Mode" setting is set to "Both"'
-										 value='PercentageTotalAndSplitLineHeight' apply-on-change='true'
-										 min='-1.5' max='1.5' increment='0.05'/>
+	<string-setting text='Label Above Counter Text' hover-hint='When the "Enable Label" setting is set to "Label Above Counter", this text will be displayed above the counter.'
+									value='LabelAboveCounterText' apply-on-change='true'/>
 
-			<string-setting text='Label Above Counter Text' hover-hint='When the "Enable Label" setting is set to "Label Above Counter", this text will be displayed above the counter.'
-											value='LabelAboveCounterText' apply-on-change='true'/>
+	<string-setting text='Label Prefix Text' hover-hint='When the "Enable Label" setting is set to "Label As Prefix", this text will be displayed as prefix.'
+									value='LabelPrefixText' apply-on-change='true'/>
 
-			<string-setting text='Label Prefix Text' hover-hint='When the "Enable Label" setting is set to "Label As Prefix", this text will be displayed as prefix.'
-											value='LabelPrefixText' apply-on-change='true'/>
+	<string-setting text='Split Percentage Prefix Left' hover-hint='When showing the split percentage (Activate with the "Percentage Mode" setting), this string is used as a prefix for the left saber&#39;s percentage.'
+									value='PercentageSplitSaberAPrefixText' apply-on-change='true'/>
 
-			<string-setting text='Split Percentage Prefix Left' hover-hint='When showing the split percentage (Activate with the "Percentage Mode" setting), this string is used as a prefix for the left saber&#39;s percentage.'
-											value='PercentageSplitSaberAPrefixText' apply-on-change='true'/>
+	<string-setting text='Split Percentage Prefix Right' hover-hint='When showing the split percentage (Activate with the "Percentage Mode" setting), this string is used as a prefix for the right saber&#39;s percentage.'
+									value='PercentageSplitSaberBPrefixText' apply-on-change='true'/>
 
-			<string-setting text='Split Percentage Prefix Right' hover-hint='When showing the split percentage (Activate with the "Percentage Mode" setting), this string is used as a prefix for the right saber&#39;s percentage.'
-											value='PercentageSplitSaberBPrefixText' apply-on-change='true'/>
-
-		<!--</settings-container>
-
-	</settings-submenu>-->
 </vertical>

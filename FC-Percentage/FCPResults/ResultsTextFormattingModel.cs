@@ -1,11 +1,6 @@
 ﻿using FCPercentage.FCPCore;
 using FCPercentage.FCPResults.CalculationModels;
 using FCPercentage.FCPResults.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FCPercentage.FCPResults
 {
@@ -18,8 +13,6 @@ namespace FCPercentage.FCPResults
 		// Color tags of score/percentage difference.
 		private string colorPositiveTag = "";
 		private string colorNegativeTag = "";
-		// Color tag for default color.
-		//private static string colorDefaultTag = "<color=#FFFFFF>";
 
 		private string percentageColorTagA = "";
 		private string percentageColorTagB = "";

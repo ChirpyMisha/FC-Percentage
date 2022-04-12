@@ -1,16 +1,10 @@
 ﻿#nullable enable
-using System;
-using System.Reflection;
+
 using TMPro;
-using Zenject;
-using BeatSaberMarkupLanguage;
-using BeatSaberMarkupLanguage.Attributes;
-using IPA.Utilities;
 using FCPercentage.FCPCore;
 using FCPercentage.FCPCore.Configuration;
 using FCPercentage.FCPResults.Configuration;
 using UnityEngine;
-using HMUI;
 
 namespace FCPercentage.FCPResults.HUD
 {

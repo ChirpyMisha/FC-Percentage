@@ -1,12 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
 
 namespace FCPercentage.FCPResults.Configuration
 {
-	//[Serializable]
 	public class ResultsSettings
 	{
 		// Results Settings (Results View)
