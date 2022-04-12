@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿#nullable enable
+
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -13,7 +15,7 @@ namespace FCPercentage.FCPResults.Configuration
 		private static string enabledTextColor = "#" + ColorUtility.ToHtmlStringRGB(Color.white);
 		private static string disabledTextColor = "#" + ColorUtility.ToHtmlStringRGB(Color.grey);
 
-		private ResultsSettings settings;
+		private ResultsSettings settings = null!;
 		private ResultsSettings soloSettings => PluginConfig.Instance.ResultsSettings;
 		private ResultsSettings missionSettings => PluginConfig.Instance.MissionResultsSettings;
 		private ResultsSettings Settings
@@ -27,11 +29,10 @@ namespace FCPercentage.FCPResults.Configuration
 			}
 		}
 
-		private ResultsSettings oldSettings;
+		private ResultsSettings oldSettings = null!;
 
-#pragma warning disable CS8618
-		public event PropertyChangedEventHandler PropertyChanged;
-#pragma warning restore CS8618
+
+		public event PropertyChangedEventHandler? PropertyChanged;
 
 		public ResultsConfigController()
 		{

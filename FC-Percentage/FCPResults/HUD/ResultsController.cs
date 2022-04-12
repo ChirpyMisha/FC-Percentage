@@ -1,16 +1,13 @@
-﻿using BeatSaberMarkupLanguage;
+﻿#nullable enable
+
+using BeatSaberMarkupLanguage;
 using BeatSaberMarkupLanguage.Attributes;
 using FCPercentage.FCPCore;
-using FCPercentage.FCPCore.Configuration;
 using FCPercentage.FCPResults.CalculationModels;
 using FCPercentage.FCPResults.Configuration;
 using HMUI;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -50,7 +47,7 @@ namespace FCPercentage.FCPResults.HUD
 			this.resultsViewController = resultsViewController;
 		}
 
-		internal abstract LevelCompletionResults GetLevelCompletionResults();
+		internal abstract LevelCompletionResults? GetLevelCompletionResults();
 		internal abstract GameObject GetViewControllerGameObject();
 
 		public void Initialize()
@@ -67,15 +64,23 @@ namespace FCPercentage.FCPResults.HUD
 
 		internal void ResultsViewController_OnActivateEvent(bool firstActivation, bool addedToHierarchy, bool screenSystemEnabling)
 		{
-			levelCompletionResults = GetLevelCompletionResults();
+			LevelCompletionResults? levelCompletionResults = GetLevelCompletionResults();
 
-			scoreManager.NotifyOfSongEnded(levelCompletionResults.modifiedScore);
-			ParseAllBSML();
+			if (levelCompletionResults != null)
+			{
+				scoreManager.NotifyOfSongEnded(levelCompletionResults.modifiedScore);
+				ParseAllBSML();
 
-			if (levelCompletionResults.levelEndStateType == global::LevelCompletionResults.LevelEndStateType.Cleared)
-				SetResultsViewText();
+				if (levelCompletionResults.levelEndStateType == global::LevelCompletionResults.LevelEndStateType.Cleared)
+					SetResultsViewText();
+				else
+					EmptyResultsViewText();
+			}
 			else
+			{
+				ParseAllBSML();
 				EmptyResultsViewText();
+			}
 		}
 
 		private void ParseAllBSML()
@@ -191,9 +196,12 @@ namespace FCPercentage.FCPResults.HUD
 				case ResultsViewDiffModels.UpdatedHighscoreDiff:
 					return new UpdatedHighscoreDiffCalculationModel(scoreManager, config, levelCompletionResults);
 			}
+			
 			Plugin.Log.Error("ResultsController, GetDiffcalculationModel: Unable to get DiffCalculationModel. Value: " + config.ScorePercentageDiffModel);
-			return null;
+			return GetDefaultDiffCalculationModel();
 		}
+
+		internal DiffCalculationModel GetDefaultDiffCalculationModel() => new OldHighscoreDiffCalculationModel(scoreManager, config, levelCompletionResults);
 
 	}
 }

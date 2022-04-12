@@ -1,12 +1,8 @@
-﻿using FCPercentage.FCPCore;
+﻿#nullable enable
+
+using FCPercentage.FCPCore;
 using FCPercentage.FCPCore.Configuration;
 using FCPercentage.FCPResults.Configuration;
-using HMUI;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace FCPercentage.FCPResults.HUD
@@ -25,13 +21,13 @@ namespace FCPercentage.FCPResults.HUD
 			textModel = new ResultsTextFormattingModel(scoreManager, config, GetDiffCalculationModel());
 		}
 
-		internal override LevelCompletionResults GetLevelCompletionResults()
+		internal override LevelCompletionResults? GetLevelCompletionResults()
 		{
 			MissionResultsViewController resViewController = (MissionResultsViewController)resultsViewController;
 			MissionCompletionResults missionCompletionResults = Accessors.MissionCompletionResults(ref resViewController);
 			if (missionCompletionResults == null)
 				return null;
-			//levelCompletionResults = missionCompletionResults.levelCompletionResults;
+
 			return missionCompletionResults.levelCompletionResults;
 		}
 

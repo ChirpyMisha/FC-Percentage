@@ -19,7 +19,7 @@ namespace FCPercentage.FCPCore
 
 		private static readonly Func<int, int> MultiplierAtNoteCount = noteCount => noteCount > 13 ? OptimiseGetMultiplier() : (noteCount > 5 ? 4 : (noteCount > 1 ? 2 : 1));
 		private static readonly Func<int, int> MultiplierAtMax = noteCount => 8;
-		private static Func<int, int>? GetMultiplier;
+		private static Func<int, int> GetMultiplier = x => 69; // Assign something random to stop compiler complaining ¯\_(ツ)_/¯
 		private static int OptimiseGetMultiplier() { GetMultiplier = MultiplierAtMax; return 8; }
 
 		private int noteCount;
@@ -33,8 +33,6 @@ namespace FCPercentage.FCPCore
 
 			CutScoreBufferNoteCount = new Dictionary<CutScoreBuffer, int>();
 			noteCount = 0;
-
-			GetMultiplier = x => 1;
 		}
 
 		public void Initialize()

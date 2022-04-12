@@ -40,6 +40,7 @@ namespace FCPercentage.FCPResults.Configuration
 
 	public static class CloningService
 	{
+#pragma warning disable CS8603
 		public static T Clone<T>(this T source)
 		{
 			// Don't serialize a null object, simply return the default for that object
@@ -50,6 +51,7 @@ namespace FCPercentage.FCPResults.Configuration
 			JsonSerializerSettings serializeSettings = new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
 			return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(source, serializeSettings), deserializeSettings);
 		}
+#pragma warning restore CS8603
 	}
 
 	public enum ResultsViewModes { On, OffWhenFC, Off }
