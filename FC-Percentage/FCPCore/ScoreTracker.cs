@@ -5,11 +5,13 @@ using Zenject;
 using FCPercentage.FCPCore.Configuration;
 using System.Collections.Generic;
 using static NoteData;
+using SiraUtil.Logging;
 
 namespace FCPercentage.FCPCore
 {
 	public class ScoreTracker : IInitializable, IDisposable, ICutScoreBufferDidChangeReceiver, ICutScoreBufferDidFinishReceiver
 	{
+		private readonly SiraLog logger;
 		[InjectOptional] private GameplayCoreSceneSetupData sceneSetupData = null!;
 		[Inject] private PlayerDataModel playerDataModel = null!;
 		private readonly ScoreController scoreController;
@@ -26,8 +28,9 @@ namespace FCPercentage.FCPCore
 
 		private PlayerLevelStatsData GetPlayerLevelStatsData(PlayerDataModel playerDataModel, IDifficultyBeatmap beatmap) => playerDataModel.playerData.GetPlayerLevelStatsData(beatmap);
 
-		public ScoreTracker([InjectOptional] ScoreController scoreController, ScoreManager scoreManager)
+		public ScoreTracker(SiraLog logger, [InjectOptional] ScoreController scoreController, ScoreManager scoreManager)
 		{
+			this.logger = logger;
 			this.scoreManager = scoreManager;
 			this.scoreController = scoreController;
 
@@ -109,7 +112,7 @@ namespace FCPercentage.FCPCore
 				CutScoreBufferNoteCount.Remove(cutScoreBuffer);
 			}
 			else
-				Plugin.Log.Error("ScoreTracker, HandleCutScoreBufferDidChange: Unable to get noteCount from CutScoreBufferNoteCount!");
+				logger.Error("HandleCutScoreBufferDidChange: Unable to get noteCount from CutScoreBufferNoteCount!");
 			cutScoreBuffer.UnregisterDidChangeReceiver(this);
 			cutScoreBuffer.UnregisterDidFinishReceiver(this);
 		}

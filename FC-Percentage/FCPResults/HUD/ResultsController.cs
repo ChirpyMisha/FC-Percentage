@@ -6,6 +6,7 @@ using FCPercentage.FCPCore;
 using FCPercentage.FCPResults.CalculationModels;
 using FCPercentage.FCPResults.Configuration;
 using HMUI;
+using SiraUtil.Logging;
 using System;
 using System.Reflection;
 using TMPro;
@@ -29,6 +30,7 @@ namespace FCPercentage.FCPResults.HUD
 		[UIComponent("fcPercentDiffText")]
 		public TextMeshProUGUI? fcPercentDiffText = null!;
 
+		private readonly SiraLog logger;
 		internal abstract ResultsSettings config { get; set; }
 		internal readonly ScoreManager scoreManager;
 		internal abstract ResultsTextFormattingModel textModel { get; set; }
@@ -41,8 +43,9 @@ namespace FCPercentage.FCPResults.HUD
 		private bool IsLabelEnabled(ResultsViewLabelOptions labelOption) => (labelOption == ResultsViewLabelOptions.BothOn || labelOption == ResultsViewLabelOptions.PercentageOn);
 		private bool IsFullCombo => levelCompletionResults != null && levelCompletionResults.fullCombo;
 
-		public ResultsController(ScoreManager scoreManager, ViewController resultsViewController)
+		public ResultsController(SiraLog logger, ScoreManager scoreManager, ViewController resultsViewController)
 		{
+			this.logger = logger;
 			this.scoreManager = scoreManager;
 			this.resultsViewController = resultsViewController;
 		}
@@ -92,7 +95,7 @@ namespace FCPercentage.FCPResults.HUD
 				if (fcScoreDiffText != null)
 					fcScoreDiffText.fontSize *= 0.85f;
 				else
-					Plugin.Log.Error($"Parsing BSML ({ResourceNameFCScore}) has failed.");
+					logger.Error($"Parsing BSML ({ResourceNameFCScore}) has failed.");
 			}
 			if (fcPercentText == null)
 			{
@@ -101,7 +104,7 @@ namespace FCPercentage.FCPResults.HUD
 				if (fcPercentDiffText != null)
 					fcPercentDiffText.fontSize *= 0.85f;
 				else
-					Plugin.Log.Error($"Parsing BSML ({ResourceNameFCPercentage}) has failed.");
+					logger.Error($"Parsing BSML ({ResourceNameFCPercentage}) has failed.");
 			}
 		}
 
@@ -195,8 +198,8 @@ namespace FCPercentage.FCPResults.HUD
 				case ResultsViewDiffModels.UpdatedHighscoreDiff:
 					return new UpdatedHighscoreDiffCalculationModel(scoreManager, config, levelCompletionResults);
 			}
-			
-			Plugin.Log.Error("ResultsController, GetDiffcalculationModel: Unable to get DiffCalculationModel. Value: " + config.ScorePercentageDiffModel);
+
+			logger.Error("GetDiffcalculationModel: Unable to get DiffCalculationModel. Value: " + config.ScorePercentageDiffModel);
 			return GetDefaultDiffCalculationModel();
 		}
 

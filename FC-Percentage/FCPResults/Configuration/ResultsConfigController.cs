@@ -7,11 +7,14 @@ using System.Runtime.CompilerServices;
 using UnityEngine;
 using BeatSaberMarkupLanguage.Attributes;
 using FCPercentage.FCPCore.Configuration;
+using SiraUtil.Logging;
 
 namespace FCPercentage.FCPResults.Configuration
 {
 	class ResultsConfigController : INotifyPropertyChanged
 	{
+		private readonly SiraLog logger;
+
 		private static string enabledTextColor = "#" + ColorUtility.ToHtmlStringRGB(Color.white);
 		private static string disabledTextColor = "#" + ColorUtility.ToHtmlStringRGB(Color.grey);
 
@@ -34,14 +37,15 @@ namespace FCPercentage.FCPResults.Configuration
 
 		public event PropertyChangedEventHandler? PropertyChanged;
 
-		public ResultsConfigController()
+		public ResultsConfigController(SiraLog logger)
 		{
+			this.logger = logger;
 			Settings = PluginConfig.Instance.ResultsSettings;
 		}
 
 		private void RevertChanges()
 		{
-			Plugin.Log.Info("ResultsConfigController, RevertChanges: Reverting changes.");
+			logger.Info("RevertChanges: Reverting changes.");
 
 			ResultsSettings.RevertChanges(settings, oldSettings);
 

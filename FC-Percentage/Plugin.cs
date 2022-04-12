@@ -14,11 +14,6 @@ namespace FCPercentage
 	[Plugin(RuntimeOptions.DynamicInit), NoEnableDisable]
 	public class Plugin
 	{
-#pragma warning disable CS8618
-		internal static Plugin Instance { get; private set; }
-		internal static IPALogger Log { get; private set; }
-#pragma warning restore CS8618
-
 		internal const string PluginName = "FCPercentage";
 
 		[Init]
@@ -27,31 +22,29 @@ namespace FCPercentage
 		/// [Init] methods that use a Constructor or called before regular methods like InitWithConfig.
 		/// Only use [Init] with one Constructor.
 		/// </summary>
-		public void Init(IPALogger logger, Config conf, Zenjector zenjector)
+		public void Init(IPALogger logger, Config conf, Zenjector zenject)
 		{
-			logger.Notice("Starting FCPercentage");
-			Instance = this;
-			Log = logger;
-			PluginConfig.Instance = conf.Generated<PluginConfig>();
-			logger.Notice("PluginConfig Generated");
+			zenject.UseLogger(logger);
+			zenject.UseMetadataBinder<Plugin>();
 
-			zenjector.Install(Location.App, (DiContainer Container) =>
+			PluginConfig.Instance = conf.Generated<PluginConfig>();
+
+			// Install zenject stuff
+			zenject.Install(Location.App, (DiContainer Container) =>
 			{
 				Container.BindInterfacesAndSelfTo<ScoreManager>().AsSingle();
 			});
-			zenjector.Install(Location.GameCore, (DiContainer Container) =>
+			zenject.Install(Location.GameCore, (DiContainer Container) =>
 			{
 				Container.BindInterfacesAndSelfTo<ScoreTracker>().AsSingle();
 			});
-			zenjector.Install(Location.Menu, (DiContainer Container) =>
+			zenject.Install(Location.Menu, (DiContainer Container) =>
 			{
 				Container.BindInterfacesAndSelfTo<ResultsConfigController>().AsCached();
 				Container.BindInterfacesAndSelfTo<ResultsConfigManager>().AsSingle();
 				Container.BindInterfacesAndSelfTo<FCPResultsViewController>().AsSingle();
 				Container.BindInterfacesAndSelfTo<FCPMissionResultsViewController>().AsSingle();
 			});
-
-			Log.Info($"{PluginName} initialized.");
 		}
 	}
 }

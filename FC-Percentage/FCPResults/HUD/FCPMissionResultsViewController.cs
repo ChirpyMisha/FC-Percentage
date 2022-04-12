@@ -3,6 +3,7 @@
 using FCPercentage.FCPCore;
 using FCPercentage.FCPCore.Configuration;
 using FCPercentage.FCPResults.Configuration;
+using SiraUtil.Logging;
 using UnityEngine;
 
 namespace FCPercentage.FCPResults.HUD
@@ -15,7 +16,7 @@ namespace FCPercentage.FCPResults.HUD
 		internal override ResultsSettings config { get; set; }
 		internal override ResultsTextFormattingModel textModel { get; set; }
 
-		public FCPMissionResultsViewController(ScoreManager scoreManager, MissionResultsViewController resultsViewController) : base(scoreManager, resultsViewController)
+		public FCPMissionResultsViewController(SiraLog logger, ScoreManager scoreManager, MissionResultsViewController resultsViewController) : base(logger, scoreManager, resultsViewController)
 		{
 			config = PluginConfig.Instance.MissionResultsSettings;
 			textModel = new ResultsTextFormattingModel(scoreManager, config, GetDiffCalculationModel());

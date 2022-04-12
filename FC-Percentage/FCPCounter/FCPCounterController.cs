@@ -7,6 +7,7 @@ using CountersPlus.Utils;
 using FCPercentage.FCPCounter.Configuration;
 using FCPercentage.FCPCore;
 using FCPercentage.FCPCore.Configuration;
+using SiraUtil.Logging;
 
 namespace FCPercentage.FCPCounter
 {
@@ -20,13 +21,15 @@ namespace FCPercentage.FCPCounter
 		private string percentageToStringFormat = "";
 
 		private CounterSettings config;
-		
+
+		private readonly SiraLog logger;
 		private readonly ScoreManager scoreManager;
 		private readonly CanvasUtility canvasUtility;
 		private readonly CustomConfigModel settings;
 
-		public FCPCounterController(ScoreManager scoreManager, CanvasUtility canvasUtility, CustomConfigModel settings, GameplayCoreSceneSetupData sceneSetupData)
+		public FCPCounterController(SiraLog logger, ScoreManager scoreManager, CanvasUtility canvasUtility, CustomConfigModel settings, GameplayCoreSceneSetupData sceneSetupData)
 		{
+			this.logger = logger;
 			this.scoreManager = scoreManager;
 			this.canvasUtility = canvasUtility;
 			this.settings = settings;
@@ -86,14 +89,14 @@ namespace FCPercentage.FCPCounter
 		{
 			if (scoreManager == null || canvasUtility == null || settings == null)
 			{
-				Plugin.Log.Error("FCPercentage : FCPCounterController has a null reference and cannot initialize! Please notify ChirpyMisha about this bug.");
-				Plugin.Log.Error("The following objects are null:");
+				logger.Error("FCPCounterController has a null reference and cannot initialize! Please notify ChirpyMisha about this bug.");
+				logger.Error("The following objects are null:");
 				if (scoreManager == null)
-					Plugin.Log.Error("- ScoreManager");
+					logger.Error("- ScoreManager");
 				if (canvasUtility == null)
-					Plugin.Log.Error("- CanvasUtility");
+					logger.Error("- CanvasUtility");
 				if (settings == null)
-					Plugin.Log.Error("- Settings");
+					logger.Error("- Settings");
 
 				return true;
 			}
