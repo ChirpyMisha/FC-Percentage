@@ -18,7 +18,7 @@ namespace FCPercentage.FCPResults.Configuration
 		private ResultsSettings missionSettings => PluginConfig.Instance.MissionResultsSettings;
 		private ResultsSettings Settings
 		{
-			get { return settings; }
+			get => settings;
 			set
 			{
 				settings = value;
@@ -110,11 +110,10 @@ namespace FCPercentage.FCPResults.Configuration
 			RaisePropertyChanged(nameof(PercentageSplitSaberBPrefixText));
 		}
 
-		private void RaisePropertyChanged([CallerMemberName] string propertyName = "")
-		{
-            this.PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-		}
+		private void RaisePropertyChanged([CallerMemberName] string propertyName = "") =>
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 		
+
 		[UIValue("is-any-on")]
 		private bool IsAnyOn => (IsAnyPercentOn || IsScoreTotalOn);
 		[UIValue("is-any-percent-on")]
@@ -150,10 +149,7 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("is-score-percentage-diff-on-color")]
 		private string IsScorePercentageDiffOnColor => GetInteractabilityColor(IsScorePercentageDiffOn);
 
-		private string GetInteractabilityColor(bool isEnabled)
-		{
-			return isEnabled ? enabledTextColor : disabledTextColor;
-		}
+		private string GetInteractabilityColor(bool isEnabled) => isEnabled ? enabledTextColor : disabledTextColor;
 
 		private void UpdateInteractabilityScorePercentage()
 		{
@@ -224,7 +220,7 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("PercentageTotalMode")]
 		public virtual ResultsViewModes PercentageTotalMode
 		{
-			get { return Settings.PercentageTotalMode; }
+			get => Settings.PercentageTotalMode;
 			set 
 			{
 				Settings.PercentageTotalMode = value;
@@ -236,7 +232,7 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("PercentageSplitMode")]
 		public virtual ResultsViewModes PercentageSplitMode
 		{
-			get { return Settings.PercentageSplitMode; }
+			get => Settings.PercentageSplitMode;
 			set 
 			{
 				Settings.PercentageSplitMode = value;
@@ -248,7 +244,7 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("ScoreTotalMode")]
 		public virtual ResultsViewModes ScoreTotalMode
 		{
-			get { return Settings.ScoreTotalMode; }
+			get => Settings.ScoreTotalMode;
 			set 
 			{
 				Settings.ScoreTotalMode = value;
@@ -260,7 +256,7 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("EnableLabel")]
 		public virtual ResultsViewLabelOptions EnableLabel
 		{
-			get { return Settings.EnableLabel; }
+			get => Settings.EnableLabel;
 			set
 			{ 
 				Settings.EnableLabel = value;
@@ -272,14 +268,14 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("DecimalPrecision")]
 		public virtual int DecimalPrecision
 		{
-			get { return Settings.DecimalPrecision; }
+			get => Settings.DecimalPrecision;
 			set { Settings.DecimalPrecision = value; RaisePropertyChanged(); }
 		}
 
 		[UIValue("EnableScorePercentageDifference")]
 		public virtual bool EnableScorePercentageDifference
 		{
-			get { return Settings.EnableScorePercentageDifference; }
+			get => Settings.EnableScorePercentageDifference;
 			set 
 			{ 
 				Settings.EnableScorePercentageDifference = value;
@@ -291,28 +287,28 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("ScorePercentageDiffModel")]
 		public virtual ResultsViewDiffModels ScorePercentageDiffModel
 		{
-			get { return Settings.ScorePercentageDiffModel; }
+			get => Settings.ScorePercentageDiffModel;
 			set { Settings.ScorePercentageDiffModel = value; RaisePropertyChanged(); }
 		}
 
 		[UIValue("SplitPercentageUseSaberColorScheme")]
 		public virtual bool SplitPercentageUseSaberColorScheme
 		{
-			get { return Settings.SplitPercentageUseSaberColorScheme; }
+			get => Settings.SplitPercentageUseSaberColorScheme;
 			set { Settings.SplitPercentageUseSaberColorScheme = value; RaisePropertyChanged(); }
 		}
 
 		[UIValue("KeepTrailingZeros")]
 		public virtual bool KeepTrailingZeros
 		{
-			get { return Settings.KeepTrailingZeros; }
+			get => Settings.KeepTrailingZeros;
 			set { Settings.KeepTrailingZeros = value; RaisePropertyChanged(); }
 		}
 
 		[UIValue("IgnoreMultiplier")]
 		public virtual bool IgnoreMultiplier
 		{
-			get { return PluginConfig.Instance.IgnoreMultiplier; }
+			get => PluginConfig.Instance.IgnoreMultiplier;
 			set { PluginConfig.Instance.IgnoreMultiplier = value; RaisePropertyChanged(); }
 		}
 
@@ -320,21 +316,21 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("ScorePercentageDiffPositiveColor")]
 		public virtual Color ScorePercentageDiffPositiveColor
 		{
-			get { return HexToColor(Settings.Advanced.DifferencePositiveColor); }
+			get => HexToColor(Settings.Advanced.DifferencePositiveColor);
 			set { Settings.Advanced.DifferencePositiveColor = ColorToHex(value); RaisePropertyChanged(); }
 		}
 
 		[UIValue("ScorePercentageDiffNegativeColor")]
 		public virtual Color ScorePercentageDiffNegativeColor
 		{
-			get { return HexToColor(Settings.Advanced.DifferenceNegativeColor); }
+			get => HexToColor(Settings.Advanced.DifferenceNegativeColor);
 			set { Settings.Advanced.DifferenceNegativeColor = ColorToHex(value); RaisePropertyChanged(); }
 		}
 
 		[UIValue("ApplyColorsToScorePercentageModDifference")]
 		public virtual bool ApplyColorsToScorePercentageModDifference
 		{
-			get { return Settings.Advanced.ApplyColorsToScorePercentageModDifference; }
+			get => Settings.Advanced.ApplyColorsToScorePercentageModDifference;
 			set { Settings.Advanced.ApplyColorsToScorePercentageModDifference = value; RaisePropertyChanged(); }
 		}
 
@@ -342,35 +338,35 @@ namespace FCPercentage.FCPResults.Configuration
 		[UIValue("ScorePrefixText")]
 		public virtual string ScorePrefixText
 		{
-			get { return Settings.Advanced.ScorePrefixText; }
+			get => Settings.Advanced.ScorePrefixText;
 			set { Settings.Advanced.ScorePrefixText = value; RaisePropertyChanged(); }
 		}
 
 		[UIValue("PercentagePrefixText")]
 		public virtual string PercentagePrefixText
 		{
-			get { return Settings.Advanced.PercentagePrefixText; }
+			get => Settings.Advanced.PercentagePrefixText;
 			set { Settings.Advanced.PercentagePrefixText = value; RaisePropertyChanged(); }
 		}
 
 		[UIValue("PercentageTotalPrefixText")]
 		public virtual string PercentageTotalPrefixText
 		{
-			get { return Settings.Advanced.PercentageTotalPrefixText; }
+			get => Settings.Advanced.PercentageTotalPrefixText;
 			set { Settings.Advanced.PercentageTotalPrefixText = value; RaisePropertyChanged(); }
 		}
 
 		[UIValue("PercentageSplitSaberAPrefixText")]
 		public virtual string PercentageSplitSaberAPrefixText
 		{
-			get { return Settings.Advanced.PercentageSplitSaberAPrefixText; }
+			get => Settings.Advanced.PercentageSplitSaberAPrefixText;
 			set { Settings.Advanced.PercentageSplitSaberAPrefixText = value; RaisePropertyChanged(); }
 		}
 
 		[UIValue("PercentageSplitSaberBPrefixText")]
 		public virtual string PercentageSplitSaberBPrefixText
 		{
-			get { return Settings.Advanced.PercentageSplitSaberBPrefixText; }
+			get => Settings.Advanced.PercentageSplitSaberBPrefixText;
 			set { Settings.Advanced.PercentageSplitSaberBPrefixText = value; RaisePropertyChanged(); }
 		}
 
